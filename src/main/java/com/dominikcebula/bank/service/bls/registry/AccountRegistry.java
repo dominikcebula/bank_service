@@ -27,8 +27,8 @@ public class AccountRegistry {
     }
 
     public synchronized AccountId openAccount(Money initialBalance) throws AccountOpenException {
-        Account account = new Account(initialBalance);
         AccountId accountId = accountIdGenerator.generateAccountId(accounts.keySet());
+        Account account = new Account(initialBalance);
 
         accounts.put(accountId, account);
 

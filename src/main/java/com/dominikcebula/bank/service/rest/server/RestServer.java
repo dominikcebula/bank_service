@@ -6,8 +6,8 @@ import com.dominikcebula.bank.service.rest.actions.IndexAction;
 import com.dominikcebula.bank.service.rest.actions.ListAccountsAction;
 import com.dominikcebula.bank.service.rest.actions.OpenAccountAction;
 import com.dominikcebula.bank.service.rest.filters.ResponseFilter;
-import com.dominikcebula.bank.service.rest.validator.ValidatorException;
-import com.dominikcebula.bank.service.rest.validator.ValidatorExceptionHandler;
+import com.dominikcebula.bank.service.rest.validator.exception.ValidatorException;
+import com.dominikcebula.bank.service.rest.validator.exception.ValidatorExceptionHandler;
 import spark.Spark;
 
 public class RestServer {

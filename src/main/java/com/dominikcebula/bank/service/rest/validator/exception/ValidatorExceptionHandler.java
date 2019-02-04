@@ -1,4 +1,4 @@
-package com.dominikcebula.bank.service.rest.validator;
+package com.dominikcebula.bank.service.rest.validator.exception;
 
 import com.dominikcebula.bank.service.rest.ds.response.ErrorResponse;
 import com.dominikcebula.bank.service.rest.json.GsonFactory;
