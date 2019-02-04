@@ -1,8 +1,10 @@
 package com.dominikcebula.bank.service;
 
-public class Runner {
+import com.dominikcebula.bank.service.rest.server.RestServer;
+
+class Runner {
 
     public static void main(String... args) {
-
+        new RestServer().start();
     }
 }
