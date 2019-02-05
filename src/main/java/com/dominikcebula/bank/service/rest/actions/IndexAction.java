@@ -7,7 +7,7 @@ public class IndexAction extends AbstractRestAction<Void, String> {
     }
 
     @Override
-    String handleRequest(Void request) throws Exception {
+    String handleRequest(Void request) {
         return "Bank Service is running";
     }
 }

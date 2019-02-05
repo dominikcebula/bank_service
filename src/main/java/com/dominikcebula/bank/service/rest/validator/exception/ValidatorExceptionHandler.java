@@ -9,7 +9,7 @@ import spark.Response;
 
 public class ValidatorExceptionHandler implements ExceptionHandler<ValidatorException> {
 
-    private Gson gson = new GsonFactory().create();
+    private final Gson gson = new GsonFactory().create();
 
     @Override
     public void handle(ValidatorException exception, Request request, Response response) {
