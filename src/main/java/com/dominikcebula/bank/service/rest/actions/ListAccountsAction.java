@@ -1,18 +1,19 @@
 package com.dominikcebula.bank.service.rest.actions;
 
+import com.dominikcebula.bank.service.bls.actions.ActionsFacade;
 import com.dominikcebula.bank.service.bls.ds.AccountsInfo;
-import com.dominikcebula.bank.service.bls.registry.AccountRegistry;
 
 public class ListAccountsAction extends AbstractRestAction<Void, AccountsInfo> {
 
-    private final AccountRegistry accountRegistry = AccountRegistry.getInstance();
+    private final ActionsFacade actionsFacade;
 
-    public ListAccountsAction() {
+    public ListAccountsAction(ActionsFacade actionsFacade) {
         super(Void.class, AccountsInfo.class);
+        this.actionsFacade = actionsFacade;
     }
 
     @Override
     AccountsInfo handleRequest(Void request) {
-        return accountRegistry.listAccounts();
+        return actionsFacade.listAccounts();
     }
 }

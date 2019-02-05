@@ -7,7 +7,11 @@ import com.dominikcebula.bank.service.rest.validator.exception.ValidatorExceptio
 
 public class AccountOpenRequestValidator extends Validator<AccountOpenRequest> {
 
-    private final Configuration configuration = Configuration.getInstance();
+    private final Configuration configuration;
+
+    public AccountOpenRequestValidator(Configuration configuration) {
+        this.configuration = configuration;
+    }
 
     @Override
     public void validate(AccountOpenRequest accountOpenRequest) throws ValidatorException {

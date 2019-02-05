@@ -9,16 +9,7 @@ public class Configuration {
     private static final int DEFAULT_MAX_THREADS = 200;
     private static final String DEFAULT_CURRENCY = "USD";
 
-    private static final Configuration INSTANCE = new Configuration();
-
     private final Properties properties = System.getProperties();
-
-    private Configuration() {
-    }
-
-    public static Configuration getInstance() {
-        return INSTANCE;
-    }
 
     public int getPort() {
         return getPropertyOrDefault("service.port", DEFAULT_SERVICE_PORT, Integer::parseInt);

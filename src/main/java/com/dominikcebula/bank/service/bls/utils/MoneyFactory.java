@@ -6,7 +6,12 @@ import org.javamoney.moneta.Money;
 import javax.money.Monetary;
 
 public class MoneyFactory {
-    private final Configuration configuration = Configuration.getInstance();
+
+    private final Configuration configuration;
+
+    public MoneyFactory(Configuration configuration) {
+        this.configuration = configuration;
+    }
 
     public Money create(Number number) {
         return create(number, configuration.getCurrency());
