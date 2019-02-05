@@ -5,13 +5,15 @@ import com.dominikcebula.bank.service.bls.ds.Account;
 import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.exception.AccountOpenException;
 import com.dominikcebula.bank.service.bls.utils.AccountIdGenerator;
+import com.google.inject.Inject;
 import org.javamoney.moneta.Money;
 
-public class OpenAccountAction {
+class OpenAccountAction {
 
     private final AccountDao accountDao;
     private final AccountIdGenerator accountIdGenerator;
 
+    @Inject
     public OpenAccountAction(AccountDao accountDao, AccountIdGenerator accountIdGenerator) {
         this.accountDao = accountDao;
         this.accountIdGenerator = accountIdGenerator;

@@ -4,13 +4,15 @@ import com.dominikcebula.bank.service.bls.dao.AccountDao;
 import com.dominikcebula.bank.service.bls.ds.Account;
 import com.dominikcebula.bank.service.bls.ds.AccountsInfo;
 import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
+import com.google.inject.Inject;
 import org.javamoney.moneta.Money;
 
-public class ListAccountsAction {
+class ListAccountsAction {
 
     private final AccountDao accountDao;
     private final MoneyFactory moneyFactory;
 
+    @Inject
     public ListAccountsAction(AccountDao accountDao, MoneyFactory moneyFactory) {
         this.accountDao = accountDao;
         this.moneyFactory = moneyFactory;

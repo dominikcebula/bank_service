@@ -2,6 +2,7 @@ package com.dominikcebula.bank.service.exception;
 
 import com.dominikcebula.bank.service.rest.ds.response.ErrorResponse;
 import com.google.gson.Gson;
+import com.google.inject.Inject;
 import spark.ExceptionHandler;
 import spark.Request;
 import spark.Response;
@@ -10,6 +11,7 @@ public class ReportableExceptionHandler implements ExceptionHandler<ReportableEx
 
     private final Gson gson;
 
+    @Inject
     public ReportableExceptionHandler(Gson gson) {
         this.gson = gson;
     }

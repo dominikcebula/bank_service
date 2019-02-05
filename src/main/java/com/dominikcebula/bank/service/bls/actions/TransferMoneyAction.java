@@ -6,12 +6,14 @@ import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.exception.AccountMissingException;
 import com.dominikcebula.bank.service.bls.exception.TransferException;
 import com.dominikcebula.bank.service.bls.exception.WithdrawException;
+import com.google.inject.Inject;
 import org.javamoney.moneta.Money;
 
-public class TransferMoneyAction {
+class TransferMoneyAction {
 
     private final AccountDao accountDao;
 
+    @Inject
     public TransferMoneyAction(AccountDao accountDao) {
         this.accountDao = accountDao;
     }

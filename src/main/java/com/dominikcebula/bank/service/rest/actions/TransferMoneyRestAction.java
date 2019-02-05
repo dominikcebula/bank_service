@@ -3,16 +3,18 @@ package com.dominikcebula.bank.service.rest.actions;
 import com.dominikcebula.bank.service.bls.actions.BankActionsFacade;
 import com.dominikcebula.bank.service.rest.ds.request.TransferMoneyRequest;
 import com.dominikcebula.bank.service.rest.ds.response.TransferMoneyResponse;
+import com.dominikcebula.bank.service.rest.json.GsonProvider;
 import com.dominikcebula.bank.service.rest.validator.Validator;
 import com.dominikcebula.bank.service.rest.validator.validators.TransferMoneyRequestValidator;
-import com.google.gson.Gson;
+import com.google.inject.Inject;
 
 public class TransferMoneyRestAction extends AbstractValidatingRestAction<TransferMoneyRequest, TransferMoneyResponse> {
 
     private final BankActionsFacade bankActionsFacade;
 
-    public TransferMoneyRestAction(Gson gson, BankActionsFacade bankActionsFacade) {
-        super(gson, TransferMoneyRequest.class, TransferMoneyResponse.class);
+    @Inject
+    public TransferMoneyRestAction(GsonProvider gsonProvider, BankActionsFacade bankActionsFacade) {
+        super(gsonProvider, TransferMoneyRequest.class, TransferMoneyResponse.class);
         this.bankActionsFacade = bankActionsFacade;
     }
 

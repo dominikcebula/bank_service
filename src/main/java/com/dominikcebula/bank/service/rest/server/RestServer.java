@@ -1,11 +1,11 @@
 package com.dominikcebula.bank.service.rest.server;
 
-import com.dominikcebula.bank.service.Context;
 import com.dominikcebula.bank.service.configuration.Configuration;
 import com.dominikcebula.bank.service.exception.ReportableException;
 import com.dominikcebula.bank.service.exception.ReportableExceptionHandler;
 import com.dominikcebula.bank.service.rest.actions.*;
 import com.dominikcebula.bank.service.rest.filters.ResponseFilter;
+import com.google.inject.Inject;
 import spark.Spark;
 
 public class RestServer {
@@ -19,16 +19,21 @@ public class RestServer {
     private final TransferMoneyRestAction transferMoneyAction;
     private final ListAccountsRestAction listAccountsRestAction;
 
-    public RestServer(Context context) {
-        this.configuration = context.getConfiguration();
-        this.responseFilter = context.getResponseFilter();
-        this.errorHandlingRestAction = context.getErrorHandlingRestAction();
-        this.reportableExceptionHandler = context.getReportableExceptionHandler();
-        this.indexRestAction = context.getIndexRestAction();
-        this.openAccountRestAction = context.getOpenAccountRestAction();
-        this.transferMoneyAction = context.getTransferMoneyRestAction();
-        this.listAccountsRestAction = context.getListAccountsRestAction();
+    @Inject
+    public RestServer(Configuration configuration, ResponseFilter responseFilter,
+                      ErrorHandlingRestAction errorHandlingRestAction, ReportableExceptionHandler reportableExceptionHandler,
+                      IndexRestAction indexRestAction, OpenAccountRestAction openAccountRestAction,
+                      TransferMoneyRestAction transferMoneyAction, ListAccountsRestAction listAccountsRestAction) {
+        this.configuration = configuration;
+        this.responseFilter = responseFilter;
+        this.errorHandlingRestAction = errorHandlingRestAction;
+        this.reportableExceptionHandler = reportableExceptionHandler;
+        this.indexRestAction = indexRestAction;
+        this.openAccountRestAction = openAccountRestAction;
+        this.transferMoneyAction = transferMoneyAction;
+        this.listAccountsRestAction = listAccountsRestAction;
     }
+
 
     public void start() {
         Spark.port(configuration.getPort());

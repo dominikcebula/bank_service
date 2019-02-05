@@ -1,5 +1,6 @@
 package com.dominikcebula.bank.service.rest.actions;
 
+import com.dominikcebula.bank.service.rest.json.GsonProvider;
 import com.google.gson.Gson;
 import spark.Request;
 import spark.Response;
@@ -12,8 +13,8 @@ abstract class AbstractRestAction<I, R> implements Route {
     private final Class<I> requestClass;
     private final Class<R> responseClass;
 
-    AbstractRestAction(Gson gson, Class<I> requestClass, Class<R> responseClass) {
-        this.gson = gson;
+    AbstractRestAction(GsonProvider gsonProvider, Class<I> requestClass, Class<R> responseClass) {
+        this.gson = gsonProvider.provide();
         this.requestClass = requestClass;
         this.responseClass = responseClass;
     }

@@ -7,6 +7,7 @@ import com.dominikcebula.bank.service.rest.json.serializer.AccountIdSerializer;
 import com.dominikcebula.bank.service.rest.json.serializer.MoneySerializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.inject.Inject;
 import org.javamoney.moneta.Money;
 
 public class GsonProvider {
@@ -16,6 +17,7 @@ public class GsonProvider {
     private final AccountIdSerializer accountIdSerializer;
     private final AccountIdDeserializer accountIdDeserializer;
 
+    @Inject
     public GsonProvider(MoneySerializer moneySerializer, MoneyDeserializer moneyDeserializer, AccountIdSerializer accountIdSerializer, AccountIdDeserializer accountIdDeserializer) {
         this.moneySerializer = moneySerializer;
         this.moneyDeserializer = moneyDeserializer;

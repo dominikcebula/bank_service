@@ -1,6 +1,7 @@
 package com.dominikcebula.bank.service.bls.utils;
 
 import com.dominikcebula.bank.service.configuration.Configuration;
+import com.google.inject.Inject;
 import org.javamoney.moneta.Money;
 
 import javax.money.Monetary;
@@ -9,6 +10,7 @@ public class MoneyFactory {
 
     private final Configuration configuration;
 
+    @Inject
     public MoneyFactory(Configuration configuration) {
         this.configuration = configuration;
     }

@@ -1,13 +1,17 @@
 package com.dominikcebula.bank.service;
 
 import com.dominikcebula.bank.service.rest.server.RestServer;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 class Runner {
 
     public static void main(String... args) {
 
-        Context context = new Context();
+        Injector injector = Guice.createInjector(new ServiceModule());
 
-        new RestServer(context).start();
+        RestServer restServer = injector.getInstance(RestServer.class);
+
+        restServer.start();
     }
 }
