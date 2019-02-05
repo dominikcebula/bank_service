@@ -6,13 +6,13 @@ import com.dominikcebula.bank.service.bls.exception.AccountOpenException;
 import com.dominikcebula.bank.service.bls.exception.TransferException;
 import org.javamoney.moneta.Money;
 
-public class ActionsFacade {
+public class BankActionsFacade {
 
     private final OpenAccountAction openAccountAction;
     private final TransferMoneyAction transferMoneyAction;
     private final ListAccountsAction listAccountsAction;
 
-    public ActionsFacade(OpenAccountAction openAccountAction, TransferMoneyAction transferMoneyAction, ListAccountsAction listAccountsAction) {
+    public BankActionsFacade(OpenAccountAction openAccountAction, TransferMoneyAction transferMoneyAction, ListAccountsAction listAccountsAction) {
         this.openAccountAction = openAccountAction;
         this.transferMoneyAction = transferMoneyAction;
         this.listAccountsAction = listAccountsAction;

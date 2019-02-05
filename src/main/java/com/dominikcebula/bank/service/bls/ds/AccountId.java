@@ -1,8 +1,10 @@
 package com.dominikcebula.bank.service.bls.ds;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import org.apache.commons.lang3.RandomStringUtils;
 
+@Getter
 @EqualsAndHashCode
 public class AccountId {
     private static final int ACCOUNT_ID_LENGTH = 16;

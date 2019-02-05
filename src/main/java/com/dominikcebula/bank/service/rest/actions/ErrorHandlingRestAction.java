@@ -1,11 +1,12 @@
 package com.dominikcebula.bank.service.rest.actions;
 
 import com.dominikcebula.bank.service.rest.ds.response.ErrorResponse;
+import com.google.gson.Gson;
 
-public class ErrorHandlingAction extends AbstractRestAction<Void, ErrorResponse> {
+public class ErrorHandlingRestAction extends AbstractRestAction<Void, ErrorResponse> {
 
-    public ErrorHandlingAction() {
-        super(Void.class, ErrorResponse.class);
+    public ErrorHandlingRestAction(Gson gson) {
+        super(gson, Void.class, ErrorResponse.class);
     }
 
     @Override

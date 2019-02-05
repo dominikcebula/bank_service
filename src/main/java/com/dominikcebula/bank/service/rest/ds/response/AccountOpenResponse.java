@@ -4,7 +4,10 @@ import com.dominikcebula.bank.service.bls.ds.AccountId;
 
 public class AccountOpenResponse extends Response {
 
+    private final AccountId accountId;
+
     public AccountOpenResponse(AccountId accountId) {
         super(Status.SUCCESS, String.format("Opened account: [%s]", accountId));
+        this.accountId = accountId;
     }
 }

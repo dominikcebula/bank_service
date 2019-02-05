@@ -1,11 +1,12 @@
 package com.dominikcebula.bank.service.rest.actions;
 
 import com.dominikcebula.bank.service.rest.validator.Validator;
+import com.google.gson.Gson;
 
 abstract class AbstractValidatingRestAction<I, R> extends AbstractRestAction<I, R> {
 
-    AbstractValidatingRestAction(Class<I> requestClass, Class<R> responseClass) {
-        super(requestClass, responseClass);
+    AbstractValidatingRestAction(Gson gson, Class<I> requestClass, Class<R> responseClass) {
+        super(gson, requestClass, responseClass);
     }
 
     @Override
