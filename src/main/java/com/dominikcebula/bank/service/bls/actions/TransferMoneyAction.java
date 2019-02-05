@@ -5,7 +5,7 @@ import com.dominikcebula.bank.service.bls.ds.Account;
 import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.exception.AccountMissingException;
 import com.dominikcebula.bank.service.bls.exception.TransferException;
-import com.dominikcebula.bank.service.bls.exception.WithDrawException;
+import com.dominikcebula.bank.service.bls.exception.WithdrawException;
 import org.javamoney.moneta.Money;
 
 public class TransferMoneyAction {
@@ -29,8 +29,8 @@ public class TransferMoneyAction {
                     deposit(toAccount.getBalance(), amount)
             );
 
-        } catch (WithDrawException | AccountMissingException e) {
-            throw new TransferException(String.format("Unable to transfer amount = [%s] from = [%s] to = [%s]: %s", amount, from, to, e.getMessage()), e);
+        } catch (WithdrawException | AccountMissingException e) {
+            throw new TransferException(String.format("Unable to transfer amount [%s] from [%s] to [%s]: %s", amount, from, to, e.getMessage()), e);
         }
     }
 
@@ -41,11 +41,11 @@ public class TransferMoneyAction {
             throw new AccountMissingException(String.format("Unable to locate account [%s]", accountId));
     }
 
-    private Money withdraw(Money accountBalance, Money amount) throws WithDrawException {
+    private Money withdraw(Money accountBalance, Money amount) throws WithdrawException {
         if (accountBalance.isGreaterThanOrEqualTo(amount))
             return accountBalance.subtract(amount);
         else
-            throw new WithDrawException(String.format("Unable to withdraw amount = [%s] from account that has balance = [%s]", amount, accountBalance));
+            throw new WithdrawException(String.format("Unable to withdraw amount [%s] from account that has balance [%s]", amount, accountBalance));
     }
 
     private Money deposit(Money accountBalance, Money amount) {

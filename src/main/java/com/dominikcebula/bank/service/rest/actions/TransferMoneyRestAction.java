@@ -4,6 +4,7 @@ import com.dominikcebula.bank.service.bls.actions.BankActionsFacade;
 import com.dominikcebula.bank.service.rest.ds.request.TransferMoneyRequest;
 import com.dominikcebula.bank.service.rest.ds.response.TransferMoneyResponse;
 import com.dominikcebula.bank.service.rest.validator.Validator;
+import com.dominikcebula.bank.service.rest.validator.validators.TransferMoneyRequestValidator;
 import com.google.gson.Gson;
 
 public class TransferMoneyRestAction extends AbstractValidatingRestAction<TransferMoneyRequest, TransferMoneyResponse> {
@@ -16,8 +17,8 @@ public class TransferMoneyRestAction extends AbstractValidatingRestAction<Transf
     }
 
     @Override
-    Validator getRequestValidator() {
-        return null;
+    Validator<TransferMoneyRequest> getRequestValidator() {
+        return new TransferMoneyRequestValidator();
     }
 
     @Override

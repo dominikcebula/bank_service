@@ -9,6 +9,11 @@ public class AccountOpenRequestValidator extends Validator<AccountOpenRequest> {
     @Override
     public void validate(AccountOpenRequest accountOpenRequest) throws ValidatorException {
         assertConditionMet(
+                accountOpenRequest.getInitialDeposit() != null,
+                "Initial Deposit has to be specified"
+        );
+
+        assertConditionMet(
                 accountOpenRequest.getInitialDeposit().isPositive(),
                 "Initial Deposit has to be greater than zero"
         );

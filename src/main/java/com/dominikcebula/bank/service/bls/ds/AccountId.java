@@ -15,6 +15,10 @@ public class AccountId {
         this.accountNumber = accountNumber;
     }
 
+    public static AccountId createAccountNumber(String accountNumber) {
+        return new AccountId(accountNumber);
+    }
+
     public static AccountId createRandomAccountId() {
         return new AccountId(RandomStringUtils.randomNumeric(ACCOUNT_ID_LENGTH));
     }
