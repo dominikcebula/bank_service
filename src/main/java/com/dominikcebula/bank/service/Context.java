@@ -21,29 +21,29 @@ import lombok.Getter;
 
 @Getter
 public class Context {
-    private Configuration configuration = new Configuration();
-    private AccountDao accountDao = new AccountDao();
+    private final Configuration configuration = new Configuration();
+    private final AccountDao accountDao = new AccountDao();
 
-    private AccountIdGenerator accountIdGenerator = new AccountIdGenerator();
-    private MoneyFactory moneyFactory = new MoneyFactory(configuration);
+    private final AccountIdGenerator accountIdGenerator = new AccountIdGenerator();
+    private final MoneyFactory moneyFactory = new MoneyFactory(configuration);
 
-    private OpenAccountAction openAccountAction = new OpenAccountAction(accountDao, accountIdGenerator);
-    private TransferMoneyAction transferMoneyAction = new TransferMoneyAction(accountDao);
-    private ListAccountsAction listAccountsAction = new ListAccountsAction(accountDao, moneyFactory);
-    private BankActionsFacade bankActionsFacade = new BankActionsFacade(openAccountAction, transferMoneyAction, listAccountsAction);
+    private final OpenAccountAction openAccountAction = new OpenAccountAction(accountDao, accountIdGenerator);
+    private final TransferMoneyAction transferMoneyAction = new TransferMoneyAction(accountDao);
+    private final ListAccountsAction listAccountsAction = new ListAccountsAction(accountDao, moneyFactory);
+    private final BankActionsFacade bankActionsFacade = new BankActionsFacade(openAccountAction, transferMoneyAction, listAccountsAction);
 
-    private MoneySerializer moneySerializer = new MoneySerializer();
-    private MoneyDeserializer moneyDeserializer = new MoneyDeserializer(moneyFactory);
-    private AccountIdSerializer accountIdSerializer = new AccountIdSerializer();
-    private AccountIdDeserializer accountIdDeserializer = new AccountIdDeserializer();
-    private Gson gson = new GsonProvider(moneySerializer, moneyDeserializer, accountIdSerializer, accountIdDeserializer).provide();
+    private final MoneySerializer moneySerializer = new MoneySerializer();
+    private final MoneyDeserializer moneyDeserializer = new MoneyDeserializer(moneyFactory);
+    private final AccountIdSerializer accountIdSerializer = new AccountIdSerializer();
+    private final AccountIdDeserializer accountIdDeserializer = new AccountIdDeserializer();
+    private final Gson gson = new GsonProvider(moneySerializer, moneyDeserializer, accountIdSerializer, accountIdDeserializer).provide();
 
-    private ResponseFilter responseFilter = new ResponseFilter();
-    private ErrorHandlingRestAction errorHandlingRestAction = new ErrorHandlingRestAction(gson);
-    private ReportableExceptionHandler reportableExceptionHandler = new ReportableExceptionHandler(gson);
+    private final ResponseFilter responseFilter = new ResponseFilter();
+    private final ErrorHandlingRestAction errorHandlingRestAction = new ErrorHandlingRestAction(gson);
+    private final ReportableExceptionHandler reportableExceptionHandler = new ReportableExceptionHandler(gson);
 
-    private IndexRestAction indexRestAction = new IndexRestAction(gson);
-    private OpenAccountRestAction openAccountRestAction = new OpenAccountRestAction(gson, bankActionsFacade);
-    private TransferMoneyRestAction transferMoneyRestAction = new TransferMoneyRestAction(gson, bankActionsFacade);
-    private ListAccountsRestAction listAccountsRestAction = new ListAccountsRestAction(gson, bankActionsFacade);
+    private final IndexRestAction indexRestAction = new IndexRestAction(gson);
+    private final OpenAccountRestAction openAccountRestAction = new OpenAccountRestAction(gson, bankActionsFacade);
+    private final TransferMoneyRestAction transferMoneyRestAction = new TransferMoneyRestAction(gson, bankActionsFacade);
+    private final ListAccountsRestAction listAccountsRestAction = new ListAccountsRestAction(gson, bankActionsFacade);
 }

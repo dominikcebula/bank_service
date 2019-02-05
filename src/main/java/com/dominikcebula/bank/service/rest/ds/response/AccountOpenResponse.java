@@ -1,7 +1,9 @@
 package com.dominikcebula.bank.service.rest.ds.response;
 
 import com.dominikcebula.bank.service.bls.ds.AccountId;
+import lombok.Getter;
 
+@Getter
 public class AccountOpenResponse extends Response {
 
     private final AccountId accountId;
