@@ -50,4 +50,8 @@ public class RestServer {
         Spark.post("/transfer", transferMoneyAction);
         Spark.get("/accounts/list", listAccountsRestAction);
     }
+
+    public void stop() {
+        Spark.stop();
+    }
 }

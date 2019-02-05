@@ -6,7 +6,7 @@ import com.dominikcebula.bank.service.configuration.Configuration;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 
-class ServiceModule extends AbstractModule {
+public class ServiceModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(Configuration.class).in(Singleton.class);
