@@ -14,7 +14,7 @@ class OpenAccountAction {
     private final AccountIdGenerator accountIdGenerator;
 
     @Inject
-    public OpenAccountAction(AccountDao accountDao, AccountIdGenerator accountIdGenerator) {
+    OpenAccountAction(AccountDao accountDao, AccountIdGenerator accountIdGenerator) {
         this.accountDao = accountDao;
         this.accountIdGenerator = accountIdGenerator;
     }

@@ -14,7 +14,7 @@ class TransferMoneyAction {
     private final AccountDao accountDao;
 
     @Inject
-    public TransferMoneyAction(AccountDao accountDao) {
+    TransferMoneyAction(AccountDao accountDao) {
         this.accountDao = accountDao;
     }
 

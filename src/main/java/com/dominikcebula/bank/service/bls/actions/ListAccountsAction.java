@@ -13,7 +13,7 @@ class ListAccountsAction {
     private final MoneyFactory moneyFactory;
 
     @Inject
-    public ListAccountsAction(AccountDao accountDao, MoneyFactory moneyFactory) {
+    ListAccountsAction(AccountDao accountDao, MoneyFactory moneyFactory) {
         this.accountDao = accountDao;
         this.moneyFactory = moneyFactory;
     }
