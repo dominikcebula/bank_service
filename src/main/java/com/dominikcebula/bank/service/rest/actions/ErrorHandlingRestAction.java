@@ -6,6 +6,8 @@ import com.google.inject.Inject;
 
 public class ErrorHandlingRestAction extends AbstractRestAction<Void, ErrorResponse> {
 
+    static final String ERROR_MESSAGE = "Error occurred while processing request.";
+
     @Inject
     public ErrorHandlingRestAction(GsonProvider gsonProvider) {
         super(gsonProvider, Void.class, ErrorResponse.class);
@@ -13,6 +15,6 @@ public class ErrorHandlingRestAction extends AbstractRestAction<Void, ErrorRespo
 
     @Override
     ErrorResponse handleRequest(Void request) {
-        return new ErrorResponse("Error occurred while processing request.");
+        return new ErrorResponse(ERROR_MESSAGE);
     }
 }

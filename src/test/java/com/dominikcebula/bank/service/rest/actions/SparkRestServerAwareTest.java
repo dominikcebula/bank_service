@@ -6,6 +6,8 @@ import com.dominikcebula.bank.service.rest.json.GsonProvider;
 import com.dominikcebula.bank.service.rest.service.ServiceController;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Module;
+import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import org.junit.After;
 import org.junit.Before;
 
@@ -33,7 +35,10 @@ public abstract class SparkRestServerAwareTest {
         );
     }
 
-    ServiceModule getServiceModule() {
-        return new ServiceModule();
+    private Module getServiceModule() {
+        return new ComposedServiceModule(
+                new ServiceModule(),
+                BoundFieldModule.of(this)
+        );
     }
 }

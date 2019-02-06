@@ -3,7 +3,7 @@ package com.dominikcebula.bank.service.rest.ds.response;
 import lombok.Getter;
 
 @Getter
-class Response {
+public class Response {
     private final Status status;
     private final String message;
 
