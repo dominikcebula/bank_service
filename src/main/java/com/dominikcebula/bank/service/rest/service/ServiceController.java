@@ -25,7 +25,10 @@ public class ServiceController {
     public void stop() {
         if (restServer != null) {
             restServer.stop();
+
+            // https://github.com/perwendel/spark/issues/705
             awaitServiceStopped.await(configuration);
+
             restServer = null;
         }
     }
