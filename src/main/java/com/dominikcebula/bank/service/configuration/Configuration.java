@@ -5,11 +5,16 @@ import java.util.function.Function;
 
 public class Configuration {
 
+    private static final String DEFAULT_SERVICE_HOST = "localhost";
     private static final int DEFAULT_SERVICE_PORT = 8080;
     private static final int DEFAULT_MAX_THREADS = 200;
     private static final String DEFAULT_CURRENCY = "USD";
 
     private final Properties properties = System.getProperties();
+
+    public String getHost() {
+        return getPropertyOrDefault("service.host", DEFAULT_SERVICE_HOST, String::valueOf);
+    }
 
     public int getPort() {
         return getPropertyOrDefault("service.port", DEFAULT_SERVICE_PORT, Integer::parseInt);

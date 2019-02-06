@@ -7,6 +7,8 @@ import com.google.inject.Inject;
 
 public class ListAccountsRestAction extends AbstractRestAction<Void, AccountsInfo> {
 
+    public static final String ACCOUNT_LIST_URI = "/accounts/list";
+
     private final BankActionsFacade bankActionsFacade;
 
     @Inject

@@ -10,6 +10,8 @@ import com.google.inject.Inject;
 
 public class TransferMoneyRestAction extends AbstractValidatingRestAction<TransferMoneyRequest, TransferMoneyResponse> {
 
+    public static final String TRANSFER_URI = "/transfer";
+
     private final BankActionsFacade bankActionsFacade;
 
     @Inject

@@ -10,6 +10,8 @@ import com.google.inject.Inject;
 
 public class OpenAccountRestAction extends AbstractValidatingRestAction<AccountOpenRequest, AccountOpenResponse> {
 
+    public static final String ACCOUTS_OPEN_URI = "/accounts/open";
+
     private final BankActionsFacade bankActionsFacade;
 
     @Inject
