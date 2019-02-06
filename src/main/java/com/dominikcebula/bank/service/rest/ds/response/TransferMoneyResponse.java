@@ -15,8 +15,8 @@ public class TransferMoneyResponse extends Response {
     public TransferMoneyResponse(TransferMoneyRequest transferMoneyRequest) {
         super(Status.SUCCESS,
                 String.format(
-                        "Transferred [%s] from [%s] to [%s]",
-                        transferMoneyRequest.getAmount(), transferMoneyRequest.getFrom(), transferMoneyRequest.getTo()
+                        "Transferred [%.2f] from [%s] to [%s]",
+                        transferMoneyRequest.getAmount().getNumber().floatValue(), transferMoneyRequest.getFrom(), transferMoneyRequest.getTo()
                 )
         );
 

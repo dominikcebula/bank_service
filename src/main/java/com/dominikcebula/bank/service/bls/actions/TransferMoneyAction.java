@@ -9,7 +9,7 @@ import com.dominikcebula.bank.service.bls.exception.WithdrawException;
 import com.google.inject.Inject;
 import org.javamoney.moneta.Money;
 
-class TransferMoneyAction {
+public class TransferMoneyAction {
 
     private final AccountDao accountDao;
 
@@ -18,7 +18,7 @@ class TransferMoneyAction {
         this.accountDao = accountDao;
     }
 
-    void transfer(AccountId from, AccountId to, Money amount) throws TransferException {
+    public void transfer(AccountId from, AccountId to, Money amount) throws TransferException {
         try {
             Account fromAccount = getExistingAccountForTransfer(from);
             Account toAccount = getExistingAccountForTransfer(to);
