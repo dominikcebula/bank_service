@@ -1,6 +1,6 @@
 package com.dominikcebula.bank.service.rest.actions;
 
-import com.dominikcebula.bank.service.bls.actions.TransferMoneyAction;
+import com.dominikcebula.bank.service.bls.actions.BankActionsFacadeInvoker;
 import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.exception.TransferException;
 import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
@@ -31,7 +31,7 @@ public class TransferMoneyRestActionIntegrationTest extends SparkRestServerAware
 
     @Bind
     @Mock
-    private TransferMoneyAction transferMoneyAction;
+    private BankActionsFacadeInvoker bankActionsFacadeInvoker;
 
     private MoneyFactory moneyFactory;
 
@@ -71,7 +71,7 @@ public class TransferMoneyRestActionIntegrationTest extends SparkRestServerAware
         Money amount = moneyFactory.create(600);
 
         Mockito.doThrow(new IllegalArgumentException("TEST"))
-                .when(transferMoneyAction).transfer(FROM, TO, amount);
+                .when(bankActionsFacadeInvoker).transfer(FROM, TO, amount);
 
         TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
         transferMoneyRequest.setFrom(FROM);

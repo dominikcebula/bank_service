@@ -50,7 +50,7 @@ public class RestClient {
         try (
                 CloseableHttpClient httpClient = HttpClients.createDefault();
                 CloseableHttpResponse httpResponse = httpClient.execute(getTarget(), httpRequest);
-                InputStreamReader contentStream = new InputStreamReader(httpResponse.getEntity().getContent());
+                InputStreamReader contentStream = new InputStreamReader(httpResponse.getEntity().getContent())
         ) {
             return gson.fromJson(contentStream, responseClass);
         } catch (Exception e) {

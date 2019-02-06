@@ -1,6 +1,6 @@
 package com.dominikcebula.bank.service.rest.actions;
 
-import com.dominikcebula.bank.service.bls.actions.BankActionsFacade;
+import com.dominikcebula.bank.service.bls.actions.BankActionsFacadeInvoker;
 import com.dominikcebula.bank.service.rest.ds.request.TransferMoneyRequest;
 import com.dominikcebula.bank.service.rest.ds.response.TransferMoneyResponse;
 import com.dominikcebula.bank.service.rest.json.GsonProvider;
@@ -12,12 +12,12 @@ public class TransferMoneyRestAction extends AbstractValidatingRestAction<Transf
 
     public static final String TRANSFER_URI = "/transfer";
 
-    private final BankActionsFacade bankActionsFacade;
+    private final BankActionsFacadeInvoker bankActionsFacadeInvoker;
 
     @Inject
-    public TransferMoneyRestAction(GsonProvider gsonProvider, BankActionsFacade bankActionsFacade) {
+    public TransferMoneyRestAction(GsonProvider gsonProvider, BankActionsFacadeInvoker bankActionsFacadeInvoker) {
         super(gsonProvider, TransferMoneyRequest.class, TransferMoneyResponse.class);
-        this.bankActionsFacade = bankActionsFacade;
+        this.bankActionsFacadeInvoker = bankActionsFacadeInvoker;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class TransferMoneyRestAction extends AbstractValidatingRestAction<Transf
 
     @Override
     TransferMoneyResponse handleRequest(TransferMoneyRequest request) throws Exception {
-        bankActionsFacade.transfer(request.getFrom(), request.getTo(), request.getAmount());
+        bankActionsFacadeInvoker.transfer(request.getFrom(), request.getTo(), request.getAmount());
 
         return new TransferMoneyResponse(request);
     }

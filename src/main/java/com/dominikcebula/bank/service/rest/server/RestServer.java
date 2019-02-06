@@ -10,7 +10,7 @@ import spark.Spark;
 
 import static com.dominikcebula.bank.service.rest.actions.IndexRestAction.INDEX_ACTION_URI;
 import static com.dominikcebula.bank.service.rest.actions.ListAccountsRestAction.ACCOUNT_LIST_URI;
-import static com.dominikcebula.bank.service.rest.actions.OpenAccountRestAction.ACCOUTS_OPEN_URI;
+import static com.dominikcebula.bank.service.rest.actions.OpenAccountRestAction.ACCOUNTS_OPEN_URI;
 import static com.dominikcebula.bank.service.rest.actions.TransferMoneyRestAction.TRANSFER_URI;
 
 public class RestServer {
@@ -51,7 +51,7 @@ public class RestServer {
         Spark.exception(ReportableException.class, reportableExceptionHandler);
 
         Spark.get(INDEX_ACTION_URI, indexRestAction);
-        Spark.post(ACCOUTS_OPEN_URI, openAccountRestAction);
+        Spark.post(ACCOUNTS_OPEN_URI, openAccountRestAction);
         Spark.post(TRANSFER_URI, transferMoneyAction);
         Spark.get(ACCOUNT_LIST_URI, listAccountsRestAction);
     }

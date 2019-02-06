@@ -1,6 +1,6 @@
 package com.dominikcebula.bank.service.rest.actions;
 
-import com.dominikcebula.bank.service.bls.actions.BankActionsFacade;
+import com.dominikcebula.bank.service.bls.actions.BankActionsFacadeInvoker;
 import com.dominikcebula.bank.service.rest.ds.request.AccountOpenRequest;
 import com.dominikcebula.bank.service.rest.ds.response.AccountOpenResponse;
 import com.dominikcebula.bank.service.rest.json.GsonProvider;
@@ -10,14 +10,14 @@ import com.google.inject.Inject;
 
 public class OpenAccountRestAction extends AbstractValidatingRestAction<AccountOpenRequest, AccountOpenResponse> {
 
-    public static final String ACCOUTS_OPEN_URI = "/accounts/open";
+    public static final String ACCOUNTS_OPEN_URI = "/accounts/open";
 
-    private final BankActionsFacade bankActionsFacade;
+    private final BankActionsFacadeInvoker bankActionsFacadeInvoker;
 
     @Inject
-    public OpenAccountRestAction(GsonProvider gsonProvider, BankActionsFacade bankActionsFacade) {
+    public OpenAccountRestAction(GsonProvider gsonProvider, BankActionsFacadeInvoker bankActionsFacadeInvoker) {
         super(gsonProvider, AccountOpenRequest.class, AccountOpenResponse.class);
-        this.bankActionsFacade = bankActionsFacade;
+        this.bankActionsFacadeInvoker = bankActionsFacadeInvoker;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class OpenAccountRestAction extends AbstractValidatingRestAction<AccountO
     @Override
     public AccountOpenResponse handleRequest(AccountOpenRequest accountOpenRequest) throws Exception {
         return new AccountOpenResponse(
-                bankActionsFacade.openAccount(
+                bankActionsFacadeInvoker.openAccount(
                         accountOpenRequest.getInitialDeposit()
                 )
         );

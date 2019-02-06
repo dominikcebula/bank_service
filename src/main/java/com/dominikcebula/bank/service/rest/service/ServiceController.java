@@ -7,10 +7,10 @@ import com.google.inject.Injector;
 public class ServiceController {
     private final Injector injector;
 
-    private AwaitServiceStopped awaitServiceStopped = new AwaitServiceStopped();
+    private final AwaitServiceStopped awaitServiceStopped = new AwaitServiceStopped();
 
     private RestServer restServer;
-    private Configuration configuration;
+    private final Configuration configuration;
 
     public ServiceController(Injector injector) {
         this.injector = injector;

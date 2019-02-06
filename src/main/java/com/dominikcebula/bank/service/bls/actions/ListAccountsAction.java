@@ -7,7 +7,7 @@ import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
 import com.google.inject.Inject;
 import org.javamoney.moneta.Money;
 
-public class ListAccountsAction {
+class ListAccountsAction {
 
     private final AccountDao accountDao;
     private final MoneyFactory moneyFactory;
@@ -18,7 +18,7 @@ public class ListAccountsAction {
         this.moneyFactory = moneyFactory;
     }
 
-    public AccountsInfo listAccounts() {
+    AccountsInfo listAccounts() {
         return new AccountsInfo(
                 accountDao.findAllAccountsInfo(),
                 getTotalBalance()

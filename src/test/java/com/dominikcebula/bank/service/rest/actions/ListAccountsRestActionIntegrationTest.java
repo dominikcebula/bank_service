@@ -1,6 +1,6 @@
 package com.dominikcebula.bank.service.rest.actions;
 
-import com.dominikcebula.bank.service.bls.actions.ListAccountsAction;
+import com.dominikcebula.bank.service.bls.actions.BankActionsFacadeInvoker;
 import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.ds.AccountInfo;
 import com.dominikcebula.bank.service.bls.ds.AccountsInfo;
@@ -27,7 +27,7 @@ public class ListAccountsRestActionIntegrationTest extends SparkRestServerAwareT
 
     @Mock
     @Bind
-    private ListAccountsAction listAccountsAction;
+    private BankActionsFacadeInvoker bankActionsFacadeInvoker;
     private MoneyFactory moneyFactory;
 
     @Before
@@ -40,7 +40,7 @@ public class ListAccountsRestActionIntegrationTest extends SparkRestServerAwareT
     @Test
     public void shouldListOpenedAccounts() {
         AccountsInfo accountsInfo = getAccountsInfo();
-        Mockito.when(listAccountsAction.listAccounts()).thenReturn(accountsInfo);
+        Mockito.when(bankActionsFacadeInvoker.listAccounts()).thenReturn(accountsInfo);
 
         AccountsInfo retrievedAccountsInfo = resetClient().getForObject(ACCOUNT_LIST_URI, AccountsInfo.class);
 

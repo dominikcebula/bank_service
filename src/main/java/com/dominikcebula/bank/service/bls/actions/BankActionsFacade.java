@@ -7,28 +7,31 @@ import com.dominikcebula.bank.service.bls.exception.TransferException;
 import com.google.inject.Inject;
 import org.javamoney.moneta.Money;
 
-public class BankActionsFacade {
+public class BankActionsFacade extends BankActionsFacadeIfc {
 
     private final OpenAccountAction openAccountAction;
     private final TransferMoneyAction transferMoneyAction;
     private final ListAccountsAction listAccountsAction;
 
     @Inject
-    public BankActionsFacade(OpenAccountAction openAccountAction, TransferMoneyAction transferMoneyAction, ListAccountsAction listAccountsAction) {
+    BankActionsFacade(OpenAccountAction openAccountAction, TransferMoneyAction transferMoneyAction, ListAccountsAction listAccountsAction) {
         this.openAccountAction = openAccountAction;
         this.transferMoneyAction = transferMoneyAction;
         this.listAccountsAction = listAccountsAction;
     }
 
-    public synchronized AccountId openAccount(Money initialBalance) throws AccountOpenException {
+    @Override
+    synchronized AccountId openAccount(Money initialBalance) throws AccountOpenException {
         return openAccountAction.openAccount(initialBalance);
     }
 
-    public synchronized void transfer(AccountId from, AccountId to, Money amount) throws TransferException {
+    @Override
+    synchronized void transfer(AccountId from, AccountId to, Money amount) throws TransferException {
         transferMoneyAction.transfer(from, to, amount);
     }
 
-    public synchronized AccountsInfo listAccounts() {
+    @Override
+    synchronized AccountsInfo listAccounts() {
         return listAccountsAction.listAccounts();
     }
 }

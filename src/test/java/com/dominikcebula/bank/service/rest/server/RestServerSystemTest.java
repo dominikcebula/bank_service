@@ -88,7 +88,7 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
         AccountOpenRequest accountOpenRequest = new AccountOpenRequest();
         accountOpenRequest.setInitialDeposit(initialDeposit);
 
-        AccountOpenResponse accountOpenResponse = resetClient().postForObject(OpenAccountRestAction.ACCOUTS_OPEN_URI, accountOpenRequest,
+        AccountOpenResponse accountOpenResponse = resetClient().postForObject(OpenAccountRestAction.ACCOUNTS_OPEN_URI, accountOpenRequest,
                 AccountOpenRequest.class, AccountOpenResponse.class);
 
         return accountOpenResponse.getAccountId();

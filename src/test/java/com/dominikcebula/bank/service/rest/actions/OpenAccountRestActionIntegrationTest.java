@@ -1,6 +1,6 @@
 package com.dominikcebula.bank.service.rest.actions;
 
-import com.dominikcebula.bank.service.bls.actions.OpenAccountAction;
+import com.dominikcebula.bank.service.bls.actions.BankActionsFacadeInvoker;
 import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.exception.AccountOpenException;
 import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
@@ -31,7 +31,7 @@ public class OpenAccountRestActionIntegrationTest extends SparkRestServerAwareTe
 
     @Mock
     @Bind
-    private OpenAccountAction openAccountAction;
+    private BankActionsFacadeInvoker bankActionsFacadeInvoker;
     private MoneyFactory moneyFactory;
 
     @Before
@@ -44,14 +44,14 @@ public class OpenAccountRestActionIntegrationTest extends SparkRestServerAwareTe
     @Test
     public void shouldOpenAccount() throws AccountOpenException {
         Money initialDeposit = moneyFactory.create(DEPOSIT);
-        Mockito.when(openAccountAction.openAccount(initialDeposit)).thenReturn(ACCOUNT_ID);
+        Mockito.when(bankActionsFacadeInvoker.openAccount(initialDeposit)).thenReturn(ACCOUNT_ID);
 
         AccountOpenRequest accountOpenRequest = new AccountOpenRequest();
 
         accountOpenRequest.setInitialDeposit(initialDeposit);
 
         AccountOpenResponse accountOpenResponse = resetClient().postForObject(
-                OpenAccountRestAction.ACCOUTS_OPEN_URI, accountOpenRequest,
+                OpenAccountRestAction.ACCOUNTS_OPEN_URI, accountOpenRequest,
                 AccountOpenRequest.class, AccountOpenResponse.class
         );
 
@@ -64,14 +64,14 @@ public class OpenAccountRestActionIntegrationTest extends SparkRestServerAwareTe
     @Test
     public void shouldFailedToOpenAccount() throws AccountOpenException {
         Money initialDeposit = moneyFactory.create(DEPOSIT);
-        Mockito.when(openAccountAction.openAccount(initialDeposit)).thenThrow(new IllegalArgumentException("TEST"));
+        Mockito.when(bankActionsFacadeInvoker.openAccount(initialDeposit)).thenThrow(new IllegalArgumentException("TEST"));
 
         AccountOpenRequest accountOpenRequest = new AccountOpenRequest();
 
         accountOpenRequest.setInitialDeposit(initialDeposit);
 
         ErrorResponse errorResponse = resetClient().postForObject(
-                OpenAccountRestAction.ACCOUTS_OPEN_URI, accountOpenRequest,
+                OpenAccountRestAction.ACCOUNTS_OPEN_URI, accountOpenRequest,
                 AccountOpenRequest.class, ErrorResponse.class
         );
 
@@ -79,14 +79,14 @@ public class OpenAccountRestActionIntegrationTest extends SparkRestServerAwareTe
     }
 
     @Test
-    public void shouldFailValidationDuringOpenAction() throws AccountOpenException {
+    public void shouldFailValidationDuringOpenAction() {
         Money initialDeposit = moneyFactory.create(0);
 
         AccountOpenRequest accountOpenRequest = new AccountOpenRequest();
         accountOpenRequest.setInitialDeposit(initialDeposit);
 
         ErrorResponse errorResponse = resetClient().postForObject(
-                OpenAccountRestAction.ACCOUTS_OPEN_URI, accountOpenRequest,
+                OpenAccountRestAction.ACCOUNTS_OPEN_URI, accountOpenRequest,
                 AccountOpenRequest.class, ErrorResponse.class
         );
 
