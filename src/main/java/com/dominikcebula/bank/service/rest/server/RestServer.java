@@ -41,6 +41,7 @@ public class RestServer {
 
 
     public void start() {
+        Spark.ipAddress(configuration.getHost());
         Spark.port(configuration.getPort());
         Spark.threadPool(configuration.getMaxThreads());
 
