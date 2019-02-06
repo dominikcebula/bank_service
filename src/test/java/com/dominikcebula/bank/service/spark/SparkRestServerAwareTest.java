@@ -16,7 +16,7 @@ import org.junit.Before;
 public abstract class SparkRestServerAwareTest {
 
     private ServiceController serviceController;
-    private Injector injector;
+    protected Injector injector;
 
     @Before
     public void setUp() {
