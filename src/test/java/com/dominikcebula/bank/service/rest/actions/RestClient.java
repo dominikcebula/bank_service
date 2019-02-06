@@ -56,7 +56,7 @@ public class RestClient {
 
     private HttpHost getTarget() {
         return HttpHost.create(
-                String.format("http://localhost:%d", configuration.getPort())
+                String.format("http://%s:%d", configuration.getHost(), configuration.getPort())
         );
     }
 
