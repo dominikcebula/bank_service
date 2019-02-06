@@ -51,6 +51,7 @@ public class AccountDaoTest {
         accountDao.store(ACCOUNT3_ID, ACCOUNT3);
 
         assertSame(ACCOUNT1, accountDao.findAccount(ACCOUNT1_ID));
+        assertTrue(accountDao.accountExists(ACCOUNT1_ID));
         assertFalse(accountDao.accountExists(ACCOUNT2_ID));
         assertSame(ACCOUNT3, accountDao.findAccount(ACCOUNT3_ID));
     }
