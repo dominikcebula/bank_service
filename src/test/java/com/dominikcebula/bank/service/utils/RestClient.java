@@ -1,4 +1,4 @@
-package com.dominikcebula.bank.service.rest.actions;
+package com.dominikcebula.bank.service.utils;
 
 import com.dominikcebula.bank.service.configuration.Configuration;
 import com.google.gson.Gson;

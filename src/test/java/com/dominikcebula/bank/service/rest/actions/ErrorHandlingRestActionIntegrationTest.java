@@ -1,6 +1,7 @@
 package com.dominikcebula.bank.service.rest.actions;
 
 import com.dominikcebula.bank.service.rest.ds.response.ErrorResponse;
+import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
 import com.google.inject.testing.fieldbinder.Bind;
 import org.junit.Test;
 import org.junit.runner.RunWith;

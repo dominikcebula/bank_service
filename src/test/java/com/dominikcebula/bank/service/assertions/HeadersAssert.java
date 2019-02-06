@@ -1,4 +1,4 @@
-package com.dominikcebula.bank.service.rest.actions;
+package com.dominikcebula.bank.service.assertions;
 
 import org.apache.http.Header;
 

@@ -1,4 +1,4 @@
-package com.dominikcebula.bank.service.rest.actions;
+package com.dominikcebula.bank.service.guice;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Module;

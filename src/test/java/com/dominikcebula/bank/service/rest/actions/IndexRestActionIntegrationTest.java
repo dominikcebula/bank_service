@@ -1,9 +1,10 @@
 package com.dominikcebula.bank.service.rest.actions;
 
+import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
 import org.apache.http.Header;
 import org.junit.Test;
 
-import static com.dominikcebula.bank.service.rest.actions.HeadersAssert.assertHeadersContain;
+import static com.dominikcebula.bank.service.assertions.HeadersAssert.assertHeadersContain;
 import static com.dominikcebula.bank.service.rest.actions.IndexRestAction.INDEX_ACTION_URI;
 import static org.junit.Assert.assertEquals;
 
