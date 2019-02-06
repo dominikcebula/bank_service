@@ -45,7 +45,7 @@ public class ListAccountsRestActionIntegrationTest extends SparkRestServerAwareT
         AccountsInfo retrievedAccountsInfo = resetClient().getForObject(ACCOUNT_LIST_URI, AccountsInfo.class);
 
         assertThat(retrievedAccountsInfo.getAccountsInfo())
-                .containsExactly(getAccounts());
+                .containsOnly(getAccounts());
         assertEquals(retrievedAccountsInfo.getTotalDeposit().getNumber().intValueExact(), TOTAL_DEPOSIT);
     }
 

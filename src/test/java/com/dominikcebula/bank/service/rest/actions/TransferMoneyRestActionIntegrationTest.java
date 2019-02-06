@@ -88,7 +88,7 @@ public class TransferMoneyRestActionIntegrationTest extends SparkRestServerAware
 
     @Test
     public void shouldFailTransferMoneyValidation() {
-        Money amount = moneyFactory.create(600);
+        Money amount = moneyFactory.create(0);
 
         TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
         transferMoneyRequest.setFrom(FROM);
