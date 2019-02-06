@@ -10,12 +10,14 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 public class HeadersAssert {
     public static void assertHeadersContain(Header[] headers, String... expectedHeaders) {
-        Set<String> headersEntries = Arrays.stream(headers)
+        assertThat(getHeaderEntriesSet(headers))
+                .contains(expectedHeaders);
+    }
+
+    private static Set<String> getHeaderEntriesSet(Header[] headers) {
+        return Arrays.stream(headers)
                 .map(HeadersAssert::getHeaderEntryAsString)
                 .collect(Collectors.toSet());
-
-        assertThat(headersEntries)
-                .contains(expectedHeaders);
     }
 
     private static String getHeaderEntryAsString(Header h) {
