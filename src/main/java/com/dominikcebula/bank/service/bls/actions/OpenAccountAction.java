@@ -8,7 +8,7 @@ import com.dominikcebula.bank.service.bls.utils.AccountIdGenerator;
 import com.google.inject.Inject;
 import org.javamoney.moneta.Money;
 
-class OpenAccountAction {
+public class OpenAccountAction {
 
     private final AccountDao accountDao;
     private final AccountIdGenerator accountIdGenerator;
@@ -19,7 +19,7 @@ class OpenAccountAction {
         this.accountIdGenerator = accountIdGenerator;
     }
 
-    AccountId openAccount(Money initialBalance) throws AccountOpenException {
+    public AccountId openAccount(Money initialBalance) throws AccountOpenException {
         AccountId accountId = accountIdGenerator.generateAccountId(accountDao.findAccountIdentifiers());
         Account account = new Account(initialBalance);
 

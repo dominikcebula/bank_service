@@ -3,14 +3,18 @@ package com.dominikcebula.bank.service.utils;
 import com.dominikcebula.bank.service.configuration.Configuration;
 import com.google.gson.Gson;
 import org.apache.http.Header;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 
 public class RestClient {
 
@@ -32,6 +36,14 @@ public class RestClient {
         HttpGet httpGet = new HttpGet(uri);
 
         return executeForResponse(httpGet).getAllHeaders();
+    }
+
+    public <I, O> O postForObject(String uri, Object requestObject, Class<I> requestClass, Class<O> responseClass) {
+        HttpPost httpPost = new HttpPost(uri);
+        HttpEntity httpEntity = getStringHttpEntity(requestObject, requestClass);
+        httpPost.setEntity(httpEntity);
+
+        return executeForEntity(httpPost, responseClass);
     }
 
     private <T> T executeForEntity(HttpRequest httpRequest, Class<T> responseClass) {
@@ -58,6 +70,14 @@ public class RestClient {
         return HttpHost.create(
                 String.format("http://%s:%d", configuration.getHost(), configuration.getPort())
         );
+    }
+
+    private <I> HttpEntity getStringHttpEntity(Object requestObject, Class<I> requestClass) {
+        try {
+            return new StringEntity(gson.toJson(requestObject, requestClass));
+        } catch (UnsupportedEncodingException e) {
+            throw new RestClientException(e.getMessage(), e);
+        }
     }
 
     private static class RestClientException extends RuntimeException {
