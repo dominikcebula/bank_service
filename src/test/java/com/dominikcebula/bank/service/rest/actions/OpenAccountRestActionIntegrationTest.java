@@ -20,6 +20,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import static com.dominikcebula.bank.service.rest.ds.response.Response.Status.ERROR;
 import static com.dominikcebula.bank.service.rest.ds.response.Response.Status.SUCCESS;
+import static com.dominikcebula.bank.service.rest.validator.validators.AccountOpenRequestValidator.MESSAGE_DEPOSIT_INCORRECT;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -75,5 +76,21 @@ public class OpenAccountRestActionIntegrationTest extends SparkRestServerAwareTe
         );
 
         assertEquals(ERROR, errorResponse.getStatus());
+    }
+
+    @Test
+    public void shouldFailValidationDuringOpenAction() throws AccountOpenException {
+        Money initialDeposit = moneyFactory.create(0);
+
+        AccountOpenRequest accountOpenRequest = new AccountOpenRequest();
+        accountOpenRequest.setInitialDeposit(initialDeposit);
+
+        ErrorResponse errorResponse = resetClient().postForObject(
+                OpenAccountRestAction.ACCOUTS_OPEN_URI, accountOpenRequest,
+                AccountOpenRequest.class, ErrorResponse.class
+        );
+
+        assertEquals(ERROR, errorResponse.getStatus());
+        assertEquals(MESSAGE_DEPOSIT_INCORRECT, errorResponse.getMessage());
     }
 }

@@ -6,27 +6,32 @@ import com.dominikcebula.bank.service.rest.validator.exception.ValidatorExceptio
 
 public class TransferMoneyRequestValidator extends Validator<TransferMoneyRequest> {
 
+    private static final String MESSAGE_AMOUNT_NOT_SPECIFIED = "Amount to transfer has to be specified";
+    public static final String AMOUNT_VALUE_INCORRECT = "Amount to transfer has to be positive";
+    private static final String FROM_ACCOUNT_NOT_SPECIFIED = "From account has to be specified";
+    private static final String TO_ACCOUNT_NOT_SPECIFIED = "To account has to be specified";
+
     @Override
     public void validate(TransferMoneyRequest transferMoneyRequest) throws ValidatorException {
 
         assertConditionMet(
                 transferMoneyRequest.getAmount() != null,
-                "Amount to transfer has to be specified"
+                MESSAGE_AMOUNT_NOT_SPECIFIED
         );
 
         assertConditionMet(
                 transferMoneyRequest.getAmount().isPositive(),
-                "Amount to transfer has to be positive"
+                AMOUNT_VALUE_INCORRECT
         );
 
         assertConditionMet(
                 transferMoneyRequest.getFrom() != null,
-                "From account has to be specified"
+                FROM_ACCOUNT_NOT_SPECIFIED
         );
 
         assertConditionMet(
                 transferMoneyRequest.getTo() != null,
-                "To account has to be specified"
+                TO_ACCOUNT_NOT_SPECIFIED
         );
     }
 }

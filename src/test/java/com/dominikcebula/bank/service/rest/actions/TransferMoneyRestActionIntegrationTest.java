@@ -20,6 +20,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import static com.dominikcebula.bank.service.rest.ds.response.Response.Status.ERROR;
 import static com.dominikcebula.bank.service.rest.ds.response.Response.Status.SUCCESS;
+import static com.dominikcebula.bank.service.rest.validator.validators.TransferMoneyRequestValidator.AMOUNT_VALUE_INCORRECT;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -83,5 +84,23 @@ public class TransferMoneyRestActionIntegrationTest extends SparkRestServerAware
         );
 
         assertEquals(ERROR, errorResponse.getStatus());
+    }
+
+    @Test
+    public void shouldFailTransferMoneyValidation() {
+        Money amount = moneyFactory.create(600);
+
+        TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
+        transferMoneyRequest.setFrom(FROM);
+        transferMoneyRequest.setTo(TO);
+        transferMoneyRequest.setAmount(amount);
+
+        ErrorResponse errorResponse = resetClient().postForObject(
+                TransferMoneyRestAction.TRANSFER_URI, transferMoneyRequest,
+                TransferMoneyRequest.class, ErrorResponse.class
+        );
+
+        assertEquals(ERROR, errorResponse.getStatus());
+        assertEquals(AMOUNT_VALUE_INCORRECT, errorResponse.getMessage());
     }
 }

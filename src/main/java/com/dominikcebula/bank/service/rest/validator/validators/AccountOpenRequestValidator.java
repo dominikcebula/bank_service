@@ -6,16 +6,19 @@ import com.dominikcebula.bank.service.rest.validator.exception.ValidatorExceptio
 
 public class AccountOpenRequestValidator extends Validator<AccountOpenRequest> {
 
+    private static final String MESSAGE_DEPOSIT_NOT_SPECIFIED = "Initial Deposit has to be specified";
+    public static final String MESSAGE_DEPOSIT_INCORRECT = "Initial Deposit has to be greater than zero";
+
     @Override
     public void validate(AccountOpenRequest accountOpenRequest) throws ValidatorException {
         assertConditionMet(
                 accountOpenRequest.getInitialDeposit() != null,
-                "Initial Deposit has to be specified"
+                MESSAGE_DEPOSIT_NOT_SPECIFIED
         );
 
         assertConditionMet(
                 accountOpenRequest.getInitialDeposit().isPositive(),
-                "Initial Deposit has to be greater than zero"
+                MESSAGE_DEPOSIT_INCORRECT
         );
     }
 }
