@@ -15,7 +15,7 @@ Currently service supports following operations:
 
 # Tools used
 
-Below is the list of outstanding tools used during development:
+Below is the list of tools used during development:
 * IntelliJ
 * Java 8
 * Guice
