@@ -26,7 +26,11 @@ public class AccountDao {
     }
 
     public Account findAccount(AccountId accountId) {
-        return new Account(accounts.get(accountId));
+        Account account = accounts.get(accountId);
+        if (account != null)
+            return new Account(account);
+        else
+            return null;
     }
 
     public Set<AccountId> findAccountIdentifiers() {

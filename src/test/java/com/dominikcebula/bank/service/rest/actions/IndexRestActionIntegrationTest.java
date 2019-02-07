@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import static com.dominikcebula.bank.service.assertions.HeadersAssert.assertHeadersContain;
 import static com.dominikcebula.bank.service.rest.actions.IndexRestAction.INDEX_ACTION_URI;
-import static com.dominikcebula.bank.service.rest.actions.IndexRestAction.MESSAGE_SERVIE_UP;
+import static com.dominikcebula.bank.service.rest.actions.IndexRestAction.MESSAGE_SERVICE_UP;
 import static org.junit.Assert.assertEquals;
 
 public class IndexRestActionIntegrationTest extends SparkRestServerAwareTest {
@@ -15,7 +15,7 @@ public class IndexRestActionIntegrationTest extends SparkRestServerAwareTest {
     public void shouldIncludeDefaultResponse() {
         String indexResponse = resetClient().getForObject(INDEX_ACTION_URI, String.class);
 
-        assertEquals(MESSAGE_SERVIE_UP, indexResponse);
+        assertEquals(MESSAGE_SERVICE_UP, indexResponse);
     }
 
     @Test

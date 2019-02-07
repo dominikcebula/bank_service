@@ -6,7 +6,7 @@ import com.google.inject.Inject;
 public class IndexRestAction extends AbstractRestAction<Void, String> {
 
     public static final String INDEX_ACTION_URI = "/";
-    static final String MESSAGE_SERVIE_UP = "Bank Service is running";
+    static final String MESSAGE_SERVICE_UP = "Bank Service is running";
 
     @Inject
     public IndexRestAction(GsonProvider gsonProvider) {
@@ -15,6 +15,6 @@ public class IndexRestAction extends AbstractRestAction<Void, String> {
 
     @Override
     String handleRequest(Void request) {
-        return MESSAGE_SERVIE_UP;
+        return MESSAGE_SERVICE_UP;
     }
 }

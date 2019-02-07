@@ -1,10 +1,15 @@
 package com.dominikcebula.bank.service.rest.service;
 
 import com.dominikcebula.bank.service.configuration.Configuration;
+import com.dominikcebula.bank.service.logging.Loggers;
 import com.dominikcebula.bank.service.rest.server.RestServer;
 import com.google.inject.Injector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ServiceController {
+
+    private Logger logger = LoggerFactory.getLogger(Loggers.SERVER);
 
     private final AwaitServiceStopped awaitServiceStopped = new AwaitServiceStopped();
 
@@ -19,12 +24,15 @@ public class ServiceController {
     }
 
     public void start() {
+        logger.info("Starting service");
+
         restServer = injector.getInstance(RestServer.class);
         restServer.start();
     }
 
     public void stop() {
         if (restServer != null) {
+            logger.info("Stopping service");
             restServer.stop();
 
             // https://github.com/perwendel/spark/issues/705

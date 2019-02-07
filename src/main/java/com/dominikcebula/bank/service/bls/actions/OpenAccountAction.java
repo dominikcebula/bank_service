@@ -5,10 +5,15 @@ import com.dominikcebula.bank.service.bls.ds.Account;
 import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.exception.AccountOpenException;
 import com.dominikcebula.bank.service.bls.utils.AccountIdGenerator;
+import com.dominikcebula.bank.service.logging.Loggers;
 import com.google.inject.Inject;
 import org.javamoney.moneta.Money;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class OpenAccountAction {
+
+    private Logger logger = LoggerFactory.getLogger(Loggers.BLS);
 
     private final AccountDao accountDao;
     private final AccountIdGenerator accountIdGenerator;
@@ -20,9 +25,13 @@ class OpenAccountAction {
     }
 
     AccountId openAccount(Money initialBalance) throws AccountOpenException {
+        logger.info("Opening account");
+
+        logger.info("Generating account id and creating account");
         AccountId accountId = accountIdGenerator.generateAccountId(accountDao.findAccountIdentifiers());
         Account account = new Account(initialBalance);
 
+        logger.info("Saving account");
         accountDao.store(accountId, account);
 
         return accountId;

@@ -64,6 +64,13 @@ public class AccountDaoTest {
     }
 
     @Test
+    public void shouldReturnNullWhenSearchingNonExistingAccount() {
+        Account account = accountDao.findAccount(ACCOUNT1_ID);
+
+        assertNull(account);
+    }
+
+    @Test
     public void shouldCorrectlyCheckForExistence() {
         accountDao.store(ACCOUNT1_ID, ACCOUNT1);
         accountDao.store(ACCOUNT3_ID, ACCOUNT3);

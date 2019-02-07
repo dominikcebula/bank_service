@@ -17,7 +17,7 @@ public class Configuration {
     private static final int DEFAULT_MAX_THREADS = 200;
     private static final String DEFAULT_CURRENCY = "USD";
 
-    private Properties properties = System.getProperties();
+    private final Properties properties;
 
     @SuppressWarnings("unused")
     public Configuration() {
