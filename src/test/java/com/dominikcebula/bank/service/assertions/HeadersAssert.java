@@ -20,7 +20,7 @@ public class HeadersAssert {
                 .collect(Collectors.toSet());
     }
 
-    private static String getHeaderEntryAsString(Header h) {
-        return String.format("%s: %s", h.getName(), h.getValue());
+    private static String getHeaderEntryAsString(Header header) {
+        return String.format("%s: %s", header.getName(), header.getValue());
     }
 }
