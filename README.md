@@ -48,7 +48,7 @@ mvn exec:java
 
 To run project from Executable JAR, go to target folder and type:
 ```
-java -jar bank.service-1.0-SNAPSHOT-jar-with-dependencies.jar
+java -jar bank-service-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
 # Runtime Configuration
@@ -65,7 +65,7 @@ mvn exec:java -Dservice.port=8081
 ```
 or from, when using jar:
 ```
-java -Dservice.port=8081 -jar bank.service-1.0-SNAPSHOT-jar-with-dependencies.jar
+java -Dservice.port=8081 -jar bank-service-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
 # Making Request
