@@ -41,7 +41,7 @@ There are two ways to run project:
 
 To run project from maven, execute:
 ```
-mvn run
+mvn exec:java
 ```
 
 ## Running Project with Executable JAR
