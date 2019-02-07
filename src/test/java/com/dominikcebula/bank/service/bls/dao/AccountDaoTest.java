@@ -31,7 +31,7 @@ public class AccountDaoTest {
     public void shouldStoreOneAccount() {
         accountDao.store(ACCOUNT1_ID, ACCOUNT1);
 
-        assertSame(ACCOUNT1, accountDao.findAccount(ACCOUNT1_ID));
+        assertEquals(ACCOUNT1, accountDao.findAccount(ACCOUNT1_ID));
     }
 
     @Test
@@ -40,9 +40,27 @@ public class AccountDaoTest {
         accountDao.store(ACCOUNT2_ID, ACCOUNT2);
         accountDao.store(ACCOUNT3_ID, ACCOUNT3);
 
-        assertSame(ACCOUNT1, accountDao.findAccount(ACCOUNT1_ID));
-        assertSame(ACCOUNT2, accountDao.findAccount(ACCOUNT2_ID));
-        assertSame(ACCOUNT3, accountDao.findAccount(ACCOUNT3_ID));
+        assertEquals(ACCOUNT1, accountDao.findAccount(ACCOUNT1_ID));
+        assertEquals(ACCOUNT2, accountDao.findAccount(ACCOUNT2_ID));
+        assertEquals(ACCOUNT3, accountDao.findAccount(ACCOUNT3_ID));
+    }
+
+    @Test
+    public void shouldGiveImmutableAccount() {
+        accountDao.store(ACCOUNT1_ID, ACCOUNT1);
+
+        accountDao.findAccount(ACCOUNT1_ID).setBalance(Money.of(555, "USD"));
+
+        assertEquals(ACCOUNT1_BALANCE, accountDao.findAccount(ACCOUNT1_ID).getBalance());
+    }
+
+    @Test
+    public void shouldGiveImmutableAccounts() {
+        accountDao.store(ACCOUNT1_ID, ACCOUNT1);
+
+        accountDao.findAllAccounts().iterator().next().setBalance(Money.of(555, "USD"));
+
+        assertEquals(ACCOUNT1_BALANCE, accountDao.findAllAccounts().iterator().next().getBalance());
     }
 
     @Test
@@ -50,10 +68,10 @@ public class AccountDaoTest {
         accountDao.store(ACCOUNT1_ID, ACCOUNT1);
         accountDao.store(ACCOUNT3_ID, ACCOUNT3);
 
-        assertSame(ACCOUNT1, accountDao.findAccount(ACCOUNT1_ID));
+        assertEquals(ACCOUNT1, accountDao.findAccount(ACCOUNT1_ID));
         assertTrue(accountDao.accountExists(ACCOUNT1_ID));
         assertFalse(accountDao.accountExists(ACCOUNT2_ID));
-        assertSame(ACCOUNT3, accountDao.findAccount(ACCOUNT3_ID));
+        assertEquals(ACCOUNT3, accountDao.findAccount(ACCOUNT3_ID));
     }
 
     @Test

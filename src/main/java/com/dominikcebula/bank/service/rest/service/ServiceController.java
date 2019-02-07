@@ -5,12 +5,13 @@ import com.dominikcebula.bank.service.rest.server.RestServer;
 import com.google.inject.Injector;
 
 public class ServiceController {
-    private final Injector injector;
 
     private final AwaitServiceStopped awaitServiceStopped = new AwaitServiceStopped();
 
-    private RestServer restServer;
+    private final Injector injector;
     private final Configuration configuration;
+
+    private RestServer restServer;
 
     public ServiceController(Injector injector) {
         this.injector = injector;

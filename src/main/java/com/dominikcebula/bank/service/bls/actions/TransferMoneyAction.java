@@ -31,6 +31,9 @@ class TransferMoneyAction {
                     deposit(toAccount.getBalance(), amount)
             );
 
+            accountDao.store(from, fromAccount);
+            accountDao.store(to, toAccount);
+
         } catch (WithdrawException | AccountMissingException e) {
             throw new TransferException(String.format("Unable to transfer amount [%s] from [%s] to [%s]: %s", amount, from, to, e.getMessage()), e);
         }

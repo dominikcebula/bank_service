@@ -14,7 +14,9 @@ public class AccountDao {
     private final Map<AccountId, Account> accounts = new HashMap<>();
 
     public Collection<Account> findAllAccounts() {
-        return accounts.values();
+        return accounts.values().stream()
+                .map(Account::new)
+                .collect(Collectors.toList());
     }
 
     public Set<AccountInfo> findAllAccountsInfo() {
@@ -24,7 +26,7 @@ public class AccountDao {
     }
 
     public Account findAccount(AccountId accountId) {
-        return accounts.get(accountId);
+        return new Account(accounts.get(accountId));
     }
 
     public Set<AccountId> findAccountIdentifiers() {
