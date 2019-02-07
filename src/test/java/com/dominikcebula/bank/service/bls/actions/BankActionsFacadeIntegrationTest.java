@@ -22,6 +22,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
@@ -76,6 +77,15 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
                         new AccountInfo(ACCOUNT_ID_3, money(BALANCE3))
                 );
         assertEquals(TOTAL_BALANCE, accountsInfo.getTotalDeposit().getNumber().intValue());
+    }
+
+    @Test
+    public void shouldListAccountsWhenNonOpened() {
+
+        AccountsInfo accountsInfo = bankActionsFacadeInvoker.listAccounts();
+
+        assertTrue(accountsInfo.getAccountsInfo().isEmpty());
+        assertEquals(NO_MONEY, accountsInfo.getTotalDeposit().getNumber().intValue());
     }
 
     @Test
