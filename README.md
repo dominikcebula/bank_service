@@ -51,6 +51,23 @@ To run project from Executable JAR, go to target folder and type:
 java -jar bank.service-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
+# Runtime Configuration
+
+Following propeties can be configured during startup by properties:
+* host - service.host
+* port - service.port
+* max threads in pool - service.max.threads
+* currency used for all operations - service.currency
+
+For example, if you want to change port execute:
+```
+mvn exec:java -Dservice.port=8081
+```
+or from, when using jar:
+```
+java -Dservice.port=8081 -jar bank.service-1.0-SNAPSHOT-jar-with-dependencies.jar
+```
+
 # Making Request
 
 ## Checking if service is up
