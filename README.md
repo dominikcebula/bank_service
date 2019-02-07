@@ -46,21 +46,63 @@ mvn exec:java
 
 ## Running Project with Executable JAR
 
-To run project from Executable JAR, to to target folder and type:
+To run project from Executable JAR, go to target folder and type:
 ```
 java -jar bank.service-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
 # Making Request
 
+## Checking if service is up
+
+Request:
+```
+$ curl http://localhost:8080/ -X GET
+```
+
+Response:
+```
+"Bank Service is running"
+```
+
 ## Opening Account
 
-TODO
+Request:
+```
+$ curl http://localhost:8080/accounts/open -X POST -d '{
+  "initialDeposit": "100.00"
+}'
+```
+
+Response:
+```json
+{"accountId":"7706480151894321","status":"SUCCESS","message":"Opened account: [7706480151894321]"}
+```
 
 ## Listing Accounts and Total Deposit
 
-TODO
+Request:
+```
+$ curl http://localhost:8080/accounts/list -X GET
+```
+
+Response:
+```json
+{"accountsInfo":[{"accountId":"1396810841773412","balance":100.0},{"accountId":"5102307317444881","balance":200.0}],"totalDeposit":300.0}
+```
 
 ## Transferring Money
 
-TODO
+Request:
+```
+$ curl http://localhost:8080/transfer -X POST -d '{
+  "from": "1396810841773412",
+  "to": "5102307317444881",
+  "amount": "50.0"
+}'
+```
+
+Response:
+```json
+{"from":"1396810841773412","to":"5102307317444881","amount":50.0,"status":"SUCCESS","message":"Transferred [50.00] from [1396810841773412] to [5102307317444881]"}
+```
