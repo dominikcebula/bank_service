@@ -1,6 +1,6 @@
 # Intro
 
-This repository contains implementation of RESTful Service for money transfer between accounts.
+This repository contains implementation of RESTful Bank Service for money transfer between accounts.
 
 Implementation was created with focus on following requirements:
 * Focus on small footprint
@@ -12,6 +12,17 @@ Currently service supports following operations:
 * Listing Accounts with their balance
 * List Total Deposit
 * Transferring Money between Accounts
+
+# Tools used
+
+Below is the list of outstanding tools used during development:
+* IntelliJ
+* Java 8
+* Guice
+* SparkJava
+* JavaMoney
+* Mockito
+* ...
 
 # Compiling project
 
