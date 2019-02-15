@@ -8,14 +8,15 @@ import com.dominikcebula.bank.service.dto.Accounts;
 import com.dominikcebula.bank.service.guice.ContextAwareTest;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomUtils;
-import org.javamoney.moneta.Money;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 
@@ -63,23 +64,22 @@ public class BankActionsFacadeMultiThreadTest extends ContextAwareTest {
     }
 
     private void openDefaultAccounts() {
-        Collections.nCopies(NUMBER_OF_ACCOUNTS, moneyFactory.create(DEFAULT_DEPOSIT))
+        Collections.nCopies(NUMBER_OF_ACCOUNTS, BigDecimal.valueOf(DEFAULT_DEPOSIT))
                 .parallelStream()
                 .forEach(this::openAccount);
     }
 
     private List<Account> openRandomAccounts() {
-        return IntStream.generate(this::randomDeposit)
+        return Stream.generate(this::randomDeposit)
                 .parallel()
                 .limit(NUMBER_OF_RANDOM_ACCOUNTS)
-                .mapToObj(moneyFactory::create)
                 .map(this::openAccount)
                 .collect(Collectors.toList());
     }
 
     @SneakyThrows
-    private Account openAccount(Money amount) {
-        return bankActionsFacadeInvoker.openAccount(amount.getNumberStripped());
+    private Account openAccount(BigDecimal amount) {
+        return bankActionsFacadeInvoker.openAccount(amount);
     }
 
     private void performRandomTransfers(List<Account> sourceAccounts, List<Account> destinationAccounts) throws TransferException {
@@ -96,7 +96,7 @@ public class BankActionsFacadeMultiThreadTest extends ContextAwareTest {
         bankActionsFacadeInvoker.transfer(
                 AccountId.createAccountNumber(sourceAccount.getAccountId()),
                 AccountId.createAccountNumber(destinationAccount.getAccountId()),
-                moneyFactory.create(randomTransfer()).getNumberStripped()
+                randomTransfer()
         );
     }
 
@@ -104,15 +104,15 @@ public class BankActionsFacadeMultiThreadTest extends ContextAwareTest {
         return accounts.get(RandomUtils.nextInt(0, accounts.size()));
     }
 
-    private int randomDeposit() {
+    private BigDecimal randomDeposit() {
         return randomMoney(3000000, 6000000);
     }
 
-    private int randomTransfer() {
+    private BigDecimal randomTransfer() {
         return randomMoney(1, 10000);
     }
 
-    private int randomMoney(int from, int to) {
-        return RandomUtils.nextInt(from, to);
+    private BigDecimal randomMoney(int from, int to) {
+        return BigDecimal.valueOf(RandomUtils.nextInt(from, to));
     }
 }

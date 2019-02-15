@@ -23,7 +23,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(MockitoJUnitRunner.class)
 public class OpenAccountRestActionIntegrationTest extends SparkRestServerAwareTest {
 
-    private static final int DEPOSIT = 500;
+    private static final BigDecimal DEPOSIT = BigDecimal.valueOf(500);
     private static final AccountId ACCOUNT_ID = AccountId.createAccountNumber("5");
 
     @Mock
@@ -40,13 +40,12 @@ public class OpenAccountRestActionIntegrationTest extends SparkRestServerAwareTe
 
     @Test
     public void shouldOpenAccount() throws AccountOpenException {
-        BigDecimal initialDeposit = moneyFactory.create(DEPOSIT).getNumberStripped();
         Account account = new Account().accountId(ACCOUNT_ID.getAccountNumber());
-        Mockito.when(bankActionsFacadeInvoker.openAccount(initialDeposit)).thenReturn(account);
+        Mockito.when(bankActionsFacadeInvoker.openAccount(DEPOSIT)).thenReturn(account);
 
         AccountOpenRequest accountOpenRequest = new AccountOpenRequest();
 
-        accountOpenRequest.setInitialDeposit(initialDeposit);
+        accountOpenRequest.setInitialDeposit(DEPOSIT);
 
         AccountOpenResponse accountOpenResponse = resetClient().postForObject(
                 OpenAccountRestAction.ACCOUNTS_OPEN_URI, accountOpenRequest,
@@ -59,12 +58,11 @@ public class OpenAccountRestActionIntegrationTest extends SparkRestServerAwareTe
 
     @Test
     public void shouldFailedToOpenAccount() throws AccountOpenException {
-        BigDecimal initialDeposit = moneyFactory.create(DEPOSIT).getNumberStripped();
-        Mockito.when(bankActionsFacadeInvoker.openAccount(initialDeposit)).thenThrow(new IllegalArgumentException("TEST"));
+        Mockito.when(bankActionsFacadeInvoker.openAccount(DEPOSIT)).thenThrow(new IllegalArgumentException("TEST"));
 
         AccountOpenRequest accountOpenRequest = new AccountOpenRequest();
 
-        accountOpenRequest.setInitialDeposit(initialDeposit);
+        accountOpenRequest.setInitialDeposit(DEPOSIT);
 
         ApiErrorResponse errorResponse = resetClient().postForObject(
                 OpenAccountRestAction.ACCOUNTS_OPEN_URI, accountOpenRequest,
@@ -76,10 +74,8 @@ public class OpenAccountRestActionIntegrationTest extends SparkRestServerAwareTe
 
     @Test
     public void shouldFailValidationDuringOpenAction() {
-        BigDecimal initialDeposit = moneyFactory.create(0).getNumberStripped();
-
         AccountOpenRequest accountOpenRequest = new AccountOpenRequest();
-        accountOpenRequest.setInitialDeposit(initialDeposit);
+        accountOpenRequest.setInitialDeposit(BigDecimal.valueOf(0));
 
         ApiErrorResponse errorResponse = resetClient().postForObject(
                 OpenAccountRestAction.ACCOUNTS_OPEN_URI, accountOpenRequest,

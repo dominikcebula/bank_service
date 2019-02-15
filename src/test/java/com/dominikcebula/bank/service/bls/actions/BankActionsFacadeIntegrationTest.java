@@ -132,7 +132,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     private BigDecimal money(int amount) {
-        return moneyFactory.create(amount).getNumberStripped();
+        return BigDecimal.valueOf(amount);
     }
 
     private void mockAccountId(AccountId accountId) throws AccountOpenException {

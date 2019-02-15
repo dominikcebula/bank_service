@@ -59,9 +59,9 @@ public class ListAccountsRestActionIntegrationTest extends SparkRestServerAwareT
 
     private Account[] getAccountsList() {
         return new Account[]{
-                new Account().accountId("1").balance(moneyFactory.create(100).getNumberStripped()),
-                new Account().accountId("2").balance(moneyFactory.create(200).getNumberStripped()),
-                new Account().accountId("3").balance(moneyFactory.create(300).getNumberStripped()),
+                new Account().accountId("1").balance(BigDecimal.valueOf(100)),
+                new Account().accountId("2").balance(BigDecimal.valueOf(200)),
+                new Account().accountId("3").balance(BigDecimal.valueOf(300)),
         };
     }
 }

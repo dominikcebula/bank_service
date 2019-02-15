@@ -4,7 +4,6 @@ import com.dominikcebula.bank.service.dto.AccountOpenRequest;
 import com.dominikcebula.bank.service.rest.validator.exception.ValidatorException;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import org.javamoney.moneta.Money;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -52,6 +51,6 @@ public class AccountOpenRequestValidatorTest {
     }
 
     private BigDecimal getMoney(int amount) {
-        return Money.of(amount, "USD").getNumberStripped();
+        return BigDecimal.valueOf(amount);
     }
 }

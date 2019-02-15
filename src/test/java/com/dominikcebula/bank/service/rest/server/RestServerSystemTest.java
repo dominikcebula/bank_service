@@ -6,10 +6,10 @@ import com.dominikcebula.bank.service.dto.*;
 import com.dominikcebula.bank.service.rest.actions.OpenAccountRestAction;
 import com.dominikcebula.bank.service.rest.actions.TransferMoneyRestAction;
 import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
-import org.javamoney.moneta.Money;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -31,22 +31,22 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
 
     @Test
     public void shouldExecuteScenarioCorrectly() {
-        Accounts accountsBeforeScenario = getAccountsList();
+        Accounts accountsBeforeScenario = getAccountsList().getAccounts();
 
-        AccountId account1 = openAccount(moneyFactory.create(500));
-        AccountId account2 = openAccount(moneyFactory.create(1000));
-        AccountId account3 = openAccount(moneyFactory.create(1500));
+        AccountId account1 = openAccount(BigDecimal.valueOf(500));
+        AccountId account2 = openAccount(BigDecimal.valueOf(1000));
+        AccountId account3 = openAccount(BigDecimal.valueOf(1500));
 
-        Accounts accountsBeforeTransfers = getAccountsList();
+        Accounts accountsBeforeTransfers = getAccountsList().getAccounts();
 
-        transfer(account1, account2, moneyFactory.create(10));
-        transfer(account2, account1, moneyFactory.create(10));
-        transfer(account1, account3, moneyFactory.create(10));
-        transfer(account3, account1, moneyFactory.create(10));
-        transfer(account2, account3, moneyFactory.create(250));
-        transfer(account3, account1, moneyFactory.create(1700));
+        transfer(account1, account2, BigDecimal.valueOf(10));
+        transfer(account2, account1, BigDecimal.valueOf(10));
+        transfer(account1, account3, BigDecimal.valueOf(10));
+        transfer(account3, account1, BigDecimal.valueOf(10));
+        transfer(account2, account3, BigDecimal.valueOf(250));
+        transfer(account3, account1, BigDecimal.valueOf(1700));
 
-        Accounts accountsAfterScenario = getAccountsList();
+        Accounts accountsAfterScenario = getAccountsList().getAccounts();
 
         assertStateBeforeScenario(accountsBeforeScenario);
         assertStateBeforeTransfersScenario(accountsBeforeTransfers, account1, account2, account3);
@@ -55,32 +55,32 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
 
     private void assertStateBeforeScenario(Accounts accountsBeforeScenario) {
         assertTrue(accountsBeforeScenario.getAccounts().isEmpty());
-        assertEquals(accountsBeforeScenario.getTotalDeposit(), moneyFactory.create(0).getNumberStripped());
+        assertEquals(accountsBeforeScenario.getTotalDeposit(), BigDecimal.valueOf(0));
     }
 
     private void assertStateBeforeTransfersScenario(Accounts accountsBeforeTransfers, AccountId account1, AccountId account2, AccountId account3) {
         assertAccountsExists(accountsBeforeTransfers, account1, account2, account3);
-        assertAccountDeposit(accountsBeforeTransfers, account1, moneyFactory.create(500));
-        assertAccountDeposit(accountsBeforeTransfers, account2, moneyFactory.create(1000));
-        assertAccountDeposit(accountsBeforeTransfers, account3, moneyFactory.create(1500));
-        assertEquals(accountsBeforeTransfers.getTotalDeposit(), moneyFactory.create(3000));
+        assertAccountDeposit(accountsBeforeTransfers, account1, BigDecimal.valueOf(500));
+        assertAccountDeposit(accountsBeforeTransfers, account2, BigDecimal.valueOf(1000));
+        assertAccountDeposit(accountsBeforeTransfers, account3, BigDecimal.valueOf(1500));
+        assertEquals(accountsBeforeTransfers.getTotalDeposit(), BigDecimal.valueOf(3000));
     }
 
     private void assertStateAfterScenario(Accounts accountsAfterScenario, AccountId account1, AccountId account2, AccountId account3) {
         assertAccountsExists(accountsAfterScenario, account1, account2, account3);
-        assertAccountDeposit(accountsAfterScenario, account1, moneyFactory.create(2200));
-        assertAccountDeposit(accountsAfterScenario, account2, moneyFactory.create(750));
-        assertAccountDeposit(accountsAfterScenario, account3, moneyFactory.create(50));
-        assertEquals(accountsAfterScenario.getTotalDeposit(), moneyFactory.create(3000).getNumberStripped());
+        assertAccountDeposit(accountsAfterScenario, account1, BigDecimal.valueOf(2200));
+        assertAccountDeposit(accountsAfterScenario, account2, BigDecimal.valueOf(750));
+        assertAccountDeposit(accountsAfterScenario, account3, BigDecimal.valueOf(50));
+        assertEquals(accountsAfterScenario.getTotalDeposit(), BigDecimal.valueOf(3000));
     }
 
-    private Accounts getAccountsList() {
-        return resetClient().getForObject(ACCOUNT_LIST_URI, Accounts.class);
+    private ListAccountsResponse getAccountsList() {
+        return resetClient().getForObject(ACCOUNT_LIST_URI, ListAccountsResponse.class);
     }
 
-    private AccountId openAccount(Money initialDeposit) {
+    private AccountId openAccount(BigDecimal initialDeposit) {
         AccountOpenRequest accountOpenRequest = new AccountOpenRequest();
-        accountOpenRequest.setInitialDeposit(initialDeposit.getNumberStripped());
+        accountOpenRequest.setInitialDeposit(initialDeposit);
 
         AccountOpenResponse accountOpenResponse = resetClient().postForObject(OpenAccountRestAction.ACCOUNTS_OPEN_URI, accountOpenRequest,
                 AccountOpenRequest.class, AccountOpenResponse.class);
@@ -88,11 +88,11 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
         return AccountId.createAccountNumber(accountOpenResponse.getAccount().getAccountId());
     }
 
-    private void transfer(AccountId from, AccountId to, Money amount) {
+    private void transfer(AccountId from, AccountId to, BigDecimal amount) {
         TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
         transferMoneyRequest.setFrom(from.getAccountNumber());
         transferMoneyRequest.setTo(to.getAccountNumber());
-        transferMoneyRequest.setAmount(amount.getNumberStripped());
+        transferMoneyRequest.setAmount(amount);
 
         TransferMoneyResponse transferMoneyResponse = resetClient().postForObject(
                 TransferMoneyRestAction.TRANSFER_URI, transferMoneyRequest,
@@ -115,10 +115,10 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
                 .collect(Collectors.toSet());
     }
 
-    private void assertAccountDeposit(Accounts accountsInfo, AccountId accountId, Money expectedDeposit) {
+    private void assertAccountDeposit(Accounts accountsInfo, AccountId accountId, BigDecimal expectedDeposit) {
         Account accountInfo = findAccountById(accountsInfo, accountId);
 
-        assertEquals(expectedDeposit.getNumberStripped(), accountInfo.getBalance());
+        assertEquals(expectedDeposit, accountInfo.getBalance());
     }
 
     private Account findAccountById(Accounts accountsInfo, AccountId accountId) {

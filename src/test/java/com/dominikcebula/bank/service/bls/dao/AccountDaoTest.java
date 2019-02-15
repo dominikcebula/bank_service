@@ -2,7 +2,6 @@ package com.dominikcebula.bank.service.bls.dao;
 
 import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.dto.Account;
-import org.javamoney.moneta.Money;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -49,7 +48,7 @@ public class AccountDaoTest {
     public void shouldGiveImmutableAccount() {
         accountDao.store(ACCOUNT1);
 
-        accountDao.findAccount(ACCOUNT1_ID).setBalance(Money.of(555, "USD").getNumberStripped());
+        accountDao.findAccount(ACCOUNT1_ID).setBalance(BigDecimal.valueOf(555));
 
         assertEquals(ACCOUNT1_BALANCE, accountDao.findAccount(ACCOUNT1_ID).getBalance());
     }
@@ -58,7 +57,7 @@ public class AccountDaoTest {
     public void shouldGiveImmutableAccounts() {
         accountDao.store(ACCOUNT1);
 
-        accountDao.findAllAccounts().iterator().next().setBalance(Money.of(555, "USD").getNumberStripped());
+        accountDao.findAllAccounts().iterator().next().setBalance(BigDecimal.valueOf(555));
 
         assertEquals(ACCOUNT1_BALANCE, accountDao.findAllAccounts().iterator().next().getBalance());
     }
@@ -108,9 +107,9 @@ public class AccountDaoTest {
                 .containsOnly(ACCOUNT1, ACCOUNT2);
     }
 
-    private static final BigDecimal ACCOUNT1_BALANCE = Money.of(10, "USD").getNumberStripped();
-    private static final BigDecimal ACCOUNT2_BALANCE = Money.of(15, "USD").getNumberStripped();
-    private static final BigDecimal ACCOUNT3_BALANCE = Money.of(30, "USD").getNumberStripped();
+    private static final BigDecimal ACCOUNT1_BALANCE = BigDecimal.valueOf(10);
+    private static final BigDecimal ACCOUNT2_BALANCE = BigDecimal.valueOf(15);
+    private static final BigDecimal ACCOUNT3_BALANCE = BigDecimal.valueOf(30);
 
     private static final AccountId ACCOUNT1_ID = AccountId.createAccountNumber("1");
     private static final AccountId ACCOUNT2_ID = AccountId.createAccountNumber("2");
