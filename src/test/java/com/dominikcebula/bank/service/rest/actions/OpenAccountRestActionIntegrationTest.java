@@ -3,11 +3,9 @@ package com.dominikcebula.bank.service.rest.actions;
 import com.dominikcebula.bank.service.bls.actions.BankActionsFacadeInvoker;
 import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.exception.AccountOpenException;
-import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
 import com.dominikcebula.bank.service.dto.*;
 import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
 import com.google.inject.testing.fieldbinder.Bind;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -29,14 +27,6 @@ public class OpenAccountRestActionIntegrationTest extends SparkRestServerAwareTe
     @Mock
     @Bind
     private BankActionsFacadeInvoker bankActionsFacadeInvoker;
-    private MoneyFactory moneyFactory;
-
-    @Before
-    @Override
-    public void setUp() {
-        super.setUp();
-        moneyFactory = injector.getInstance(MoneyFactory.class);
-    }
 
     @Test
     public void shouldOpenAccount() throws AccountOpenException {

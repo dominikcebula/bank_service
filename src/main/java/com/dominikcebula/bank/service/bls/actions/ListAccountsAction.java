@@ -1,7 +1,6 @@
 package com.dominikcebula.bank.service.bls.actions;
 
 import com.dominikcebula.bank.service.bls.dao.AccountDao;
-import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
 import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.dto.Accounts;
 import com.dominikcebula.bank.service.logging.Loggers;
@@ -17,12 +16,10 @@ class ListAccountsAction {
     private Logger logger = LoggerFactory.getLogger(Loggers.BLS);
 
     private final AccountDao accountDao;
-    private final MoneyFactory moneyFactory;
 
     @Inject
-    ListAccountsAction(AccountDao accountDao, MoneyFactory moneyFactory) {
+    ListAccountsAction(AccountDao accountDao) {
         this.accountDao = accountDao;
-        this.moneyFactory = moneyFactory;
     }
 
     Accounts listAccounts() {

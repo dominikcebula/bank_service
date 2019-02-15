@@ -3,14 +3,12 @@ package com.dominikcebula.bank.service.rest.actions;
 import com.dominikcebula.bank.service.bls.actions.BankActionsFacadeInvoker;
 import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.exception.TransferException;
-import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
 import com.dominikcebula.bank.service.dto.ApiCode;
 import com.dominikcebula.bank.service.dto.ApiErrorResponse;
 import com.dominikcebula.bank.service.dto.TransferMoneyRequest;
 import com.dominikcebula.bank.service.dto.TransferMoneyResponse;
 import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
 import com.google.inject.testing.fieldbinder.Bind;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -31,15 +29,6 @@ public class TransferMoneyRestActionIntegrationTest extends SparkRestServerAware
     @Bind
     @Mock
     private BankActionsFacadeInvoker bankActionsFacadeInvoker;
-
-    private MoneyFactory moneyFactory;
-
-    @Before
-    @Override
-    public void setUp() {
-        super.setUp();
-        moneyFactory = injector.getInstance(MoneyFactory.class);
-    }
 
     @Test
     public void shouldTransferMoney() {

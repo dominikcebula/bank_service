@@ -5,11 +5,9 @@ import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.exception.AccountMissingException;
 import com.dominikcebula.bank.service.bls.exception.TransferException;
 import com.dominikcebula.bank.service.bls.exception.WithdrawException;
-import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
 import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.logging.Loggers;
 import com.google.inject.Inject;
-import org.javamoney.moneta.Money;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,12 +18,10 @@ class TransferMoneyAction {
     private Logger logger = LoggerFactory.getLogger(Loggers.BLS);
 
     private final AccountDao accountDao;
-    private final MoneyFactory moneyFactory;
 
     @Inject
-    TransferMoneyAction(AccountDao accountDao, MoneyFactory moneyFactory) {
+    TransferMoneyAction(AccountDao accountDao) {
         this.accountDao = accountDao;
-        this.moneyFactory = moneyFactory;
     }
 
     void transfer(AccountId from, AccountId to, BigDecimal amount) throws TransferException {
@@ -62,19 +58,13 @@ class TransferMoneyAction {
     }
 
     private BigDecimal withdraw(BigDecimal accountBalance, BigDecimal amount) throws WithdrawException {
-        Money accountBalanceMoney = moneyFactory.create(accountBalance);
-        Money amountMoney = moneyFactory.create(amount);
-
-        if (accountBalanceMoney.isGreaterThanOrEqualTo(amountMoney))
-            return accountBalanceMoney.subtract(amountMoney).getNumberStripped();
+        if (accountBalance.compareTo(amount) >= 0)
+            return accountBalance.subtract(amount);
         else
             throw new WithdrawException(String.format("Unable to withdraw amount [%s] from account that has balance [%s]", amount, accountBalance));
     }
 
     private BigDecimal deposit(BigDecimal accountBalance, BigDecimal amount) {
-        Money accountBalanceMoney = moneyFactory.create(accountBalance);
-        Money amountMoney = moneyFactory.create(amount);
-
-        return accountBalanceMoney.add(amountMoney).getNumberStripped();
+        return accountBalance.add(amount);
     }
 }

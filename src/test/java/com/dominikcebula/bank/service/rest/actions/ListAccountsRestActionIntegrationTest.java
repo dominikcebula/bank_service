@@ -1,7 +1,6 @@
 package com.dominikcebula.bank.service.rest.actions;
 
 import com.dominikcebula.bank.service.bls.actions.BankActionsFacadeInvoker;
-import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
 import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.dto.Accounts;
 import com.dominikcebula.bank.service.dto.ApiCode;
@@ -30,13 +29,11 @@ public class ListAccountsRestActionIntegrationTest extends SparkRestServerAwareT
     @Mock
     @Bind
     private BankActionsFacadeInvoker bankActionsFacadeInvoker;
-    private MoneyFactory moneyFactory;
 
     @Before
     @Override
     public void setUp() {
         super.setUp();
-        moneyFactory = injector.getInstance(MoneyFactory.class);
     }
 
     @Test

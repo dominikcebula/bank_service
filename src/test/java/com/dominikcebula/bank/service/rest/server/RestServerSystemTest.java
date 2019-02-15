@@ -1,12 +1,10 @@
 package com.dominikcebula.bank.service.rest.server;
 
 import com.dominikcebula.bank.service.bls.ds.AccountId;
-import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
 import com.dominikcebula.bank.service.dto.*;
 import com.dominikcebula.bank.service.rest.actions.OpenAccountRestAction;
 import com.dominikcebula.bank.service.rest.actions.TransferMoneyRestAction;
 import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -19,15 +17,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class RestServerSystemTest extends SparkRestServerAwareTest {
-
-    private MoneyFactory moneyFactory;
-
-    @Before
-    @Override
-    public void setUp() {
-        super.setUp();
-        moneyFactory = injector.getInstance(MoneyFactory.class);
-    }
 
     @Test
     public void shouldExecuteScenarioCorrectly() {

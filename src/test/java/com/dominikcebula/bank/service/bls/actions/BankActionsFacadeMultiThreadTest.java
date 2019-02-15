@@ -2,7 +2,6 @@ package com.dominikcebula.bank.service.bls.actions;
 
 import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.exception.TransferException;
-import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
 import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.dto.Accounts;
 import com.dominikcebula.bank.service.guice.ContextAwareTest;
@@ -29,13 +28,11 @@ public class BankActionsFacadeMultiThreadTest extends ContextAwareTest {
     private static final int TOTAL_DEPOSIT = NUMBER_OF_ACCOUNTS * DEFAULT_DEPOSIT;
 
     private BankActionsFacadeInvoker bankActionsFacadeInvoker;
-    private MoneyFactory moneyFactory;
 
     @Before
     public void setUp() {
         super.setUp();
         bankActionsFacadeInvoker = injector.getInstance(BankActionsFacadeInvoker.class);
-        moneyFactory = injector.getInstance(MoneyFactory.class);
     }
 
     @Test

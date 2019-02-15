@@ -46,11 +46,4 @@ public class ConfigurationTest {
 
         assertEquals(SERVICE_MAX_THREADS_VALUES, configuration.getMaxThreads());
     }
-
-    @Test
-    public void shouldFetchCurrencyFromProperty() {
-        properties.setProperty(SERVICE_CURRENCY, SERVICE_CURRENCY_VALUE);
-
-        assertEquals(SERVICE_CURRENCY_VALUE, configuration.getCurrency());
-    }
 }

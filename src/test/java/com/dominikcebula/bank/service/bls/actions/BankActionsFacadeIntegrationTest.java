@@ -5,7 +5,6 @@ import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.exception.AccountOpenException;
 import com.dominikcebula.bank.service.bls.exception.TransferException;
 import com.dominikcebula.bank.service.bls.utils.AccountIdGenerator;
-import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
 import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.dto.Accounts;
 import com.dominikcebula.bank.service.guice.ContextAwareTest;
@@ -40,7 +39,6 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     private static final int NO_MONEY = 0;
 
     private BankActionsFacadeInvoker bankActionsFacadeInvoker;
-    private MoneyFactory moneyFactory;
     private AccountDao accountDao;
     @Mock
     @Bind
@@ -53,7 +51,6 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     public void setUp() {
         super.setUp();
         bankActionsFacadeInvoker = injector.getInstance(BankActionsFacadeInvoker.class);
-        moneyFactory = injector.getInstance(MoneyFactory.class);
         accountDao = injector.getInstance(AccountDao.class);
     }
 

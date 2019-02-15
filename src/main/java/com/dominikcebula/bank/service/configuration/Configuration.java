@@ -10,12 +10,10 @@ public class Configuration {
     static final String SERVICE_HOST = "service.host";
     static final String SERVICE_PORT = "service.port";
     static final String SERVICE_MAX_THREADS = "service.max.threads";
-    static final String SERVICE_CURRENCY = "service.currency";
 
     private static final String DEFAULT_SERVICE_HOST = "localhost";
     private static final int DEFAULT_SERVICE_PORT = 8080;
     private static final int DEFAULT_MAX_THREADS = 200;
-    private static final String DEFAULT_CURRENCY = "USD";
 
     private final Properties properties;
 
@@ -39,10 +37,6 @@ public class Configuration {
 
     public int getMaxThreads() {
         return getPropertyOrDefault(SERVICE_MAX_THREADS, DEFAULT_MAX_THREADS, Integer::parseInt);
-    }
-
-    public String getCurrency() {
-        return getPropertyOrDefault(SERVICE_CURRENCY, DEFAULT_CURRENCY, String::valueOf);
     }
 
     private <T> T getPropertyOrDefault(String propertyName, T defaultValue, Function<String, T> parser) {
