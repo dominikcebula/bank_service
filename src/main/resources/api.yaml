@@ -63,13 +63,13 @@ definitions:
   Money:
     type: "number"
     format: "float"
-  AccoundId:
+  AccountId:
     type: "string"
   Account:
     type: "object"
     properties:
       accountId:
-        $ref: '#/definitions/AccoundId'
+        $ref: '#/definitions/AccountId'
       balance:
         $ref: '#/definitions/Money'
   Accounts:
@@ -104,9 +104,9 @@ definitions:
     type: "object"
     properties:
       from:
-        $ref: '#/definitions/AccoundId'
+        $ref: '#/definitions/AccountId'
       to:
-        $ref: '#/definitions/AccoundId'
+        $ref: '#/definitions/AccountId'
       amount:
         $ref: '#/definitions/Money'
   TransferMoneyResponse:
@@ -114,9 +114,9 @@ definitions:
       status:
         $ref: '#/definitions/ApiResponse'
       from:
-        $ref: '#/definitions/AccoundId'
+        $ref: '#/definitions/AccountId'
       to:
-        $ref: '#/definitions/AccoundId'
+        $ref: '#/definitions/AccountId'
       amount:
         $ref: '#/definitions/Money'
   ApiCode:
