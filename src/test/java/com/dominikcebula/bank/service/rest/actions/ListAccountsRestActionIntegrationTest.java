@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 import static com.dominikcebula.bank.service.rest.actions.ListAccountsRestAction.ACCOUNT_LIST_URI;
@@ -48,7 +49,9 @@ public class ListAccountsRestActionIntegrationTest extends SparkRestServerAwareT
     }
 
     private Accounts getAccounts() {
-        return new Accounts().accounts(Arrays.asList(getAccountsList()));
+        return new Accounts()
+                .accounts(Arrays.asList(getAccountsList()))
+                .totalDeposit(BigDecimal.valueOf(600));
     }
 
     private Account[] getAccountsList() {

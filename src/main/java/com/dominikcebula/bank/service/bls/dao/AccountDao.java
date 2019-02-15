@@ -42,6 +42,6 @@ public class AccountDao {
         Account newAccount = new Account();
         newAccount.setAccountId(account.getAccountId());
         newAccount.setBalance(account.getBalance());
-        return account;
+        return newAccount;
     }
 }

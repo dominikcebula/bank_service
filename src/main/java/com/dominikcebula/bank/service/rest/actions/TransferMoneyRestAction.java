@@ -31,8 +31,10 @@ public class TransferMoneyRestAction extends AbstractValidatingRestAction<Transf
     TransferMoneyResponse handleRequest(TransferMoneyRequest request) throws Exception {
         bankActionsFacadeInvoker.transfer(AccountId.createAccountNumber(request.getFrom()), AccountId.createAccountNumber(request.getTo()), request.getAmount());
 
-        return new TransferMoneyResponse().status(
-                new ModelApiResponse().code(ApiCode.MONEY_TRANSFERED)
-        );
+        return new TransferMoneyResponse()
+                .status(new ModelApiResponse().code(ApiCode.MONEY_TRANSFERED))
+                .from(request.getFrom())
+                .to(request.getTo())
+                .amount(request.getAmount());
     }
 }

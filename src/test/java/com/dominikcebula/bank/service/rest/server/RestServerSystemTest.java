@@ -55,7 +55,7 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
 
     private void assertStateBeforeScenario(Accounts accountsBeforeScenario) {
         assertTrue(accountsBeforeScenario.getAccounts().isEmpty());
-        assertEquals(accountsBeforeScenario.getTotalDeposit(), moneyFactory.create(0));
+        assertEquals(accountsBeforeScenario.getTotalDeposit(), moneyFactory.create(0).getNumberStripped());
     }
 
     private void assertStateBeforeTransfersScenario(Accounts accountsBeforeTransfers, AccountId account1, AccountId account2, AccountId account3) {
@@ -71,7 +71,7 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
         assertAccountDeposit(accountsAfterScenario, account1, moneyFactory.create(2200));
         assertAccountDeposit(accountsAfterScenario, account2, moneyFactory.create(750));
         assertAccountDeposit(accountsAfterScenario, account3, moneyFactory.create(50));
-        assertEquals(accountsAfterScenario.getTotalDeposit(), moneyFactory.create(3000));
+        assertEquals(accountsAfterScenario.getTotalDeposit(), moneyFactory.create(3000).getNumberStripped());
     }
 
     private Accounts getAccountsList() {
