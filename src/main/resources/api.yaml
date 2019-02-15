@@ -23,6 +23,7 @@ paths:
           description: "Accounts list"
           schema:
             $ref: '#/definitions/ListAccountsResponse'
+
   /accounts/create:
     post:
       summary: "Create new account"
@@ -34,9 +35,10 @@ paths:
             $ref: '#/definitions/AccountOpenRequest'
       responses:
         200:
-          description: "Created Account detials"
+          description: "Created Account details"
           schema:
             $ref: '#/definitions/AccountOpenResponse'
+
   /transfer:
     post:
       summary: "Transfer money between accounts"
@@ -48,18 +50,11 @@ paths:
             $ref: '#/definitions/TransferMoneyRequest'
       responses:
         200:
-          description: "Transfered money"
+          description: "Transferred money operation result"
           schema:
             $ref: '#/definitions/TransferMoneyResponse'
 
 definitions:
-  HealthCheckResponse:
-    type: "object"
-    properties:
-      status:
-        type: "string"
-        enum:
-          - "up"
   Money:
     type: "number"
     format: "float"
@@ -81,6 +76,15 @@ definitions:
           $ref: '#/definitions/Account'
       totalDeposit:
         $ref: '#/definitions/Money'
+
+  HealthCheckResponse:
+    type: "object"
+    properties:
+      status:
+        type: "string"
+        enum:
+          - "up"
+
   ListAccountsResponse:
     type: object
     properties:
@@ -88,6 +92,7 @@ definitions:
         $ref: '#/definitions/ApiResponse'
       accounts:
         $ref: '#/definitions/Accounts'
+
   AccountOpenRequest:
     type: object
     properties:
@@ -100,6 +105,7 @@ definitions:
         $ref: '#/definitions/ApiResponse'
       account:
         $ref: '#/definitions/Account'
+
   TransferMoneyRequest:
     type: "object"
     properties:
@@ -119,6 +125,7 @@ definitions:
         $ref: '#/definitions/AccountId'
       amount:
         $ref: '#/definitions/Money'
+
   ApiCode:
     type: "string"
     enum:
