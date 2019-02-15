@@ -1,7 +1,7 @@
 package com.dominikcebula.bank.service.rest.validator.validators;
 
 import com.dominikcebula.bank.service.bls.ds.AccountId;
-import com.dominikcebula.bank.service.rest.ds.request.TransferMoneyRequest;
+import com.dominikcebula.bank.service.dto.TransferMoneyRequest;
 import com.dominikcebula.bank.service.rest.validator.exception.ValidatorException;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -28,9 +28,9 @@ public class TransferMoneyRequestValidatorTest {
     @Test
     public void shouldProcessRequestCorrectly() throws ValidatorException {
         TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
-        transferMoneyRequest.setFrom(FROM);
-        transferMoneyRequest.setTo(TO);
-        transferMoneyRequest.setAmount(AMOUNT_POSITIVE);
+        transferMoneyRequest.setFrom(FROM.getAccountNumber());
+        transferMoneyRequest.setTo(TO.getAccountNumber());
+        transferMoneyRequest.setAmount(AMOUNT_POSITIVE.getNumberStripped());
 
         transferMoneyRequestValidator.validate(transferMoneyRequest);
     }
@@ -41,8 +41,8 @@ public class TransferMoneyRequestValidatorTest {
         expectedException.expectMessage(MESSAGE_AMOUNT_NOT_SPECIFIED);
 
         TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
-        transferMoneyRequest.setFrom(FROM);
-        transferMoneyRequest.setTo(TO);
+        transferMoneyRequest.setFrom(FROM.getAccountNumber());
+        transferMoneyRequest.setTo(TO.getAccountNumber());
 
         transferMoneyRequestValidator.validate(transferMoneyRequest);
     }
@@ -54,9 +54,9 @@ public class TransferMoneyRequestValidatorTest {
         expectedException.expectMessage(MESSAGE_AMOUNT_VALUE_INCORRECT);
 
         TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
-        transferMoneyRequest.setFrom(FROM);
-        transferMoneyRequest.setTo(TO);
-        transferMoneyRequest.setAmount(Money.of(amount, "PLN"));
+        transferMoneyRequest.setFrom(FROM.getAccountNumber());
+        transferMoneyRequest.setTo(TO.getAccountNumber());
+        transferMoneyRequest.setAmount(Money.of(amount, "PLN").getNumberStripped());
 
         transferMoneyRequestValidator.validate(transferMoneyRequest);
     }
@@ -67,8 +67,8 @@ public class TransferMoneyRequestValidatorTest {
         expectedException.expectMessage(MESSAGE_FROM_ACCOUNT_NOT_SPECIFIED);
 
         TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
-        transferMoneyRequest.setTo(TO);
-        transferMoneyRequest.setAmount(AMOUNT_POSITIVE);
+        transferMoneyRequest.setTo(TO.getAccountNumber());
+        transferMoneyRequest.setAmount(AMOUNT_POSITIVE.getNumberStripped());
 
         transferMoneyRequestValidator.validate(transferMoneyRequest);
     }
@@ -79,8 +79,8 @@ public class TransferMoneyRequestValidatorTest {
         expectedException.expectMessage(MESSAGE_TO_ACCOUNT_NOT_SPECIFIED);
 
         TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
-        transferMoneyRequest.setFrom(FROM);
-        transferMoneyRequest.setAmount(AMOUNT_POSITIVE);
+        transferMoneyRequest.setFrom(FROM.getAccountNumber());
+        transferMoneyRequest.setAmount(AMOUNT_POSITIVE.getNumberStripped());
 
         transferMoneyRequestValidator.validate(transferMoneyRequest);
     }

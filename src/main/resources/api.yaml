@@ -37,6 +37,20 @@ paths:
           description: "Created Account detials"
           schema:
             $ref: '#/definitions/AccountOpenResponse'
+  /transfer:
+    post:
+      summary: "Transfer money between accounts"
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/TransferMoneyRequest'
+      responses:
+        200:
+          description: "Transfered money"
+          schema:
+            $ref: '#/definitions/TransferMoneyResponse'
 
 definitions:
   HealthCheckResponse:
@@ -79,10 +93,31 @@ definitions:
         $ref: '#/definitions/ApiResponse'
       account:
         $ref: '#/definitions/Account'
+  TransferMoneyRequest:
+    type: "object"
+    properties:
+      from:
+        $ref: '#/definitions/AccoundId'
+      to:
+        $ref: '#/definitions/AccoundId'
+      amount:
+        $ref: '#/definitions/Money'
+  TransferMoneyResponse:
+    properties:
+      status:
+        $ref: '#/definitions/ApiResponse'
+      from:
+        $ref: '#/definitions/AccoundId'
+      to:
+        $ref: '#/definitions/AccoundId'
+      amount:
+        $ref: '#/definitions/Money'
   ApiCode:
     type: "string"
     enum:
+      - FAILED
       - ACCOUNT_OPENED
+      - MONEY_TRANSFERED
   ApiResponse:
     type: "object"
     properties:

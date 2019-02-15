@@ -94,7 +94,11 @@ public class BankActionsFacadeMultiThreadTest extends ContextAwareTest {
         Account sourceAccount = getRandomAccount(sourceAccounts);
         Account destinationAccount = getRandomAccount(destinationAccounts);
 
-        bankActionsFacadeInvoker.transfer(AccountId.createAccountNumber(sourceAccount.getAccountId()), AccountId.createAccountNumber(destinationAccount.getAccountId()), moneyFactory.create(randomTransfer()));
+        bankActionsFacadeInvoker.transfer(
+                AccountId.createAccountNumber(sourceAccount.getAccountId()),
+                AccountId.createAccountNumber(destinationAccount.getAccountId()),
+                moneyFactory.create(randomTransfer()).getNumberStripped()
+        );
     }
 
     private Account getRandomAccount(List<Account> accounts) {

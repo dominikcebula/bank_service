@@ -1,8 +1,11 @@
 package com.dominikcebula.bank.service.rest.actions;
 
 import com.dominikcebula.bank.service.bls.actions.BankActionsFacadeInvoker;
-import com.dominikcebula.bank.service.rest.ds.request.TransferMoneyRequest;
-import com.dominikcebula.bank.service.rest.ds.response.TransferMoneyResponse;
+import com.dominikcebula.bank.service.bls.ds.AccountId;
+import com.dominikcebula.bank.service.dto.ApiCode;
+import com.dominikcebula.bank.service.dto.ModelApiResponse;
+import com.dominikcebula.bank.service.dto.TransferMoneyRequest;
+import com.dominikcebula.bank.service.dto.TransferMoneyResponse;
 import com.dominikcebula.bank.service.rest.json.GsonProvider;
 import com.dominikcebula.bank.service.rest.validator.Validator;
 import com.dominikcebula.bank.service.rest.validator.validators.TransferMoneyRequestValidator;
@@ -27,8 +30,10 @@ public class TransferMoneyRestAction extends AbstractValidatingRestAction<Transf
 
     @Override
     TransferMoneyResponse handleRequest(TransferMoneyRequest request) throws Exception {
-        bankActionsFacadeInvoker.transfer(request.getFrom(), request.getTo(), request.getAmount());
+        bankActionsFacadeInvoker.transfer(AccountId.createAccountNumber(request.getFrom()), AccountId.createAccountNumber(request.getTo()), request.getAmount());
 
-        return new TransferMoneyResponse(request);
+        return new TransferMoneyResponse().status(
+                new ModelApiResponse().code(ApiCode.MONEY_TRANSFERED)
+        );
     }
 }

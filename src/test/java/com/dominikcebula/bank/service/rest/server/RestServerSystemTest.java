@@ -6,11 +6,11 @@ import com.dominikcebula.bank.service.bls.ds.AccountsInfo;
 import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
 import com.dominikcebula.bank.service.dto.AccountOpenRequest;
 import com.dominikcebula.bank.service.dto.AccountOpenResponse;
+import com.dominikcebula.bank.service.dto.TransferMoneyRequest;
+import com.dominikcebula.bank.service.dto.TransferMoneyResponse;
 import com.dominikcebula.bank.service.rest.actions.OpenAccountRestAction;
 import com.dominikcebula.bank.service.rest.actions.TransferMoneyRestAction;
-import com.dominikcebula.bank.service.rest.ds.request.TransferMoneyRequest;
 import com.dominikcebula.bank.service.rest.ds.response.Response;
-import com.dominikcebula.bank.service.rest.ds.response.TransferMoneyResponse;
 import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
 import org.javamoney.moneta.Money;
 import org.junit.Before;
@@ -96,9 +96,9 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
 
     private void transfer(AccountId from, AccountId to, Money amount) {
         TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
-        transferMoneyRequest.setFrom(from);
-        transferMoneyRequest.setTo(to);
-        transferMoneyRequest.setAmount(amount);
+        transferMoneyRequest.setFrom(from.getAccountNumber());
+        transferMoneyRequest.setTo(to.getAccountNumber());
+        transferMoneyRequest.setAmount(amount.getNumberStripped());
 
         TransferMoneyResponse transferMoneyResponse = resetClient().postForObject(
                 TransferMoneyRestAction.TRANSFER_URI, transferMoneyRequest,

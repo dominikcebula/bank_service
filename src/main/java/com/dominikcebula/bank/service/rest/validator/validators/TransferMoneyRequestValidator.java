@@ -1,6 +1,6 @@
 package com.dominikcebula.bank.service.rest.validator.validators;
 
-import com.dominikcebula.bank.service.rest.ds.request.TransferMoneyRequest;
+import com.dominikcebula.bank.service.dto.TransferMoneyRequest;
 import com.dominikcebula.bank.service.rest.validator.Validator;
 import com.dominikcebula.bank.service.rest.validator.exception.ValidatorException;
 
@@ -20,7 +20,7 @@ public class TransferMoneyRequestValidator extends Validator<TransferMoneyReques
         );
 
         assertConditionMet(
-                transferMoneyRequest.getAmount().isPositive(),
+                transferMoneyRequest.getAmount().floatValue() > 0,
                 MESSAGE_AMOUNT_VALUE_INCORRECT
         );
 

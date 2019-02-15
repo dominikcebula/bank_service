@@ -4,9 +4,10 @@ import com.dominikcebula.bank.service.bls.actions.BankActionsFacadeInvoker;
 import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.exception.TransferException;
 import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
-import com.dominikcebula.bank.service.rest.ds.request.TransferMoneyRequest;
+import com.dominikcebula.bank.service.dto.ApiCode;
+import com.dominikcebula.bank.service.dto.TransferMoneyRequest;
+import com.dominikcebula.bank.service.dto.TransferMoneyResponse;
 import com.dominikcebula.bank.service.rest.ds.response.ErrorResponse;
-import com.dominikcebula.bank.service.rest.ds.response.TransferMoneyResponse;
 import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
 import com.google.inject.testing.fieldbinder.Bind;
 import org.fest.assertions.api.Assertions;
@@ -47,23 +48,19 @@ public class TransferMoneyRestActionIntegrationTest extends SparkRestServerAware
         Money amount = moneyFactory.create(600);
 
         TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
-        transferMoneyRequest.setFrom(FROM);
-        transferMoneyRequest.setTo(TO);
-        transferMoneyRequest.setAmount(amount);
+        transferMoneyRequest.setFrom(FROM.getAccountNumber());
+        transferMoneyRequest.setTo(TO.getAccountNumber());
+        transferMoneyRequest.setAmount(amount.getNumberStripped());
 
         TransferMoneyResponse transferMoneyResponse = resetClient().postForObject(
                 TransferMoneyRestAction.TRANSFER_URI, transferMoneyRequest,
                 TransferMoneyRequest.class, TransferMoneyResponse.class
         );
 
-        assertEquals(SUCCESS, transferMoneyResponse.getStatus());
-        assertEquals(FROM, transferMoneyResponse.getFrom());
-        assertEquals(TO, transferMoneyResponse.getTo());
-        assertEquals(amount, transferMoneyResponse.getAmount());
-        Assertions.assertThat(transferMoneyResponse.getMessage())
-                .contains(FROM.getAccountNumber())
-                .contains(TO.getAccountNumber())
-                .contains(String.valueOf(amount.getNumber().intValue()));
+        assertEquals(ApiCode.MONEY_TRANSFERED, transferMoneyResponse.getStatus().getCode());
+        assertEquals(FROM.getAccountNumber(), transferMoneyResponse.getFrom());
+        assertEquals(TO.getAccountNumber(), transferMoneyResponse.getTo());
+        assertEquals(amount.getNumberStripped(), transferMoneyResponse.getAmount());
     }
 
     @Test
@@ -71,12 +68,12 @@ public class TransferMoneyRestActionIntegrationTest extends SparkRestServerAware
         Money amount = moneyFactory.create(600);
 
         Mockito.doThrow(new IllegalArgumentException("TEST"))
-                .when(bankActionsFacadeInvoker).transfer(FROM, TO, amount);
+                .when(bankActionsFacadeInvoker).transfer(FROM, TO, amount.getNumberStripped());
 
         TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
-        transferMoneyRequest.setFrom(FROM);
-        transferMoneyRequest.setTo(TO);
-        transferMoneyRequest.setAmount(amount);
+        transferMoneyRequest.setFrom(FROM.getAccountNumber());
+        transferMoneyRequest.setTo(TO.getAccountNumber());
+        transferMoneyRequest.setAmount(amount.getNumberStripped());
 
         ErrorResponse errorResponse = resetClient().postForObject(
                 TransferMoneyRestAction.TRANSFER_URI, transferMoneyRequest,
@@ -91,9 +88,9 @@ public class TransferMoneyRestActionIntegrationTest extends SparkRestServerAware
         Money amount = moneyFactory.create(0);
 
         TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
-        transferMoneyRequest.setFrom(FROM);
-        transferMoneyRequest.setTo(TO);
-        transferMoneyRequest.setAmount(amount);
+        transferMoneyRequest.setFrom(FROM.getAccountNumber());
+        transferMoneyRequest.setTo(TO.getAccountNumber());
+        transferMoneyRequest.setAmount(amount.getNumberStripped());
 
         ErrorResponse errorResponse = resetClient().postForObject(
                 TransferMoneyRestAction.TRANSFER_URI, transferMoneyRequest,
