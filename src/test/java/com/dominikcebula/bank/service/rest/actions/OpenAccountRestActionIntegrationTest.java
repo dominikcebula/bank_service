@@ -4,13 +4,9 @@ import com.dominikcebula.bank.service.bls.actions.BankActionsFacadeInvoker;
 import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.exception.AccountOpenException;
 import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
-import com.dominikcebula.bank.service.dto.Account;
-import com.dominikcebula.bank.service.dto.AccountOpenRequest;
-import com.dominikcebula.bank.service.dto.AccountOpenResponse;
-import com.dominikcebula.bank.service.rest.ds.response.ErrorResponse;
+import com.dominikcebula.bank.service.dto.*;
 import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
 import com.google.inject.testing.fieldbinder.Bind;
-import org.javamoney.moneta.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +17,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.math.BigDecimal;
 
 import static com.dominikcebula.bank.service.dto.ApiCode.ACCOUNT_OPENED;
-import static com.dominikcebula.bank.service.rest.ds.response.Response.Status.ERROR;
 import static com.dominikcebula.bank.service.rest.validator.validators.AccountOpenRequestValidator.MESSAGE_DEPOSIT_INCORRECT;
 import static org.junit.Assert.assertEquals;
 
@@ -71,12 +66,12 @@ public class OpenAccountRestActionIntegrationTest extends SparkRestServerAwareTe
 
         accountOpenRequest.setInitialDeposit(initialDeposit);
 
-        ErrorResponse errorResponse = resetClient().postForObject(
+        ApiErrorResponse errorResponse = resetClient().postForObject(
                 OpenAccountRestAction.ACCOUNTS_OPEN_URI, accountOpenRequest,
-                AccountOpenRequest.class, ErrorResponse.class
+                AccountOpenRequest.class, ApiErrorResponse.class
         );
 
-        assertEquals(ERROR, errorResponse.getStatus());
+        assertEquals(ApiCode.FAILED, errorResponse.getCode());
     }
 
     @Test
@@ -86,12 +81,12 @@ public class OpenAccountRestActionIntegrationTest extends SparkRestServerAwareTe
         AccountOpenRequest accountOpenRequest = new AccountOpenRequest();
         accountOpenRequest.setInitialDeposit(initialDeposit);
 
-        ErrorResponse errorResponse = resetClient().postForObject(
+        ApiErrorResponse errorResponse = resetClient().postForObject(
                 OpenAccountRestAction.ACCOUNTS_OPEN_URI, accountOpenRequest,
-                AccountOpenRequest.class, ErrorResponse.class
+                AccountOpenRequest.class, ApiErrorResponse.class
         );
 
-        assertEquals(ERROR, errorResponse.getStatus());
+        assertEquals(ApiCode.FAILED, errorResponse.getCode());
         assertEquals(MESSAGE_DEPOSIT_INCORRECT, errorResponse.getMessage());
     }
 }

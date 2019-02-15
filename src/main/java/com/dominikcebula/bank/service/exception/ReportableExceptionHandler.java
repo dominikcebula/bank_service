@@ -1,7 +1,8 @@
 package com.dominikcebula.bank.service.exception;
 
+import com.dominikcebula.bank.service.dto.ApiCode;
+import com.dominikcebula.bank.service.dto.ApiErrorResponse;
 import com.dominikcebula.bank.service.logging.Loggers;
-import com.dominikcebula.bank.service.rest.ds.response.ErrorResponse;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
@@ -27,7 +28,9 @@ public class ReportableExceptionHandler implements ExceptionHandler<ReportableEx
 
         response.body(
                 gson.toJson(
-                        new ErrorResponse(exception.getMessage())
+                        new ApiErrorResponse()
+                                .code(ApiCode.FAILED)
+                                .message(exception.getMessage())
                 )
         );
     }

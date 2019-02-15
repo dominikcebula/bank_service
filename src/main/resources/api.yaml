@@ -123,3 +123,10 @@ definitions:
     properties:
       code:
         $ref: '#/definitions/ApiCode'
+  ApiErrorResponse:
+    type: "object"
+    allOf:
+      - $ref: '#/definitions/ApiResponse'
+      - properties:
+          message:
+            type: string

@@ -4,13 +4,9 @@ import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.ds.AccountInfo;
 import com.dominikcebula.bank.service.bls.ds.AccountsInfo;
 import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
-import com.dominikcebula.bank.service.dto.AccountOpenRequest;
-import com.dominikcebula.bank.service.dto.AccountOpenResponse;
-import com.dominikcebula.bank.service.dto.TransferMoneyRequest;
-import com.dominikcebula.bank.service.dto.TransferMoneyResponse;
+import com.dominikcebula.bank.service.dto.*;
 import com.dominikcebula.bank.service.rest.actions.OpenAccountRestAction;
 import com.dominikcebula.bank.service.rest.actions.TransferMoneyRestAction;
-import com.dominikcebula.bank.service.rest.ds.response.Response;
 import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
 import org.javamoney.moneta.Money;
 import org.junit.Before;
@@ -105,7 +101,7 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
                 TransferMoneyRequest.class, TransferMoneyResponse.class
         );
 
-        assertEquals(Response.Status.SUCCESS, transferMoneyResponse.getStatus());
+        assertEquals(ApiCode.MONEY_TRANSFERED, transferMoneyResponse.getStatus().getCode());
     }
 
     private void assertAccountsExists(AccountsInfo accountsInfo, AccountId... accountIds) {

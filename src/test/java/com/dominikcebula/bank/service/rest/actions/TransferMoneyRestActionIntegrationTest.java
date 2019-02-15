@@ -5,12 +5,11 @@ import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.exception.TransferException;
 import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
 import com.dominikcebula.bank.service.dto.ApiCode;
+import com.dominikcebula.bank.service.dto.ApiErrorResponse;
 import com.dominikcebula.bank.service.dto.TransferMoneyRequest;
 import com.dominikcebula.bank.service.dto.TransferMoneyResponse;
-import com.dominikcebula.bank.service.rest.ds.response.ErrorResponse;
 import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
 import com.google.inject.testing.fieldbinder.Bind;
-import org.fest.assertions.api.Assertions;
 import org.javamoney.moneta.Money;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,8 +18,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static com.dominikcebula.bank.service.rest.ds.response.Response.Status.ERROR;
-import static com.dominikcebula.bank.service.rest.ds.response.Response.Status.SUCCESS;
 import static com.dominikcebula.bank.service.rest.validator.validators.TransferMoneyRequestValidator.MESSAGE_AMOUNT_VALUE_INCORRECT;
 import static org.junit.Assert.assertEquals;
 
@@ -75,12 +72,12 @@ public class TransferMoneyRestActionIntegrationTest extends SparkRestServerAware
         transferMoneyRequest.setTo(TO.getAccountNumber());
         transferMoneyRequest.setAmount(amount.getNumberStripped());
 
-        ErrorResponse errorResponse = resetClient().postForObject(
+        ApiErrorResponse errorResponse = resetClient().postForObject(
                 TransferMoneyRestAction.TRANSFER_URI, transferMoneyRequest,
-                TransferMoneyRequest.class, ErrorResponse.class
+                TransferMoneyRequest.class, ApiErrorResponse.class
         );
 
-        assertEquals(ERROR, errorResponse.getStatus());
+        assertEquals(ApiCode.FAILED, errorResponse.getCode());
     }
 
     @Test
@@ -92,12 +89,12 @@ public class TransferMoneyRestActionIntegrationTest extends SparkRestServerAware
         transferMoneyRequest.setTo(TO.getAccountNumber());
         transferMoneyRequest.setAmount(amount.getNumberStripped());
 
-        ErrorResponse errorResponse = resetClient().postForObject(
+        ApiErrorResponse errorResponse = resetClient().postForObject(
                 TransferMoneyRestAction.TRANSFER_URI, transferMoneyRequest,
-                TransferMoneyRequest.class, ErrorResponse.class
+                TransferMoneyRequest.class, ApiErrorResponse.class
         );
 
-        assertEquals(ERROR, errorResponse.getStatus());
+        assertEquals(ApiCode.FAILED, errorResponse.getCode());
         assertEquals(MESSAGE_AMOUNT_VALUE_INCORRECT, errorResponse.getMessage());
     }
 }

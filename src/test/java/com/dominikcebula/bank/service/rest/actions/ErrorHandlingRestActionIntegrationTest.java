@@ -1,9 +1,11 @@
 package com.dominikcebula.bank.service.rest.actions;
 
-import com.dominikcebula.bank.service.rest.ds.response.ErrorResponse;
+import com.dominikcebula.bank.service.dto.ApiCode;
+import com.dominikcebula.bank.service.dto.ApiErrorResponse;
 import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
 import com.google.inject.testing.fieldbinder.Bind;
 import org.apache.http.Header;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -13,7 +15,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import static com.dominikcebula.bank.service.assertions.HeadersAssert.assertHeadersContain;
 import static com.dominikcebula.bank.service.rest.actions.ErrorHandlingRestAction.ERROR_MESSAGE;
 import static com.dominikcebula.bank.service.rest.actions.ListAccountsRestAction.ACCOUNT_LIST_URI;
-import static com.dominikcebula.bank.service.rest.ds.response.Response.Status;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -25,9 +26,9 @@ public class ErrorHandlingRestActionIntegrationTest extends SparkRestServerAware
 
     @Test
     public void shouldShowRestErrorOnNotFoundError() {
-        ErrorResponse errorResponse = resetClient().getForObject("/non-existing-uri", ErrorResponse.class);
+        ApiErrorResponse errorResponse = resetClient().getForObject("/non-existing-uri", ApiErrorResponse.class);
 
-        assertEquals(Status.ERROR, errorResponse.getStatus());
+        assertEquals(ApiCode.FAILED, errorResponse.getCode());
         assertEquals(ERROR_MESSAGE, errorResponse.getMessage());
     }
 
@@ -35,11 +36,11 @@ public class ErrorHandlingRestActionIntegrationTest extends SparkRestServerAware
     public void shouldShowRestErrorOnInternalError() throws Exception {
         mockExceptionThrown();
 
-        ErrorResponse errorResponse = resetClient().getForObject(ACCOUNT_LIST_URI, ErrorResponse.class);
+        ApiErrorResponse errorResponse = resetClient().getForObject(ACCOUNT_LIST_URI, ApiErrorResponse.class);
 
         Mockito.verify(listAccountsRestAction).handle(Mockito.any(), Mockito.any());
 
-        assertEquals(Status.ERROR, errorResponse.getStatus());
+        assertEquals(ApiCode.FAILED, errorResponse.getCode());
         assertEquals(ERROR_MESSAGE, errorResponse.getMessage());
     }
 
