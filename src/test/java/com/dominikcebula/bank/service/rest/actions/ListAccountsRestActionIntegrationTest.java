@@ -4,6 +4,8 @@ import com.dominikcebula.bank.service.bls.actions.BankActionsFacadeInvoker;
 import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
 import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.dto.Accounts;
+import com.dominikcebula.bank.service.dto.ApiCode;
+import com.dominikcebula.bank.service.dto.ListAccountsResponse;
 import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
 import com.google.inject.testing.fieldbinder.Bind;
 import org.junit.Before;
@@ -41,11 +43,12 @@ public class ListAccountsRestActionIntegrationTest extends SparkRestServerAwareT
     public void shouldListOpenedAccounts() {
         Mockito.when(bankActionsFacadeInvoker.listAccounts()).thenReturn(getAccounts());
 
-        Accounts retrievedAccountsInfo = resetClient().getForObject(ACCOUNT_LIST_URI, Accounts.class);
+        ListAccountsResponse listAccountsResponse = resetClient().getForObject(ACCOUNT_LIST_URI, ListAccountsResponse.class);
 
-        assertThat(retrievedAccountsInfo.getAccounts())
+        assertThat(listAccountsResponse.getAccounts().getAccounts())
                 .containsOnly(getAccountsList());
-        assertEquals(retrievedAccountsInfo.getTotalDeposit().intValue(), TOTAL_DEPOSIT);
+        assertEquals(listAccountsResponse.getAccounts().getTotalDeposit().intValue(), TOTAL_DEPOSIT);
+        assertEquals(listAccountsResponse.getStatus().getCode(), ApiCode.ACCOUNTS_LISTED);
     }
 
     private Accounts getAccounts() {

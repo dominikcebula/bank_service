@@ -22,7 +22,7 @@ paths:
         200:
           description: "Accounts list"
           schema:
-            $ref: '#/definitions/ApiResponse'
+            $ref: '#/definitions/ListAccountsResponse'
   /accounts/create:
     post:
       summary: "Create new account"
@@ -62,7 +62,7 @@ definitions:
           - "up"
   Money:
     type: "number"
-    format: "float"
+    format: "decimal"
   AccoundId:
     type: "string"
   Account:
@@ -81,6 +81,13 @@ definitions:
           $ref: '#/definitions/Account'
       totalDeposit:
         $ref: '#/definitions/Money'
+  ListAccountsResponse:
+    type: object
+    properties:
+      status:
+        $ref: '#/definitions/ApiResponse'
+      accounts:
+        $ref: '#/definitions/Accounts'
   AccountOpenRequest:
     type: object
     properties:
@@ -117,6 +124,7 @@ definitions:
     enum:
       - FAILED
       - ACCOUNT_OPENED
+      - ACCOUNTS_LISTED
       - MONEY_TRANSFERED
   ApiResponse:
     type: "object"
