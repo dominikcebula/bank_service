@@ -2,6 +2,7 @@ package com.dominikcebula.bank.service.exception;
 
 import com.dominikcebula.bank.service.dto.ApiCode;
 import com.dominikcebula.bank.service.dto.ApiErrorResponse;
+import com.dominikcebula.bank.service.dto.ModelApiResponse;
 import com.dominikcebula.bank.service.logging.Loggers;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
@@ -29,7 +30,7 @@ public class ReportableExceptionHandler implements ExceptionHandler<ReportableEx
         response.body(
                 gson.toJson(
                         new ApiErrorResponse()
-                                .code(ApiCode.FAILED)
+                                .status(new ModelApiResponse().code(ApiCode.FAILED))
                                 .message(exception.getMessage())
                 )
         );

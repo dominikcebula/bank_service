@@ -2,6 +2,7 @@ package com.dominikcebula.bank.service.rest.actions;
 
 import com.dominikcebula.bank.service.dto.ApiCode;
 import com.dominikcebula.bank.service.dto.ApiErrorResponse;
+import com.dominikcebula.bank.service.dto.ModelApiResponse;
 import com.google.inject.Inject;
 
 public class ErrorHandlingRestAction extends AbstractRestAction<Void, ApiErrorResponse> {
@@ -15,6 +16,6 @@ public class ErrorHandlingRestAction extends AbstractRestAction<Void, ApiErrorRe
 
     @Override
     ApiErrorResponse handleRequest(Void request) {
-        return new ApiErrorResponse().code(ApiCode.FAILED).message(ERROR_MESSAGE);
+        return new ApiErrorResponse().status(new ModelApiResponse().code(ApiCode.FAILED)).message(ERROR_MESSAGE);
     }
 }

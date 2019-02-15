@@ -27,7 +27,7 @@ public class ErrorHandlingRestActionIntegrationTest extends SparkRestServerAware
     public void shouldShowRestErrorOnNotFoundError() {
         ApiErrorResponse errorResponse = resetClient().getForObject("/non-existing-uri", ApiErrorResponse.class);
 
-        assertEquals(ApiCode.FAILED, errorResponse.getCode());
+        assertEquals(ApiCode.FAILED, errorResponse.getStatus().getCode());
         assertEquals(ERROR_MESSAGE, errorResponse.getMessage());
     }
 
@@ -39,7 +39,7 @@ public class ErrorHandlingRestActionIntegrationTest extends SparkRestServerAware
 
         Mockito.verify(listAccountsRestAction).handle(Mockito.any(), Mockito.any());
 
-        assertEquals(ApiCode.FAILED, errorResponse.getCode());
+        assertEquals(ApiCode.FAILED, errorResponse.getStatus().getCode());
         assertEquals(ERROR_MESSAGE, errorResponse.getMessage());
     }
 

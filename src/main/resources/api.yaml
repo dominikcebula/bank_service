@@ -139,9 +139,8 @@ definitions:
       code:
         $ref: '#/definitions/ApiCode'
   ApiErrorResponse:
-    type: "object"
-    allOf:
-      - $ref: '#/definitions/ApiResponse'
-      - properties:
-          message:
-            type: string
+    properties:
+      status:
+        $ref: '#/definitions/ApiResponse'
+      message:
+        type: "string"

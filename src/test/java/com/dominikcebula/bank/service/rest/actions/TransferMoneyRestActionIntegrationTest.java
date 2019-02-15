@@ -67,7 +67,7 @@ public class TransferMoneyRestActionIntegrationTest extends SparkRestServerAware
                 TransferMoneyRequest.class, ApiErrorResponse.class
         );
 
-        assertEquals(ApiCode.FAILED, errorResponse.getCode());
+        assertEquals(ApiCode.FAILED, errorResponse.getStatus().getCode());
     }
 
     @Test
@@ -84,7 +84,7 @@ public class TransferMoneyRestActionIntegrationTest extends SparkRestServerAware
                 TransferMoneyRequest.class, ApiErrorResponse.class
         );
 
-        assertEquals(ApiCode.FAILED, errorResponse.getCode());
+        assertEquals(ApiCode.FAILED, errorResponse.getStatus().getCode());
         assertEquals(MESSAGE_AMOUNT_VALUE_INCORRECT, errorResponse.getMessage());
     }
 }

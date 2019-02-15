@@ -59,7 +59,7 @@ public class OpenAccountRestActionIntegrationTest extends SparkRestServerAwareTe
                 AccountOpenRequest.class, ApiErrorResponse.class
         );
 
-        assertEquals(ApiCode.FAILED, errorResponse.getCode());
+        assertEquals(ApiCode.FAILED, errorResponse.getStatus().getCode());
     }
 
     @Test
@@ -72,7 +72,7 @@ public class OpenAccountRestActionIntegrationTest extends SparkRestServerAwareTe
                 AccountOpenRequest.class, ApiErrorResponse.class
         );
 
-        assertEquals(ApiCode.FAILED, errorResponse.getCode());
+        assertEquals(ApiCode.FAILED, errorResponse.getStatus().getCode());
         assertEquals(MESSAGE_DEPOSIT_INCORRECT, errorResponse.getMessage());
     }
 }
