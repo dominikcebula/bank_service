@@ -1,6 +1,6 @@
 package com.dominikcebula.bank.service.rest.validator.validators;
 
-import com.dominikcebula.bank.service.rest.ds.request.AccountOpenRequest;
+import com.dominikcebula.bank.service.dto.AccountOpenRequest;
 import com.dominikcebula.bank.service.rest.validator.Validator;
 import com.dominikcebula.bank.service.rest.validator.exception.ValidatorException;
 
@@ -17,7 +17,7 @@ public class AccountOpenRequestValidator extends Validator<AccountOpenRequest> {
         );
 
         assertConditionMet(
-                accountOpenRequest.getInitialDeposit().isPositive(),
+                accountOpenRequest.getInitialDeposit().floatValue() > 0,
                 MESSAGE_DEPOSIT_INCORRECT
         );
     }

@@ -4,12 +4,12 @@ import com.dominikcebula.bank.service.bls.actions.BankActionsFacadeInvoker;
 import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.exception.AccountOpenException;
 import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
-import com.dominikcebula.bank.service.rest.ds.request.AccountOpenRequest;
-import com.dominikcebula.bank.service.rest.ds.response.AccountOpenResponse;
+import com.dominikcebula.bank.service.dto.Account;
+import com.dominikcebula.bank.service.dto.AccountOpenRequest;
+import com.dominikcebula.bank.service.dto.AccountOpenResponse;
 import com.dominikcebula.bank.service.rest.ds.response.ErrorResponse;
 import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
 import com.google.inject.testing.fieldbinder.Bind;
-import org.fest.assertions.api.Assertions;
 import org.javamoney.moneta.Money;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,8 +18,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.math.BigDecimal;
+
+import static com.dominikcebula.bank.service.dto.ApiCode.ACCOUNT_OPENED;
 import static com.dominikcebula.bank.service.rest.ds.response.Response.Status.ERROR;
-import static com.dominikcebula.bank.service.rest.ds.response.Response.Status.SUCCESS;
 import static com.dominikcebula.bank.service.rest.validator.validators.AccountOpenRequestValidator.MESSAGE_DEPOSIT_INCORRECT;
 import static org.junit.Assert.assertEquals;
 
@@ -43,8 +45,9 @@ public class OpenAccountRestActionIntegrationTest extends SparkRestServerAwareTe
 
     @Test
     public void shouldOpenAccount() throws AccountOpenException {
-        Money initialDeposit = moneyFactory.create(DEPOSIT);
-        Mockito.when(bankActionsFacadeInvoker.openAccount(initialDeposit)).thenReturn(ACCOUNT_ID);
+        BigDecimal initialDeposit = moneyFactory.create(DEPOSIT).getNumberStripped();
+        Account account = new Account().accountId(ACCOUNT_ID.getAccountNumber());
+        Mockito.when(bankActionsFacadeInvoker.openAccount(initialDeposit)).thenReturn(account);
 
         AccountOpenRequest accountOpenRequest = new AccountOpenRequest();
 
@@ -55,15 +58,13 @@ public class OpenAccountRestActionIntegrationTest extends SparkRestServerAwareTe
                 AccountOpenRequest.class, AccountOpenResponse.class
         );
 
-        assertEquals(SUCCESS, accountOpenResponse.getStatus());
-        assertEquals(ACCOUNT_ID, accountOpenResponse.getAccountId());
-        Assertions.assertThat(accountOpenResponse.getMessage())
-                .contains(ACCOUNT_ID.getAccountNumber());
+        assertEquals(ACCOUNT_OPENED, accountOpenResponse.getStatus().getCode());
+        assertEquals(ACCOUNT_ID, AccountId.createAccountNumber(accountOpenResponse.getAccount().getAccountId()));
     }
 
     @Test
     public void shouldFailedToOpenAccount() throws AccountOpenException {
-        Money initialDeposit = moneyFactory.create(DEPOSIT);
+        BigDecimal initialDeposit = moneyFactory.create(DEPOSIT).getNumberStripped();
         Mockito.when(bankActionsFacadeInvoker.openAccount(initialDeposit)).thenThrow(new IllegalArgumentException("TEST"));
 
         AccountOpenRequest accountOpenRequest = new AccountOpenRequest();
@@ -80,7 +81,7 @@ public class OpenAccountRestActionIntegrationTest extends SparkRestServerAwareTe
 
     @Test
     public void shouldFailValidationDuringOpenAction() {
-        Money initialDeposit = moneyFactory.create(0);
+        BigDecimal initialDeposit = moneyFactory.create(0).getNumberStripped();
 
         AccountOpenRequest accountOpenRequest = new AccountOpenRequest();
         accountOpenRequest.setInitialDeposit(initialDeposit);

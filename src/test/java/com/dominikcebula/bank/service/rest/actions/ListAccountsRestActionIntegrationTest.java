@@ -1,20 +1,19 @@
 package com.dominikcebula.bank.service.rest.actions;
 
 import com.dominikcebula.bank.service.bls.actions.BankActionsFacadeInvoker;
-import com.dominikcebula.bank.service.bls.ds.AccountId;
-import com.dominikcebula.bank.service.bls.ds.AccountInfo;
-import com.dominikcebula.bank.service.bls.ds.AccountsInfo;
 import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
+import com.dominikcebula.bank.service.dto.Account;
+import com.dominikcebula.bank.service.dto.Accounts;
 import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
-import com.google.common.collect.Sets;
 import com.google.inject.testing.fieldbinder.Bind;
-import org.javamoney.moneta.Money;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.util.Arrays;
 
 import static com.dominikcebula.bank.service.rest.actions.ListAccountsRestAction.ACCOUNT_LIST_URI;
 import static org.fest.assertions.api.Assertions.assertThat;
@@ -39,32 +38,24 @@ public class ListAccountsRestActionIntegrationTest extends SparkRestServerAwareT
 
     @Test
     public void shouldListOpenedAccounts() {
-        AccountsInfo accountsInfo = getAccountsInfo();
-        Mockito.when(bankActionsFacadeInvoker.listAccounts()).thenReturn(accountsInfo);
+        Mockito.when(bankActionsFacadeInvoker.listAccounts()).thenReturn(getAccounts());
 
-        AccountsInfo retrievedAccountsInfo = resetClient().getForObject(ACCOUNT_LIST_URI, AccountsInfo.class);
+        Accounts retrievedAccountsInfo = resetClient().getForObject(ACCOUNT_LIST_URI, Accounts.class);
 
-        assertThat(retrievedAccountsInfo.getAccountsInfo())
-                .containsOnly(getAccounts());
-        assertEquals(retrievedAccountsInfo.getTotalDeposit().getNumber().intValueExact(), TOTAL_DEPOSIT);
+        assertThat(retrievedAccountsInfo.getAccounts())
+                .containsOnly(getAccountsList());
+        assertEquals(retrievedAccountsInfo.getTotalDeposit().intValue(), TOTAL_DEPOSIT);
     }
 
-    private AccountsInfo getAccountsInfo() {
-        return new AccountsInfo(
-                Sets.newHashSet(getAccounts()),
-                getTotalDeposit()
-        );
+    private Accounts getAccounts() {
+        return new Accounts().accounts(Arrays.asList(getAccountsList()));
     }
 
-    private AccountInfo[] getAccounts() {
-        return new AccountInfo[]{
-                new AccountInfo(AccountId.createAccountNumber("1"), moneyFactory.create(100)),
-                new AccountInfo(AccountId.createAccountNumber("2"), moneyFactory.create(200)),
-                new AccountInfo(AccountId.createAccountNumber("3"), moneyFactory.create(300))
+    private Account[] getAccountsList() {
+        return new Account[]{
+                new Account().accountId("1").balance(moneyFactory.create(100).getNumberStripped()),
+                new Account().accountId("2").balance(moneyFactory.create(200).getNumberStripped()),
+                new Account().accountId("3").balance(moneyFactory.create(300).getNumberStripped()),
         };
-    }
-
-    private Money getTotalDeposit() {
-        return moneyFactory.create(TOTAL_DEPOSIT);
     }
 }

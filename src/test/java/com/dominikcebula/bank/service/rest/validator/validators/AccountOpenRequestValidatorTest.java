@@ -1,6 +1,6 @@
 package com.dominikcebula.bank.service.rest.validator.validators;
 
-import com.dominikcebula.bank.service.rest.ds.request.AccountOpenRequest;
+import com.dominikcebula.bank.service.dto.AccountOpenRequest;
 import com.dominikcebula.bank.service.rest.validator.exception.ValidatorException;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -9,6 +9,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+
+import java.math.BigDecimal;
 
 import static com.dominikcebula.bank.service.rest.validator.validators.AccountOpenRequestValidator.MESSAGE_DEPOSIT_INCORRECT;
 import static com.dominikcebula.bank.service.rest.validator.validators.AccountOpenRequestValidator.MESSAGE_DEPOSIT_NOT_SPECIFIED;
@@ -49,7 +51,7 @@ public class AccountOpenRequestValidatorTest {
         accountOpenRequestValidator.validate(accountOpenRequest);
     }
 
-    private Money getMoney(int amount) {
-        return Money.of(amount, "USD");
+    private BigDecimal getMoney(int amount) {
+        return Money.of(amount, "USD").getNumberStripped();
     }
 }

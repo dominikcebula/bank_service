@@ -2,15 +2,14 @@ package com.dominikcebula.bank.service.bls.actions;
 
 import com.dominikcebula.bank.service.bls.dao.AccountDao;
 import com.dominikcebula.bank.service.bls.ds.AccountId;
-import com.dominikcebula.bank.service.bls.ds.AccountInfo;
-import com.dominikcebula.bank.service.bls.ds.AccountsInfo;
 import com.dominikcebula.bank.service.bls.exception.AccountOpenException;
 import com.dominikcebula.bank.service.bls.exception.TransferException;
 import com.dominikcebula.bank.service.bls.utils.AccountIdGenerator;
 import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
+import com.dominikcebula.bank.service.dto.Account;
+import com.dominikcebula.bank.service.dto.Accounts;
 import com.dominikcebula.bank.service.guice.ContextAwareTest;
 import com.google.inject.testing.fieldbinder.Bind;
-import org.javamoney.moneta.Money;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -19,6 +18,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.math.BigDecimal;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -68,24 +69,24 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     public void shouldListAccounts() throws AccountOpenException {
         openAccounts();
 
-        AccountsInfo accountsInfo = bankActionsFacadeInvoker.listAccounts();
+        Accounts accounts = bankActionsFacadeInvoker.listAccounts();
 
-        assertThat(accountsInfo.getAccountsInfo())
+        assertThat(accounts.getAccounts())
                 .containsOnly(
-                        new AccountInfo(ACCOUNT_ID_1, money(BALANCE1)),
-                        new AccountInfo(ACCOUNT_ID_2, money(BALANCE2)),
-                        new AccountInfo(ACCOUNT_ID_3, money(BALANCE3))
+                        new Account().accountId(ACCOUNT_ID_1.getAccountNumber()).balance(money(BALANCE1)),
+                        new Account().accountId(ACCOUNT_ID_2.getAccountNumber()).balance(money(BALANCE2)),
+                        new Account().accountId(ACCOUNT_ID_3.getAccountNumber()).balance(money(BALANCE3))
                 );
-        assertEquals(TOTAL_BALANCE, accountsInfo.getTotalDeposit().getNumber().intValue());
+        assertEquals(TOTAL_BALANCE, accounts.getTotalDeposit().intValue());
     }
 
     @Test
     public void shouldListAccountsWhenNonOpened() {
 
-        AccountsInfo accountsInfo = bankActionsFacadeInvoker.listAccounts();
+        Accounts accounts = bankActionsFacadeInvoker.listAccounts();
 
-        assertTrue(accountsInfo.getAccountsInfo().isEmpty());
-        assertEquals(NO_MONEY, accountsInfo.getTotalDeposit().getNumber().intValue());
+        assertTrue(accounts.getAccounts().isEmpty());
+        assertEquals(NO_MONEY, accounts.getTotalDeposit().intValue());
     }
 
     @Test
@@ -94,9 +95,9 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
 
         bankActionsFacadeInvoker.transfer(ACCOUNT_ID_1, ACCOUNT_ID_2, money(BALANCE1));
 
-        assertEquals(NO_MONEY, accountDao.findAccount(ACCOUNT_ID_1).getBalance().getNumber().intValue());
-        assertEquals(BALANCE1 + BALANCE2, accountDao.findAccount(ACCOUNT_ID_2).getBalance().getNumber().intValue());
-        assertEquals(BALANCE3, accountDao.findAccount(ACCOUNT_ID_3).getBalance().getNumber().intValue());
+        assertEquals(NO_MONEY, accountDao.findAccount(ACCOUNT_ID_1).getBalance().intValue());
+        assertEquals(BALANCE1 + BALANCE2, accountDao.findAccount(ACCOUNT_ID_2).getBalance().intValue());
+        assertEquals(BALANCE3, accountDao.findAccount(ACCOUNT_ID_3).getBalance().intValue());
     }
 
     @Test
@@ -130,8 +131,8 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
         bankActionsFacadeInvoker.openAccount(money(BALANCE3));
     }
 
-    private Money money(int amount) {
-        return moneyFactory.create(amount);
+    private BigDecimal money(int amount) {
+        return moneyFactory.create(amount).getNumberStripped();
     }
 
     private void mockAccountId(AccountId accountId) throws AccountOpenException {

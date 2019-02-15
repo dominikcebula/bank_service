@@ -1,21 +1,22 @@
 package com.dominikcebula.bank.service.rest.actions;
 
+import com.dominikcebula.bank.service.dto.HealthCheckResponse;
+import com.dominikcebula.bank.service.dto.HealthCheckResponse.StatusEnum;
 import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
 import org.apache.http.Header;
 import org.junit.Test;
 
 import static com.dominikcebula.bank.service.assertions.HeadersAssert.assertHeadersContain;
 import static com.dominikcebula.bank.service.rest.actions.IndexRestAction.INDEX_ACTION_URI;
-import static com.dominikcebula.bank.service.rest.actions.IndexRestAction.MESSAGE_SERVICE_UP;
 import static org.junit.Assert.assertEquals;
 
 public class IndexRestActionIntegrationTest extends SparkRestServerAwareTest {
 
     @Test
     public void shouldIncludeDefaultResponse() {
-        String indexResponse = resetClient().getForObject(INDEX_ACTION_URI, String.class);
+        HealthCheckResponse indexResponse = resetClient().getForObject(INDEX_ACTION_URI, HealthCheckResponse.class);
 
-        assertEquals(MESSAGE_SERVICE_UP, indexResponse);
+        assertEquals(StatusEnum.UP, indexResponse.getStatus());
     }
 
     @Test

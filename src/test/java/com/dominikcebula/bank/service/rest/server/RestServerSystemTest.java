@@ -4,11 +4,11 @@ import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.ds.AccountInfo;
 import com.dominikcebula.bank.service.bls.ds.AccountsInfo;
 import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
+import com.dominikcebula.bank.service.dto.AccountOpenRequest;
+import com.dominikcebula.bank.service.dto.AccountOpenResponse;
 import com.dominikcebula.bank.service.rest.actions.OpenAccountRestAction;
 import com.dominikcebula.bank.service.rest.actions.TransferMoneyRestAction;
-import com.dominikcebula.bank.service.rest.ds.request.AccountOpenRequest;
 import com.dominikcebula.bank.service.rest.ds.request.TransferMoneyRequest;
-import com.dominikcebula.bank.service.rest.ds.response.AccountOpenResponse;
 import com.dominikcebula.bank.service.rest.ds.response.Response;
 import com.dominikcebula.bank.service.rest.ds.response.TransferMoneyResponse;
 import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
@@ -86,12 +86,12 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
 
     private AccountId openAccount(Money initialDeposit) {
         AccountOpenRequest accountOpenRequest = new AccountOpenRequest();
-        accountOpenRequest.setInitialDeposit(initialDeposit);
+        accountOpenRequest.setInitialDeposit(initialDeposit.getNumberStripped());
 
         AccountOpenResponse accountOpenResponse = resetClient().postForObject(OpenAccountRestAction.ACCOUNTS_OPEN_URI, accountOpenRequest,
                 AccountOpenRequest.class, AccountOpenResponse.class);
 
-        return accountOpenResponse.getAccountId();
+        return AccountId.createAccountNumber(accountOpenResponse.getAccount().getAccountId());
     }
 
     private void transfer(AccountId from, AccountId to, Money amount) {

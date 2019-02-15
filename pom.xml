@@ -10,6 +10,8 @@
 
     <properties>
         <main-class>com.dominikcebula.bank.service.Runner</main-class>
+        <swagger-core-version>1.5.21</swagger-core-version>
+        <swagger-plugin-version>2.4.1</swagger-plugin-version>
     </properties>
 
     <dependencies>
@@ -63,6 +65,12 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>${swagger-core-version}</version>
         </dependency>
 
         <dependency>
@@ -142,6 +150,30 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-codegen-maven-plugin</artifactId>
+                <version>${swagger-plugin-version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/api.yaml</inputSpec>
+                            <language>java</language>
+                            <modelPackage>com.dominikcebula.bank.service.dto</modelPackage>
+                            <withXml>false</withXml>
+                            <generateApis>false</generateApis>
+                            <generateApiTests>false</generateApiTests>
+                            <generateApiDocumentation>false</generateApiDocumentation>
+                            <generateModelTests>false</generateModelTests>
+                            <generateModelDocumentation>false</generateModelDocumentation>
+                            <generateSupportingFiles>false</generateSupportingFiles>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

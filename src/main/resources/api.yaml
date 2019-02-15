@@ -1,0 +1,90 @@
+swagger: "2.0"
+info:
+  description: "Simple Bank Service Rest API"
+  version: "1.0.0"
+  title: "Bank Service Rest API"
+  contact:
+    email: "dominikcebula@gmail.com"
+paths:
+  /:
+    get:
+      summary: "Index Action showing that service is up"
+      responses:
+        200:
+          description: "Service is up"
+          schema:
+            $ref: '#/definitions/HealthCheckResponse'
+
+  /accounts/list:
+    get:
+      summary: "List all accounts in the system"
+      responses:
+        200:
+          description: "Accounts list"
+          schema:
+            $ref: '#/definitions/ApiResponse'
+  /accounts/create:
+    post:
+      summary: "Create new account"
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AccountOpenRequest'
+      responses:
+        200:
+          description: "Created Account detials"
+          schema:
+            $ref: '#/definitions/AccountOpenResponse'
+
+definitions:
+  HealthCheckResponse:
+    type: "object"
+    properties:
+      status:
+        type: "string"
+        enum:
+          - "up"
+  Money:
+    type: "number"
+    format: "float"
+  AccoundId:
+    type: "string"
+  Account:
+    type: "object"
+    properties:
+      accountId:
+        $ref: '#/definitions/AccoundId'
+      balance:
+        $ref: '#/definitions/Money'
+  Accounts:
+    type: object
+    properties:
+      accounts:
+        type: "array"
+        items:
+          $ref: '#/definitions/Account'
+      totalDeposit:
+        $ref: '#/definitions/Money'
+  AccountOpenRequest:
+    type: object
+    properties:
+      initialDeposit:
+        $ref: '#/definitions/Money'
+  AccountOpenResponse:
+    type: "object"
+    properties:
+      status:
+        $ref: '#/definitions/ApiResponse'
+      account:
+        $ref: '#/definitions/Account'
+  ApiCode:
+    type: "string"
+    enum:
+      - ACCOUNT_OPENED
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        $ref: '#/definitions/ApiCode'

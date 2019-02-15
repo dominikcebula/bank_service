@@ -1,15 +1,17 @@
 package com.dominikcebula.bank.service.bls.actions;
 
 import com.dominikcebula.bank.service.bls.dao.AccountDao;
-import com.dominikcebula.bank.service.bls.ds.Account;
 import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.exception.AccountOpenException;
 import com.dominikcebula.bank.service.bls.utils.AccountIdGenerator;
+import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.logging.Loggers;
 import com.google.inject.Inject;
 import org.javamoney.moneta.Money;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.math.BigDecimal;
 
 class OpenAccountAction {
 
@@ -24,16 +26,18 @@ class OpenAccountAction {
         this.accountIdGenerator = accountIdGenerator;
     }
 
-    AccountId openAccount(Money initialBalance) throws AccountOpenException {
+    Account openAccount(BigDecimal initialBalance) throws AccountOpenException {
         logger.info("Opening account");
 
         logger.info("Generating account id and creating account");
         AccountId accountId = accountIdGenerator.generateAccountId(accountDao.findAccountIdentifiers());
-        Account account = new Account(initialBalance);
+        Account account = new Account();
+        account.setAccountId(accountId.getAccountNumber());
+        account.setBalance(initialBalance);
 
         logger.info("Saving account");
-        accountDao.store(accountId, account);
+        accountDao.store(account);
 
-        return accountId;
+        return account;
     }
 }

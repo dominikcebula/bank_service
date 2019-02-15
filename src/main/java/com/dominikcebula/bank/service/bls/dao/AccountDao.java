@@ -1,11 +1,12 @@
 package com.dominikcebula.bank.service.bls.dao;
 
-import com.dominikcebula.bank.service.bls.ds.Account;
 import com.dominikcebula.bank.service.bls.ds.AccountId;
-import com.dominikcebula.bank.service.bls.ds.AccountInfo;
+import com.dominikcebula.bank.service.dto.Account;
+import com.dominikcebula.bank.service.dto.Accounts;
 
-import java.util.Collection;
+import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -13,22 +14,16 @@ import java.util.stream.Collectors;
 public class AccountDao {
     private final Map<AccountId, Account> accounts = new HashMap<>();
 
-    public Collection<Account> findAllAccounts() {
+    public List<Account> findAllAccounts() {
         return accounts.values().stream()
-                .map(Account::new)
+                .map(this::copyAccount)
                 .collect(Collectors.toList());
-    }
-
-    public Set<AccountInfo> findAllAccountsInfo() {
-        return accounts.entrySet().stream()
-                .map(this::getAccountInfo)
-                .collect(Collectors.toSet());
     }
 
     public Account findAccount(AccountId accountId) {
         Account account = accounts.get(accountId);
         if (account != null)
-            return new Account(account);
+            return copyAccount(account);
         else
             return null;
     }
@@ -41,11 +36,14 @@ public class AccountDao {
         return accounts.containsKey(accountId);
     }
 
-    public void store(AccountId accountId, Account account) {
-        accounts.put(accountId, account);
+    public void store(Account account) {
+        accounts.put(AccountId.createAccountNumber(account.getAccountId()), account);
     }
 
-    private AccountInfo getAccountInfo(Map.Entry<AccountId, Account> accountEntry) {
-        return new AccountInfo(accountEntry.getKey(), accountEntry.getValue().getBalance());
+    private Account copyAccount(Account account) {
+        Account newAccount = new Account();
+        newAccount.setAccountId(account.getAccountId());
+        newAccount.setBalance(account.getBalance());
+        return account;
     }
 }

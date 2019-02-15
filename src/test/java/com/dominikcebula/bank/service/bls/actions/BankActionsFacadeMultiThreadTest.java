@@ -4,6 +4,8 @@ import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.ds.AccountsInfo;
 import com.dominikcebula.bank.service.bls.exception.TransferException;
 import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
+import com.dominikcebula.bank.service.dto.Account;
+import com.dominikcebula.bank.service.dto.Accounts;
 import com.dominikcebula.bank.service.guice.ContextAwareTest;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomUtils;
@@ -40,24 +42,24 @@ public class BankActionsFacadeMultiThreadTest extends ContextAwareTest {
     public void shouldOpenAccountsCorrectly() {
         openDefaultAccounts();
 
-        AccountsInfo accountsInfo = bankActionsFacadeInvoker.listAccounts();
+        Accounts accounts = bankActionsFacadeInvoker.listAccounts();
 
-        assertEquals(NUMBER_OF_ACCOUNTS, accountsInfo.getAccountsInfo().size());
-        assertEquals(TOTAL_DEPOSIT, accountsInfo.getTotalDeposit().getNumber().intValue());
+        assertEquals(NUMBER_OF_ACCOUNTS, accounts.getAccounts().size());
+        assertEquals(TOTAL_DEPOSIT, accounts.getTotalDeposit().intValue());
     }
 
     @Test
     public void shouldTransferMoneyBetweenAccountsCorrectly() throws TransferException {
-        List<AccountId> sourceAccounts = openRandomAccounts();
-        List<AccountId> destinationAccounts = openRandomAccounts();
+        List<Account> sourceAccounts = openRandomAccounts();
+        List<Account> destinationAccounts = openRandomAccounts();
 
-        AccountsInfo accountsBeforeTransfer = bankActionsFacadeInvoker.listAccounts();
+        Accounts accountsBeforeTransfer = bankActionsFacadeInvoker.listAccounts();
 
         performRandomTransfers(sourceAccounts, destinationAccounts);
 
-        AccountsInfo accountsAfterTransfer = bankActionsFacadeInvoker.listAccounts();
+        Accounts accountsAfterTransfer = bankActionsFacadeInvoker.listAccounts();
 
-        assertEquals(accountsBeforeTransfer.getAccountsInfo().size(), accountsAfterTransfer.getAccountsInfo().size());
+        assertEquals(accountsBeforeTransfer.getAccounts().size(), accountsAfterTransfer.getAccounts().size());
         assertEquals(accountsBeforeTransfer.getTotalDeposit(), accountsAfterTransfer.getTotalDeposit());
     }
 
@@ -67,7 +69,7 @@ public class BankActionsFacadeMultiThreadTest extends ContextAwareTest {
                 .forEach(this::openAccount);
     }
 
-    private List<AccountId> openRandomAccounts() {
+    private List<Account> openRandomAccounts() {
         return IntStream.generate(this::randomDeposit)
                 .parallel()
                 .limit(NUMBER_OF_RANDOM_ACCOUNTS)
@@ -77,25 +79,25 @@ public class BankActionsFacadeMultiThreadTest extends ContextAwareTest {
     }
 
     @SneakyThrows
-    private AccountId openAccount(Money amount) {
-        return bankActionsFacadeInvoker.openAccount(amount);
+    private Account openAccount(Money amount) {
+        return bankActionsFacadeInvoker.openAccount(amount.getNumberStripped());
     }
 
-    private void performRandomTransfers(List<AccountId> sourceAccounts, List<AccountId> destinationAccounts) throws TransferException {
+    private void performRandomTransfers(List<Account> sourceAccounts, List<Account> destinationAccounts) throws TransferException {
         IntStream.range(0, NUMBER_OF_TRANSFERS)
                 .parallel()
                 .forEach(i -> performTransfer(sourceAccounts, destinationAccounts));
     }
 
     @SneakyThrows
-    private void performTransfer(List<AccountId> sourceAccounts, List<AccountId> destinationAccounts) {
-        AccountId sourceAccount = getRandomAccount(sourceAccounts);
-        AccountId destinationAccount = getRandomAccount(destinationAccounts);
+    private void performTransfer(List<Account> sourceAccounts, List<Account> destinationAccounts) {
+        Account sourceAccount = getRandomAccount(sourceAccounts);
+        Account destinationAccount = getRandomAccount(destinationAccounts);
 
-        bankActionsFacadeInvoker.transfer(sourceAccount, destinationAccount, moneyFactory.create(randomTransfer()));
+        bankActionsFacadeInvoker.transfer(AccountId.createAccountNumber(sourceAccount.getAccountId()), AccountId.createAccountNumber(destinationAccount.getAccountId()), moneyFactory.create(randomTransfer()));
     }
 
-    private AccountId getRandomAccount(List<AccountId> accounts) {
+    private Account getRandomAccount(List<Account> accounts) {
         return accounts.get(RandomUtils.nextInt(0, accounts.size()));
     }
 

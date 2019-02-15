@@ -1,12 +1,16 @@
 package com.dominikcebula.bank.service.rest.actions;
 
 import com.dominikcebula.bank.service.bls.actions.BankActionsFacadeInvoker;
-import com.dominikcebula.bank.service.rest.ds.request.AccountOpenRequest;
-import com.dominikcebula.bank.service.rest.ds.response.AccountOpenResponse;
+import com.dominikcebula.bank.service.dto.Account;
+import com.dominikcebula.bank.service.dto.AccountOpenRequest;
+import com.dominikcebula.bank.service.dto.AccountOpenResponse;
+import com.dominikcebula.bank.service.dto.ModelApiResponse;
 import com.dominikcebula.bank.service.rest.json.GsonProvider;
 import com.dominikcebula.bank.service.rest.validator.Validator;
 import com.dominikcebula.bank.service.rest.validator.validators.AccountOpenRequestValidator;
 import com.google.inject.Inject;
+
+import static com.dominikcebula.bank.service.dto.ApiCode.ACCOUNT_OPENED;
 
 public class OpenAccountRestAction extends AbstractValidatingRestAction<AccountOpenRequest, AccountOpenResponse> {
 
@@ -27,10 +31,12 @@ public class OpenAccountRestAction extends AbstractValidatingRestAction<AccountO
 
     @Override
     public AccountOpenResponse handleRequest(AccountOpenRequest accountOpenRequest) throws Exception {
-        return new AccountOpenResponse(
-                bankActionsFacadeInvoker.openAccount(
-                        accountOpenRequest.getInitialDeposit()
-                )
-        );
+        Account account = bankActionsFacadeInvoker.openAccount(accountOpenRequest.getInitialDeposit());
+        ModelApiResponse status = new ModelApiResponse().code(ACCOUNT_OPENED);
+
+        AccountOpenResponse accountOpenResponse = new AccountOpenResponse();
+        accountOpenResponse.setStatus(status);
+        accountOpenResponse.setAccount(account);
+        return accountOpenResponse;
     }
 }
