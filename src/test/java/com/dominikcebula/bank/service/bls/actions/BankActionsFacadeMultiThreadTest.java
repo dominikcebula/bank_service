@@ -1,7 +1,6 @@
 package com.dominikcebula.bank.service.bls.actions;
 
 import com.dominikcebula.bank.service.bls.ds.AccountId;
-import com.dominikcebula.bank.service.bls.ds.AccountsInfo;
 import com.dominikcebula.bank.service.bls.exception.TransferException;
 import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
 import com.dominikcebula.bank.service.dto.Account;

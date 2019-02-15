@@ -1,7 +1,6 @@
 package com.dominikcebula.bank.service.bls.dao;
 
 import com.dominikcebula.bank.service.bls.ds.AccountId;
-import com.dominikcebula.bank.service.bls.ds.AccountInfo;
 import com.dominikcebula.bank.service.dto.Account;
 import org.javamoney.moneta.Money;
 import org.junit.Before;

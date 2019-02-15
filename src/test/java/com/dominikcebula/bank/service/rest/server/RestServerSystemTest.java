@@ -1,8 +1,6 @@
 package com.dominikcebula.bank.service.rest.server;
 
 import com.dominikcebula.bank.service.bls.ds.AccountId;
-import com.dominikcebula.bank.service.bls.ds.AccountInfo;
-import com.dominikcebula.bank.service.bls.ds.AccountsInfo;
 import com.dominikcebula.bank.service.bls.utils.MoneyFactory;
 import com.dominikcebula.bank.service.dto.*;
 import com.dominikcebula.bank.service.rest.actions.OpenAccountRestAction;
@@ -33,13 +31,13 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
 
     @Test
     public void shouldExecuteScenarioCorrectly() {
-        AccountsInfo accountsBeforeScenario = getAccountsList();
+        Accounts accountsBeforeScenario = getAccountsList();
 
         AccountId account1 = openAccount(moneyFactory.create(500));
         AccountId account2 = openAccount(moneyFactory.create(1000));
         AccountId account3 = openAccount(moneyFactory.create(1500));
 
-        AccountsInfo accountsBeforeTransfers = getAccountsList();
+        Accounts accountsBeforeTransfers = getAccountsList();
 
         transfer(account1, account2, moneyFactory.create(10));
         transfer(account2, account1, moneyFactory.create(10));
@@ -48,19 +46,19 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
         transfer(account2, account3, moneyFactory.create(250));
         transfer(account3, account1, moneyFactory.create(1700));
 
-        AccountsInfo accountsAfterScenario = getAccountsList();
+        Accounts accountsAfterScenario = getAccountsList();
 
         assertStateBeforeScenario(accountsBeforeScenario);
         assertStateBeforeTransfersScenario(accountsBeforeTransfers, account1, account2, account3);
         assertStateAfterScenario(accountsAfterScenario, account1, account2, account3);
     }
 
-    private void assertStateBeforeScenario(AccountsInfo accountsBeforeScenario) {
-        assertTrue(accountsBeforeScenario.getAccountsInfo().isEmpty());
+    private void assertStateBeforeScenario(Accounts accountsBeforeScenario) {
+        assertTrue(accountsBeforeScenario.getAccounts().isEmpty());
         assertEquals(accountsBeforeScenario.getTotalDeposit(), moneyFactory.create(0));
     }
 
-    private void assertStateBeforeTransfersScenario(AccountsInfo accountsBeforeTransfers, AccountId account1, AccountId account2, AccountId account3) {
+    private void assertStateBeforeTransfersScenario(Accounts accountsBeforeTransfers, AccountId account1, AccountId account2, AccountId account3) {
         assertAccountsExists(accountsBeforeTransfers, account1, account2, account3);
         assertAccountDeposit(accountsBeforeTransfers, account1, moneyFactory.create(500));
         assertAccountDeposit(accountsBeforeTransfers, account2, moneyFactory.create(1000));
@@ -68,7 +66,7 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
         assertEquals(accountsBeforeTransfers.getTotalDeposit(), moneyFactory.create(3000));
     }
 
-    private void assertStateAfterScenario(AccountsInfo accountsAfterScenario, AccountId account1, AccountId account2, AccountId account3) {
+    private void assertStateAfterScenario(Accounts accountsAfterScenario, AccountId account1, AccountId account2, AccountId account3) {
         assertAccountsExists(accountsAfterScenario, account1, account2, account3);
         assertAccountDeposit(accountsAfterScenario, account1, moneyFactory.create(2200));
         assertAccountDeposit(accountsAfterScenario, account2, moneyFactory.create(750));
@@ -76,8 +74,8 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
         assertEquals(accountsAfterScenario.getTotalDeposit(), moneyFactory.create(3000));
     }
 
-    private AccountsInfo getAccountsList() {
-        return resetClient().getForObject(ACCOUNT_LIST_URI, AccountsInfo.class);
+    private Accounts getAccountsList() {
+        return resetClient().getForObject(ACCOUNT_LIST_URI, Accounts.class);
     }
 
     private AccountId openAccount(Money initialDeposit) {
@@ -104,27 +102,28 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
         assertEquals(ApiCode.MONEY_TRANSFERED, transferMoneyResponse.getStatus().getCode());
     }
 
-    private void assertAccountsExists(AccountsInfo accountsInfo, AccountId... accountIds) {
+    private void assertAccountsExists(Accounts accountsInfo, AccountId... accountIds) {
         assertThat(
                 getAccountIdsSet(accountsInfo)
         ).containsOnly(accountIds);
     }
 
-    private Set<AccountId> getAccountIdsSet(AccountsInfo accountsInfo) {
-        return accountsInfo.getAccountsInfo().stream()
-                .map(AccountInfo::getAccountId)
+    private Set<AccountId> getAccountIdsSet(Accounts accountsInfo) {
+        return accountsInfo.getAccounts().stream()
+                .map(Account::getAccountId)
+                .map(AccountId::createAccountNumber)
                 .collect(Collectors.toSet());
     }
 
-    private void assertAccountDeposit(AccountsInfo accountsInfo, AccountId accountId, Money expectedDeposit) {
-        AccountInfo accountInfo = findAccountById(accountsInfo, accountId);
+    private void assertAccountDeposit(Accounts accountsInfo, AccountId accountId, Money expectedDeposit) {
+        Account accountInfo = findAccountById(accountsInfo, accountId);
 
-        assertEquals(expectedDeposit, accountInfo.getBalance());
+        assertEquals(expectedDeposit.getNumberStripped(), accountInfo.getBalance());
     }
 
-    private AccountInfo findAccountById(AccountsInfo accountsInfo, AccountId accountId) {
-        return accountsInfo.getAccountsInfo().stream()
-                .filter(a -> a.getAccountId().equals(accountId))
+    private Account findAccountById(Accounts accountsInfo, AccountId accountId) {
+        return accountsInfo.getAccounts().stream()
+                .filter(a -> a.getAccountId().equals(accountId.getAccountNumber()))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("Unable to find account " + accountId));
     }
