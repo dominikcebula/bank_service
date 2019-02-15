@@ -7,7 +7,6 @@ import com.dominikcebula.bank.service.bls.utils.AccountIdGenerator;
 import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.logging.Loggers;
 import com.google.inject.Inject;
-import org.javamoney.moneta.Money;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

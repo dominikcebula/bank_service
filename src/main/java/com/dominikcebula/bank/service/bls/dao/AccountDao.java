@@ -2,9 +2,7 @@ package com.dominikcebula.bank.service.bls.dao;
 
 import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.dto.Account;
-import com.dominikcebula.bank.service.dto.Accounts;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

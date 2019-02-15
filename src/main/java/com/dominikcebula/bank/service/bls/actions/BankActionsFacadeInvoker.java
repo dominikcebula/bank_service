@@ -6,7 +6,6 @@ import com.dominikcebula.bank.service.bls.exception.TransferException;
 import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.dto.Accounts;
 import com.google.inject.Inject;
-import org.javamoney.moneta.Money;
 
 import java.math.BigDecimal;
 
