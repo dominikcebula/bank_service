@@ -2,9 +2,9 @@ package com.dominikcebula.bank.service.spark;
 
 import com.dominikcebula.bank.service.configuration.Configuration;
 import com.dominikcebula.bank.service.guice.ContextAwareTest;
-import com.dominikcebula.bank.service.rest.json.GsonProvider;
 import com.dominikcebula.bank.service.rest.service.ServiceController;
 import com.dominikcebula.bank.service.utils.RestClient;
+import com.google.gson.GsonBuilder;
 import org.junit.After;
 import org.junit.Before;
 
@@ -27,7 +27,7 @@ public abstract class SparkRestServerAwareTest extends ContextAwareTest {
     protected RestClient resetClient() {
         return new RestClient(
                 injector.getInstance(Configuration.class),
-                injector.getInstance(GsonProvider.class).provide()
+                new GsonBuilder().create()
         );
     }
 }

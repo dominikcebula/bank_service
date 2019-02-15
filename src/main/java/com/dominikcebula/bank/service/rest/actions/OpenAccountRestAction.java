@@ -5,7 +5,6 @@ import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.dto.AccountOpenRequest;
 import com.dominikcebula.bank.service.dto.AccountOpenResponse;
 import com.dominikcebula.bank.service.dto.ModelApiResponse;
-import com.dominikcebula.bank.service.rest.json.GsonProvider;
 import com.dominikcebula.bank.service.rest.validator.Validator;
 import com.dominikcebula.bank.service.rest.validator.validators.AccountOpenRequestValidator;
 import com.google.inject.Inject;
@@ -19,8 +18,8 @@ public class OpenAccountRestAction extends AbstractValidatingRestAction<AccountO
     private final BankActionsFacadeInvoker bankActionsFacadeInvoker;
 
     @Inject
-    public OpenAccountRestAction(GsonProvider gsonProvider, BankActionsFacadeInvoker bankActionsFacadeInvoker) {
-        super(gsonProvider, AccountOpenRequest.class, AccountOpenResponse.class);
+    public OpenAccountRestAction(BankActionsFacadeInvoker bankActionsFacadeInvoker) {
+        super(AccountOpenRequest.class, AccountOpenResponse.class);
         this.bankActionsFacadeInvoker = bankActionsFacadeInvoker;
     }
 

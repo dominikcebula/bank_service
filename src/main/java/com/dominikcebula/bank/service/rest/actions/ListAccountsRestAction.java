@@ -2,7 +2,6 @@ package com.dominikcebula.bank.service.rest.actions;
 
 import com.dominikcebula.bank.service.bls.actions.BankActionsFacadeInvoker;
 import com.dominikcebula.bank.service.dto.Accounts;
-import com.dominikcebula.bank.service.rest.json.GsonProvider;
 import com.google.inject.Inject;
 
 public class ListAccountsRestAction extends AbstractRestAction<Void, Accounts> {
@@ -12,8 +11,8 @@ public class ListAccountsRestAction extends AbstractRestAction<Void, Accounts> {
     private final BankActionsFacadeInvoker bankActionsFacadeInvoker;
 
     @Inject
-    public ListAccountsRestAction(GsonProvider gsonProvider, BankActionsFacadeInvoker bankActionsFacadeInvoker) {
-        super(gsonProvider, Void.class, Accounts.class);
+    public ListAccountsRestAction(BankActionsFacadeInvoker bankActionsFacadeInvoker) {
+        super(Void.class, Accounts.class);
         this.bankActionsFacadeInvoker = bankActionsFacadeInvoker;
     }
 

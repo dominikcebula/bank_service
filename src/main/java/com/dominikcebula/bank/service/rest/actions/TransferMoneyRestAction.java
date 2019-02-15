@@ -6,7 +6,6 @@ import com.dominikcebula.bank.service.dto.ApiCode;
 import com.dominikcebula.bank.service.dto.ModelApiResponse;
 import com.dominikcebula.bank.service.dto.TransferMoneyRequest;
 import com.dominikcebula.bank.service.dto.TransferMoneyResponse;
-import com.dominikcebula.bank.service.rest.json.GsonProvider;
 import com.dominikcebula.bank.service.rest.validator.Validator;
 import com.dominikcebula.bank.service.rest.validator.validators.TransferMoneyRequestValidator;
 import com.google.inject.Inject;
@@ -18,8 +17,8 @@ public class TransferMoneyRestAction extends AbstractValidatingRestAction<Transf
     private final BankActionsFacadeInvoker bankActionsFacadeInvoker;
 
     @Inject
-    public TransferMoneyRestAction(GsonProvider gsonProvider, BankActionsFacadeInvoker bankActionsFacadeInvoker) {
-        super(gsonProvider, TransferMoneyRequest.class, TransferMoneyResponse.class);
+    public TransferMoneyRestAction(BankActionsFacadeInvoker bankActionsFacadeInvoker) {
+        super(TransferMoneyRequest.class, TransferMoneyResponse.class);
         this.bankActionsFacadeInvoker = bankActionsFacadeInvoker;
     }
 

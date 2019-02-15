@@ -1,8 +1,8 @@
 package com.dominikcebula.bank.service.rest.actions;
 
 import com.dominikcebula.bank.service.logging.Loggers;
-import com.dominikcebula.bank.service.rest.json.GsonProvider;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -13,13 +13,12 @@ abstract class AbstractRestAction<I, R> implements Route {
 
     private Logger logger = LoggerFactory.getLogger(Loggers.REST);
 
-    private final Gson gson;
+    private final Gson gson = new GsonBuilder().create();
 
     private final Class<I> requestClass;
     private final Class<R> responseClass;
 
-    AbstractRestAction(GsonProvider gsonProvider, Class<I> requestClass, Class<R> responseClass) {
-        this.gson = gsonProvider.provide();
+    AbstractRestAction(Class<I> requestClass, Class<R> responseClass) {
         this.requestClass = requestClass;
         this.responseClass = responseClass;
     }
