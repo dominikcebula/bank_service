@@ -195,7 +195,7 @@ definitions:
       - FAILED
       - ACCOUNT_CREATED
       - ACCOUNTS_LISTED
-      - MONEY_TRANSFERED
+      - MONEY_TRANSFERRED
   ApiResponse:
     type: "object"
     required:

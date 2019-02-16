@@ -89,7 +89,7 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
                 TransferMoneyRequest.class, TransferMoneyResponse.class
         );
 
-        assertEquals(ApiCode.MONEY_TRANSFERED, transferMoneyResponse.getStatus().getCode());
+        assertEquals(ApiCode.MONEY_TRANSFERRED, transferMoneyResponse.getStatus().getCode());
     }
 
     private void assertAccountsExists(Accounts accountsInfo, AccountId... accountIds) {

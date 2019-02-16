@@ -8,7 +8,7 @@ Implementation was created with focus on following requirements:
 * Avoid usages of heavy framework
 
 Currently service supports following operations:
-* Opening Account
+* Creating Account
 * Listing Accounts with their balance
 * List Total Deposit
 * Transferring Money between Accounts
@@ -77,21 +77,31 @@ $ curl http://localhost:8080/ -X GET
 
 Response:
 ```
-"Bank Service is running"
+{
+  "status": "up"
+}
 ```
 
 ## Opening Account
 
 Request:
 ```
-$ curl http://localhost:8080/accounts/open -X POST -d '{
+$ curl http://localhost:8080/accounts/create -X POST -d '{
   "initialDeposit": "100.00"
 }'
 ```
 
 Response:
 ```json
-{"accountId":"7706480151894321","status":"SUCCESS","message":"Opened account: [7706480151894321]"}
+{
+  "status": {
+    "code": "ACCOUNT_CREATED"
+  },
+  "account": {
+    "accountId": "0481998112065640",
+    "balance": 100
+  }
+}
 ```
 
 ## Listing Accounts and Total Deposit
@@ -103,7 +113,24 @@ $ curl http://localhost:8080/accounts/list -X GET
 
 Response:
 ```json
-{"accountsInfo":[{"accountId":"1396810841773412","balance":100.0},{"accountId":"5102307317444881","balance":200.0}],"totalDeposit":300.0}
+{
+  "status": {
+    "code": "ACCOUNTS_LISTED"
+  },
+  "accounts": {
+    "accounts": [
+      {
+        "accountId": "8955895919049153",
+        "balance": 100
+      },
+      {
+        "accountId": "0481998112065640",
+        "balance": 200
+      }
+    ],
+    "totalDeposit": 300
+  }
+}
 ```
 
 ## Transferring Money
@@ -111,13 +138,20 @@ Response:
 Request:
 ```
 $ curl http://localhost:8080/transfer -X POST -d '{
-  "from": "1396810841773412",
-  "to": "5102307317444881",
+  "from": "8955895919049153",
+  "to": "0481998112065640",
   "amount": "50.0"
 }'
 ```
 
 Response:
 ```json
-{"from":"1396810841773412","to":"5102307317444881","amount":50.0,"status":"SUCCESS","message":"Transferred [50.00] from [1396810841773412] to [5102307317444881]"}
+{
+  "status": {
+    "code": "MONEY_TRANSFERRED"
+  },
+  "from": "8955895919049153",
+  "to": "0481998112065640",
+  "amount": 50
+}
 ```

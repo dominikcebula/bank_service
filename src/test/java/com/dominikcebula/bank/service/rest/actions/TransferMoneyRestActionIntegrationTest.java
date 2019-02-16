@@ -44,7 +44,7 @@ public class TransferMoneyRestActionIntegrationTest extends SparkRestServerAware
                 TransferMoneyRequest.class, TransferMoneyResponse.class
         );
 
-        assertEquals(ApiCode.MONEY_TRANSFERED, transferMoneyResponse.getStatus().getCode());
+        assertEquals(ApiCode.MONEY_TRANSFERRED, transferMoneyResponse.getStatus().getCode());
         assertEquals(FROM.getAccountNumber(), transferMoneyResponse.getFrom());
         assertEquals(TO.getAccountNumber(), transferMoneyResponse.getTo());
         assertEquals(amount, transferMoneyResponse.getAmount());
