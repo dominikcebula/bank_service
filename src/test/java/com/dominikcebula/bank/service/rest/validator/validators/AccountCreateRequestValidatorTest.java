@@ -11,7 +11,9 @@ import org.junit.runner.RunWith;
 
 import java.math.BigDecimal;
 
-import static com.dominikcebula.bank.service.rest.validator.validators.AccountCreateRequestValidator.*;
+import static com.dominikcebula.bank.service.rest.validator.validators.AccountCreateRequestValidator.MESSAGE_ACCOUNT_CREATE_NOT_SPECIFIED;
+import static com.dominikcebula.bank.service.rest.validator.validators.AmountValidator.MESSAGE_VALUE_INCORRECT;
+import static com.dominikcebula.bank.service.rest.validator.validators.AmountValidator.MESSAGE_VALUE_MISSING;
 
 @RunWith(JUnitParamsRunner.class)
 public class AccountCreateRequestValidatorTest {
@@ -24,7 +26,7 @@ public class AccountCreateRequestValidatorTest {
     @Test
     public void shouldProcessRequestCorrectly() throws ValidatorException {
         AccountCreateRequest accountCreateRequest = new AccountCreateRequest();
-        accountCreateRequest.setInitialDeposit(getMoney(5));
+        accountCreateRequest.setInitialDeposit(BigDecimal.valueOf(5));
 
         accountCreateRequestValidator.validate(accountCreateRequest);
     }
@@ -40,24 +42,20 @@ public class AccountCreateRequestValidatorTest {
     @Test
     public void shouldReportMissingDeposit() throws ValidatorException {
         expectedException.expect(ValidatorException.class);
-        expectedException.expectMessage(MESSAGE_DEPOSIT_NOT_SPECIFIED);
+        expectedException.expectMessage(MESSAGE_VALUE_MISSING);
 
         accountCreateRequestValidator.validate(new AccountCreateRequest());
     }
 
     @Test
-    @Parameters({"0", "-5"})
-    public void shouldReportIncorrectDeposit(int deposit) throws ValidatorException {
+    @Parameters({"0", "-5", "1.456"})
+    public void shouldReportIncorrectDeposit(BigDecimal deposit) throws ValidatorException {
         expectedException.expect(ValidatorException.class);
-        expectedException.expectMessage(MESSAGE_DEPOSIT_INCORRECT);
+        expectedException.expectMessage(MESSAGE_VALUE_INCORRECT);
 
         AccountCreateRequest accountCreateRequest = new AccountCreateRequest();
-        accountCreateRequest.setInitialDeposit(getMoney(deposit));
+        accountCreateRequest.setInitialDeposit(deposit);
 
         accountCreateRequestValidator.validate(accountCreateRequest);
-    }
-
-    private BigDecimal getMoney(int amount) {
-        return BigDecimal.valueOf(amount);
     }
 }

@@ -7,8 +7,8 @@ import java.math.BigDecimal;
 
 public class AmountValidator extends Validator<BigDecimal> {
 
-    static final String MESSAGE_VALUE_MISSING = "Amount value is missing";
-    static final String MESSAGE_VALUE_INCORRECT = "Amount value is incorrect";
+    public static final String MESSAGE_VALUE_MISSING = "Amount value is missing";
+    public static final String MESSAGE_VALUE_INCORRECT = "Amount value is incorrect";
 
     @Override
     public void validate(BigDecimal value) throws ValidatorException {

@@ -7,8 +7,6 @@ import com.dominikcebula.bank.service.rest.validator.exception.ValidatorExceptio
 public class AccountCreateRequestValidator extends Validator<AccountCreateRequest> {
 
     static final String MESSAGE_ACCOUNT_CREATE_NOT_SPECIFIED = "Account Create Object has to be specified";
-    static final String MESSAGE_DEPOSIT_NOT_SPECIFIED = "Initial Deposit has to be specified";
-    public static final String MESSAGE_DEPOSIT_INCORRECT = "Initial Deposit has to be greater than zero";
 
     private AmountValidator amountValidator = new AmountValidator();
 
@@ -17,16 +15,6 @@ public class AccountCreateRequestValidator extends Validator<AccountCreateReques
         assertConditionMet(
                 accountCreateRequest != null,
                 MESSAGE_ACCOUNT_CREATE_NOT_SPECIFIED
-        );
-
-        assertConditionMet(
-                accountCreateRequest.getInitialDeposit() != null,
-                MESSAGE_DEPOSIT_NOT_SPECIFIED
-        );
-
-        assertConditionMet(
-                accountCreateRequest.getInitialDeposit().floatValue() > 0,
-                MESSAGE_DEPOSIT_INCORRECT
         );
 
         amountValidator.validate(accountCreateRequest.getInitialDeposit());
