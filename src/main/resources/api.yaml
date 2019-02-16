@@ -62,6 +62,9 @@ definitions:
     type: "string"
   Account:
     type: "object"
+    required:
+      - accountId
+      - balance
     properties:
       accountId:
         $ref: '#/definitions/AccountId'
@@ -69,6 +72,9 @@ definitions:
         $ref: '#/definitions/Money'
   Accounts:
     type: object
+    required:
+      - accounts
+      - totalDeposit
     properties:
       accounts:
         type: "array"
@@ -79,6 +85,8 @@ definitions:
 
   HealthCheckResponse:
     type: "object"
+    required:
+      - status
     properties:
       status:
         type: "string"
@@ -87,6 +95,9 @@ definitions:
 
   ListAccountsResponse:
     type: object
+    required:
+      - status
+      - accounts
     properties:
       status:
         $ref: '#/definitions/ApiResponse'
@@ -95,11 +106,16 @@ definitions:
 
   AccountCreateRequest:
     type: object
+    required:
+      - initialDeposit
     properties:
       initialDeposit:
         $ref: '#/definitions/Money'
   AccountCreateResponse:
     type: "object"
+    required:
+      - status
+      - account
     properties:
       status:
         $ref: '#/definitions/ApiResponse'
@@ -108,6 +124,10 @@ definitions:
 
   TransferMoneyRequest:
     type: "object"
+    required:
+      - from
+      - to
+      - amount
     properties:
       from:
         $ref: '#/definitions/AccountId'
@@ -116,6 +136,11 @@ definitions:
       amount:
         $ref: '#/definitions/Money'
   TransferMoneyResponse:
+    required:
+      - status
+      - from
+      - to
+      - amount
     properties:
       status:
         $ref: '#/definitions/ApiResponse'
@@ -135,10 +160,15 @@ definitions:
       - MONEY_TRANSFERED
   ApiResponse:
     type: "object"
+    required:
+      - code
     properties:
       code:
         $ref: '#/definitions/ApiCode'
   ApiErrorResponse:
+    required:
+      - status
+      - message
     properties:
       status:
         $ref: '#/definitions/ApiResponse'
