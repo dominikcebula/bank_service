@@ -5,6 +5,7 @@ import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.exception.AccountMissingException;
 import com.dominikcebula.bank.service.bls.exception.TransferException;
 import com.dominikcebula.bank.service.bls.exception.WithdrawException;
+import com.dominikcebula.bank.service.bls.utils.MoneyCalculator;
 import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.logging.Loggers;
 import com.google.inject.Inject;
@@ -18,10 +19,12 @@ class TransferMoneyAction {
     private Logger logger = LoggerFactory.getLogger(Loggers.BLS);
 
     private final AccountDao accountDao;
+    private final MoneyCalculator moneyCalculator;
 
     @Inject
-    TransferMoneyAction(AccountDao accountDao) {
+    TransferMoneyAction(AccountDao accountDao, MoneyCalculator moneyCalculator) {
         this.accountDao = accountDao;
+        this.moneyCalculator = moneyCalculator;
     }
 
     void transfer(AccountId from, AccountId to, BigDecimal amount) throws TransferException {
@@ -59,12 +62,12 @@ class TransferMoneyAction {
 
     private BigDecimal withdraw(BigDecimal accountBalance, BigDecimal amount) throws WithdrawException {
         if (accountBalance.compareTo(amount) >= 0)
-            return accountBalance.subtract(amount);
+            return moneyCalculator.subtract(accountBalance, amount);
         else
             throw new WithdrawException(String.format("Unable to withdraw amount [%s] from account that has balance [%s]", amount, accountBalance));
     }
 
     private BigDecimal deposit(BigDecimal accountBalance, BigDecimal amount) {
-        return accountBalance.add(amount);
+        return moneyCalculator.add(accountBalance, amount);
     }
 }

@@ -4,6 +4,7 @@ import com.dominikcebula.bank.service.bls.dao.AccountDao;
 import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.exception.AccountCreateException;
 import com.dominikcebula.bank.service.bls.utils.AccountIdGenerator;
+import com.dominikcebula.bank.service.bls.utils.MoneyAmountRound;
 import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.logging.Loggers;
 import com.google.inject.Inject;
@@ -18,11 +19,13 @@ class CreateAccountAction {
 
     private final AccountDao accountDao;
     private final AccountIdGenerator accountIdGenerator;
+    private final MoneyAmountRound moneyAmountRound;
 
     @Inject
-    CreateAccountAction(AccountDao accountDao, AccountIdGenerator accountIdGenerator) {
+    CreateAccountAction(AccountDao accountDao, AccountIdGenerator accountIdGenerator, MoneyAmountRound moneyAmountRound) {
         this.accountDao = accountDao;
         this.accountIdGenerator = accountIdGenerator;
+        this.moneyAmountRound = moneyAmountRound;
     }
 
     Account createAccount(BigDecimal initialBalance) throws AccountCreateException {
@@ -32,7 +35,7 @@ class CreateAccountAction {
         AccountId accountId = accountIdGenerator.generateAccountId(accountDao.findAccountIdentifiers());
         Account account = new Account();
         account.setAccountId(accountId.getAccountNumber());
-        account.setBalance(initialBalance);
+        account.setBalance(moneyAmountRound.round(initialBalance));
 
         logger.info("Saving account");
         accountDao.store(account);

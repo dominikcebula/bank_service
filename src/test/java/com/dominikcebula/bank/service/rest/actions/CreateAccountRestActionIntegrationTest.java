@@ -15,14 +15,14 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.math.BigDecimal;
 
 import static com.dominikcebula.bank.service.dto.ApiCode.ACCOUNT_CREATED;
-import static com.dominikcebula.bank.service.rest.validator.validators.AmountValidator.MESSAGE_VALUE_MISSING;
+import static com.dominikcebula.bank.service.rest.validator.validators.AmountValidator.MESSAGE_VALUE_INCORRECT;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CreateAccountRestActionIntegrationTest extends SparkRestServerAwareTest {
 
-    private static final BigDecimal DEPOSIT = BigDecimal.valueOf(500);
-    private static final AccountId ACCOUNT_ID = AccountId.createAccountNumber("5");
+    private static final BigDecimal DEPOSIT = BigDecimal.valueOf(5000.85);
+    private static final AccountId ACCOUNT_ID = AccountId.createRandomAccountId();
 
     @Mock
     @Bind
@@ -30,7 +30,7 @@ public class CreateAccountRestActionIntegrationTest extends SparkRestServerAware
 
     @Test
     public void shouldOpenAccount() throws AccountCreateException {
-        Account account = new Account().accountId(ACCOUNT_ID.getAccountNumber());
+        Account account = new Account().accountId(ACCOUNT_ID.getAccountNumber()).balance(DEPOSIT);
         Mockito.when(bankActionsFacadeInvoker.createAccount(DEPOSIT)).thenReturn(account);
 
         AccountCreateRequest accountCreateRequest = new AccountCreateRequest();
@@ -42,8 +42,10 @@ public class CreateAccountRestActionIntegrationTest extends SparkRestServerAware
                 AccountCreateRequest.class, AccountCreateResponse.class
         );
 
+        Account createdAccount = accountCreateResponse.getAccount();
         assertEquals(ACCOUNT_CREATED, accountCreateResponse.getStatus().getCode());
-        assertEquals(ACCOUNT_ID, AccountId.createAccountNumber(accountCreateResponse.getAccount().getAccountId()));
+        assertEquals(ACCOUNT_ID, AccountId.createAccountNumber(createdAccount.getAccountId()));
+        assertEquals(DEPOSIT, createdAccount.getBalance());
     }
 
     @Test
@@ -73,6 +75,6 @@ public class CreateAccountRestActionIntegrationTest extends SparkRestServerAware
         );
 
         assertEquals(ApiCode.FAILED, errorResponse.getStatus().getCode());
-        assertEquals(MESSAGE_VALUE_MISSING, errorResponse.getMessage());
+        assertEquals(MESSAGE_VALUE_INCORRECT, errorResponse.getMessage());
     }
 }
