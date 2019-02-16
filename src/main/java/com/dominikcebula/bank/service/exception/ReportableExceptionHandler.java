@@ -27,6 +27,8 @@ public class ReportableExceptionHandler implements ExceptionHandler<ReportableEx
     public void handle(ReportableException exception, Request request, Response response) {
         logger.error(exception.getMessage(), exception);
 
+        response.status(400);
+
         response.body(
                 gson.toJson(
                         new ApiErrorResponse()

@@ -9,7 +9,7 @@ abstract class AbstractValidatingRestAction<I, R> extends AbstractRestAction<I, 
     }
 
     @Override
-    void postProcessRequest(I requestObject) throws Exception {
+    void postProcessRequestObject(I requestObject) throws Exception {
         getRequestValidator().validate(requestObject);
     }
 

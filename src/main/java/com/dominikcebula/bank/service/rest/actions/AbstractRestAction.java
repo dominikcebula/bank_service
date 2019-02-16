@@ -33,17 +33,25 @@ abstract class AbstractRestAction<I, R> implements Route {
         I requestObject = gson.fromJson(request.body(), requestClass);
 
         logger.info("Post processing JSON Data");
-        postProcessRequest(requestObject);
+        postProcessRequestObject(requestObject);
 
         logger.info("Executing handler");
         R responseObject = handleRequest(requestObject);
 
         logger.info("Creating response");
-        return gson.toJson(responseObject, responseClass);
+        String json = gson.toJson(responseObject, responseClass);
+
+        response.status(getStatusCode());
+
+        return json;
     }
 
-    void postProcessRequest(I requestObject) throws Exception {
+    void postProcessRequestObject(I requestObject) throws Exception {
     }
 
     abstract R handleRequest(I request) throws Exception;
+
+    int getStatusCode() {
+        return 200;
+    }
 }

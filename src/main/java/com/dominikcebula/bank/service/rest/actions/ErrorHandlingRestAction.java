@@ -18,4 +18,9 @@ public class ErrorHandlingRestAction extends AbstractRestAction<Void, ApiErrorRe
     ApiErrorResponse handleRequest(Void request) {
         return new ApiErrorResponse().status(new ModelApiResponse().code(ApiCode.FAILED)).message(ERROR_MESSAGE);
     }
+
+    @Override
+    int getStatusCode() {
+        return 500;
+    }
 }
