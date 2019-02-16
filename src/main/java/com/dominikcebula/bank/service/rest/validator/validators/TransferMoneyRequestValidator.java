@@ -12,6 +12,9 @@ public class TransferMoneyRequestValidator extends Validator<TransferMoneyReques
     static final String MESSAGE_FROM_ACCOUNT_NOT_SPECIFIED = "From account has to be specified";
     static final String MESSAGE_TO_ACCOUNT_NOT_SPECIFIED = "To account has to be specified";
 
+    private AccountIdValidator accountIdValidator = new AccountIdValidator();
+    private AmountValidator amountValidator = new AmountValidator();
+
     @Override
     public void validate(TransferMoneyRequest transferMoneyRequest) throws ValidatorException {
 
@@ -39,5 +42,10 @@ public class TransferMoneyRequestValidator extends Validator<TransferMoneyReques
                 transferMoneyRequest.getTo() != null,
                 MESSAGE_TO_ACCOUNT_NOT_SPECIFIED
         );
+
+        accountIdValidator.validate(transferMoneyRequest.getFrom());
+        accountIdValidator.validate(transferMoneyRequest.getTo());
+
+        amountValidator.validate(transferMoneyRequest.getAmount());
     }
 }

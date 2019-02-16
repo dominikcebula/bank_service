@@ -10,6 +10,8 @@ public class AccountCreateRequestValidator extends Validator<AccountCreateReques
     static final String MESSAGE_DEPOSIT_NOT_SPECIFIED = "Initial Deposit has to be specified";
     public static final String MESSAGE_DEPOSIT_INCORRECT = "Initial Deposit has to be greater than zero";
 
+    private AmountValidator amountValidator = new AmountValidator();
+
     @Override
     public void validate(AccountCreateRequest accountCreateRequest) throws ValidatorException {
         assertConditionMet(
@@ -26,5 +28,7 @@ public class AccountCreateRequestValidator extends Validator<AccountCreateReques
                 accountCreateRequest.getInitialDeposit().floatValue() > 0,
                 MESSAGE_DEPOSIT_INCORRECT
         );
+
+        amountValidator.validate(accountCreateRequest.getInitialDeposit());
     }
 }

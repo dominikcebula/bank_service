@@ -12,13 +12,14 @@ import org.junit.runner.RunWith;
 
 import java.math.BigDecimal;
 
+import static com.dominikcebula.bank.service.rest.validator.validators.AccountIdValidator.MESSAGE_ACCOUNT_ID_INCORRECT;
 import static com.dominikcebula.bank.service.rest.validator.validators.TransferMoneyRequestValidator.*;
 
 @RunWith(JUnitParamsRunner.class)
 public class TransferMoneyRequestValidatorTest {
 
-    private static final AccountId FROM = AccountId.createAccountNumber("1");
-    private static final AccountId TO = AccountId.createAccountNumber("2");
+    private static final AccountId FROM = AccountId.createRandomAccountId();
+    private static final AccountId TO = AccountId.createRandomAccountId();
     private static final BigDecimal AMOUNT_POSITIVE = BigDecimal.valueOf(5);
 
     private TransferMoneyRequestValidator transferMoneyRequestValidator = new TransferMoneyRequestValidator();
@@ -89,6 +90,32 @@ public class TransferMoneyRequestValidatorTest {
 
         TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
         transferMoneyRequest.setFrom(FROM.getAccountNumber());
+        transferMoneyRequest.setAmount(AMOUNT_POSITIVE);
+
+        transferMoneyRequestValidator.validate(transferMoneyRequest);
+    }
+
+    @Test
+    public void shouldReportFromIncorrect() throws ValidatorException {
+        expectedException.expect(ValidatorException.class);
+        expectedException.expectMessage(MESSAGE_ACCOUNT_ID_INCORRECT);
+
+        TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
+        transferMoneyRequest.setFrom("123");
+        transferMoneyRequest.setTo(TO.getAccountNumber());
+        transferMoneyRequest.setAmount(AMOUNT_POSITIVE);
+
+        transferMoneyRequestValidator.validate(transferMoneyRequest);
+    }
+
+    @Test
+    public void shouldReportToIncorrect() throws ValidatorException {
+        expectedException.expect(ValidatorException.class);
+        expectedException.expectMessage(MESSAGE_ACCOUNT_ID_INCORRECT);
+
+        TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
+        transferMoneyRequest.setFrom(FROM.getAccountNumber());
+        transferMoneyRequest.setTo("12345678901234567");
         transferMoneyRequest.setAmount(AMOUNT_POSITIVE);
 
         transferMoneyRequestValidator.validate(transferMoneyRequest);

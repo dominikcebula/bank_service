@@ -7,7 +7,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 @Getter
 @EqualsAndHashCode
 public class AccountId {
-    private static final int ACCOUNT_ID_LENGTH = 16;
+    public static final int ACCOUNT_ID_LENGTH = 16;
 
     private final String accountNumber;
 
