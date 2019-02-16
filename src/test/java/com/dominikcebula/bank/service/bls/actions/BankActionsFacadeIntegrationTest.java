@@ -37,6 +37,8 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     private static final int BALANCE3 = 700;
     private static final int TOTAL_BALANCE = BALANCE1 + BALANCE2 + BALANCE3;
     private static final int NO_MONEY = 0;
+    private static final double FLOAT_AMOUNT = 5.671;
+    private static final double FLOAT_AMOUNT_ROUNDED = 5.67;
 
     private BankActionsFacadeInvoker bankActionsFacadeInvoker;
     private AccountDao accountDao;
@@ -95,6 +97,15 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
         assertEquals(NO_MONEY, accountDao.findAccount(ACCOUNT_ID_1).getBalance().intValue());
         assertEquals(BALANCE1 + BALANCE2, accountDao.findAccount(ACCOUNT_ID_2).getBalance().intValue());
         assertEquals(BALANCE3, accountDao.findAccount(ACCOUNT_ID_3).getBalance().intValue());
+    }
+
+    @Test
+    public void shouldTransferRoundedMoneyBetweenAccounts() throws AccountOpenException, TransferException {
+        openAccounts();
+
+        bankActionsFacadeInvoker.transfer(ACCOUNT_ID_1, ACCOUNT_ID_2, BigDecimal.valueOf(FLOAT_AMOUNT));
+
+        assertEquals(BALANCE2 + FLOAT_AMOUNT_ROUNDED, accountDao.findAccount(ACCOUNT_ID_2).getBalance().floatValue(), 0f);
     }
 
     @Test
