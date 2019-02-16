@@ -23,9 +23,9 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
     public void shouldExecuteScenarioCorrectly() {
         Accounts accountsBeforeScenario = getAccountsList().getAccounts();
 
-        AccountId account1 = openAccount(BigDecimal.valueOf(500));
-        AccountId account2 = openAccount(BigDecimal.valueOf(1000));
-        AccountId account3 = openAccount(BigDecimal.valueOf(1500));
+        AccountId account1 = createAccount(BigDecimal.valueOf(500));
+        AccountId account2 = createAccount(BigDecimal.valueOf(1000));
+        AccountId account3 = createAccount(BigDecimal.valueOf(1500));
 
         Accounts accountsBeforeTransfers = getAccountsList().getAccounts();
 
@@ -68,7 +68,7 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
         return resetClient().getForObject(ACCOUNT_LIST_URI, ListAccountsResponse.class);
     }
 
-    private AccountId openAccount(BigDecimal initialDeposit) {
+    private AccountId createAccount(BigDecimal initialDeposit) {
         AccountCreateRequest accountCreateRequest = new AccountCreateRequest();
         accountCreateRequest.setInitialDeposit(initialDeposit);
 

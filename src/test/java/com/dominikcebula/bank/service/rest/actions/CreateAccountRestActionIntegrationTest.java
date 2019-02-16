@@ -29,7 +29,7 @@ public class CreateAccountRestActionIntegrationTest extends SparkRestServerAware
     private BankActionsFacadeInvoker bankActionsFacadeInvoker;
 
     @Test
-    public void shouldOpenAccount() throws AccountCreateException {
+    public void shouldCreateAccount() throws AccountCreateException {
         Account account = new Account().accountId(ACCOUNT_ID.getAccountNumber()).balance(DEPOSIT);
         Mockito.when(bankActionsFacadeInvoker.createAccount(DEPOSIT)).thenReturn(account);
 
@@ -49,7 +49,7 @@ public class CreateAccountRestActionIntegrationTest extends SparkRestServerAware
     }
 
     @Test
-    public void shouldFailedToOpenAccount() throws AccountCreateException {
+    public void shouldFailedToCreateAccount() throws AccountCreateException {
         Mockito.when(bankActionsFacadeInvoker.createAccount(DEPOSIT)).thenThrow(new IllegalArgumentException("TEST"));
 
         AccountCreateRequest accountCreateRequest = new AccountCreateRequest();
@@ -65,7 +65,7 @@ public class CreateAccountRestActionIntegrationTest extends SparkRestServerAware
     }
 
     @Test
-    public void shouldFailValidationDuringOpenAction() {
+    public void shouldFailValidationDuringCreateAction() {
         AccountCreateRequest accountCreateRequest = new AccountCreateRequest();
         accountCreateRequest.setInitialDeposit(BigDecimal.valueOf(0));
 

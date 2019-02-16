@@ -82,7 +82,7 @@ Response:
 }
 ```
 
-## Opening Account
+## Creating Account
 
 Request:
 ```

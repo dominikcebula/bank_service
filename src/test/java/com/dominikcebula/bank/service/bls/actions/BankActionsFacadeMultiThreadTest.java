@@ -35,8 +35,8 @@ public class BankActionsFacadeMultiThreadTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldOpenAccountsCorrectly() {
-        openDefaultAccounts();
+    public void shouldCreateAccountsCorrectly() {
+        createDefaultAccounts();
 
         Accounts accounts = bankActionsFacadeInvoker.listAccounts();
 
@@ -46,8 +46,8 @@ public class BankActionsFacadeMultiThreadTest extends ContextAwareTest {
 
     @Test
     public void shouldTransferMoneyBetweenAccountsCorrectly() {
-        List<Account> sourceAccounts = openRandomAccounts();
-        List<Account> destinationAccounts = openRandomAccounts();
+        List<Account> sourceAccounts = createRandomAccounts();
+        List<Account> destinationAccounts = createRandomAccounts();
 
         Accounts accountsBeforeTransfer = bankActionsFacadeInvoker.listAccounts();
 
@@ -59,22 +59,22 @@ public class BankActionsFacadeMultiThreadTest extends ContextAwareTest {
         assertEquals(accountsBeforeTransfer.getTotalDeposit(), accountsAfterTransfer.getTotalDeposit());
     }
 
-    private void openDefaultAccounts() {
+    private void createDefaultAccounts() {
         Collections.nCopies(NUMBER_OF_ACCOUNTS, BigDecimal.valueOf(DEFAULT_DEPOSIT))
                 .parallelStream()
-                .forEach(this::openAccount);
+                .forEach(this::createAccount);
     }
 
-    private List<Account> openRandomAccounts() {
+    private List<Account> createRandomAccounts() {
         return Stream.generate(this::randomDeposit)
                 .parallel()
                 .limit(NUMBER_OF_RANDOM_ACCOUNTS)
-                .map(this::openAccount)
+                .map(this::createAccount)
                 .collect(Collectors.toList());
     }
 
     @SneakyThrows
-    private Account openAccount(BigDecimal amount) {
+    private Account createAccount(BigDecimal amount) {
         return bankActionsFacadeInvoker.createAccount(amount);
     }
 

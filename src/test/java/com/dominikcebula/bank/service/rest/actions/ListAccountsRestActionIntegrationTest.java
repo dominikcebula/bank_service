@@ -30,7 +30,7 @@ public class ListAccountsRestActionIntegrationTest extends SparkRestServerAwareT
     private BankActionsFacadeInvoker bankActionsFacadeInvoker;
 
     @Test
-    public void shouldListOpenedAccounts() {
+    public void shouldListCreatedAccounts() {
         Mockito.when(bankActionsFacadeInvoker.listAccounts()).thenReturn(getAccounts());
 
         ListAccountsResponse listAccountsResponse = resetClient().getForObject(ACCOUNT_LIST_URI, ListAccountsResponse.class);
