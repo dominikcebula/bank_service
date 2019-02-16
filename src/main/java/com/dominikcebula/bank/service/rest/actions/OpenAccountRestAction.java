@@ -33,9 +33,8 @@ public class OpenAccountRestAction extends AbstractValidatingRestAction<AccountO
         Account account = bankActionsFacadeInvoker.openAccount(accountOpenRequest.getInitialDeposit());
         ModelApiResponse status = new ModelApiResponse().code(ACCOUNT_OPENED);
 
-        AccountOpenResponse accountOpenResponse = new AccountOpenResponse();
-        accountOpenResponse.setStatus(status);
-        accountOpenResponse.setAccount(account);
-        return accountOpenResponse;
+        return new AccountOpenResponse()
+                .status(status)
+                .account(account);
     }
 }

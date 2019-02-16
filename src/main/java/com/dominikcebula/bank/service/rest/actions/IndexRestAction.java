@@ -15,8 +15,7 @@ public class IndexRestAction extends AbstractRestAction<Void, HealthCheckRespons
 
     @Override
     HealthCheckResponse handleRequest(Void request) {
-        HealthCheckResponse healthCheckResponse = new HealthCheckResponse();
-        healthCheckResponse.setStatus(StatusEnum.UP);
-        return healthCheckResponse;
+        return new HealthCheckResponse()
+                .status(StatusEnum.UP);
     }
 }
