@@ -58,8 +58,10 @@ definitions:
   Money:
     type: "number"
     format: "float"
+    minimum: 0
   AccountId:
     type: "string"
+    pattern: "^[0-9]{16}$"
   Account:
     type: "object"
     required:
