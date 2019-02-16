@@ -20,7 +20,6 @@ Below is the list of tools used during development:
 * Java 8
 * Guice
 * SparkJava
-* JavaMoney
 * Mockito
 * ...
 
