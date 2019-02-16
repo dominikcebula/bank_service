@@ -11,8 +11,7 @@ import org.junit.runner.RunWith;
 
 import java.math.BigDecimal;
 
-import static com.dominikcebula.bank.service.rest.validator.validators.AccountCreateRequestValidator.MESSAGE_DEPOSIT_INCORRECT;
-import static com.dominikcebula.bank.service.rest.validator.validators.AccountCreateRequestValidator.MESSAGE_DEPOSIT_NOT_SPECIFIED;
+import static com.dominikcebula.bank.service.rest.validator.validators.AccountCreateRequestValidator.*;
 
 @RunWith(JUnitParamsRunner.class)
 public class AccountCreateRequestValidatorTest {
@@ -28,6 +27,14 @@ public class AccountCreateRequestValidatorTest {
         accountCreateRequest.setInitialDeposit(getMoney(5));
 
         accountCreateRequestValidator.validate(accountCreateRequest);
+    }
+
+    @Test
+    public void shouldReportMissingRequestObject() throws ValidatorException {
+        expectedException.expect(ValidatorException.class);
+        expectedException.expectMessage(MESSAGE_ACCOUNT_CREATE_NOT_SPECIFIED);
+
+        accountCreateRequestValidator.validate(null);
     }
 
     @Test

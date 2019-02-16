@@ -37,6 +37,14 @@ public class TransferMoneyRequestValidatorTest {
     }
 
     @Test
+    public void shouldReportTransferObjectMissing() throws ValidatorException {
+        expectedException.expect(ValidatorException.class);
+        expectedException.expectMessage(MESSAGE_TRANSFER_REQUEST_NOT_SPECIFIED);
+
+        transferMoneyRequestValidator.validate(null);
+    }
+
+    @Test
     public void shouldReportAmountMissing() throws ValidatorException {
         expectedException.expect(ValidatorException.class);
         expectedException.expectMessage(MESSAGE_AMOUNT_NOT_SPECIFIED);
