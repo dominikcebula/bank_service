@@ -9,6 +9,8 @@ paths:
   /:
     get:
       summary: "Index Action showing that service is up"
+      produces:
+        - application/json
       responses:
         200:
           description: "Service is up"
@@ -18,15 +20,29 @@ paths:
   /accounts/list:
     get:
       summary: "List all accounts in the system"
+      produces:
+        - application/json
       responses:
         200:
           description: "Accounts list"
           schema:
             $ref: '#/definitions/ListAccountsResponse'
+        400:
+          description: "Validation Error"
+          schema:
+            $ref: '#/definitions/ApiErrorResponse'
+        500:
+          description: "Internal Request Processing Error"
+          schema:
+            $ref: '#/definitions/ApiErrorResponse'
 
   /accounts/create:
     post:
       summary: "Create new account"
+      consumes:
+        - application/json
+      produces:
+        - application/json
       parameters:
         - name: body
           in: body
@@ -38,10 +54,22 @@ paths:
           description: "Created Account details"
           schema:
             $ref: '#/definitions/AccountCreateResponse'
+        400:
+          description: "Validation Error"
+          schema:
+            $ref: '#/definitions/ApiErrorResponse'
+        500:
+          description: "Internal Request Processing Error"
+          schema:
+            $ref: '#/definitions/ApiErrorResponse'
 
   /transfer:
     post:
       summary: "Transfer money between accounts"
+      consumes:
+        - application/json
+      produces:
+        - application/json
       parameters:
         - name: body
           in: body
@@ -53,6 +81,14 @@ paths:
           description: "Transferred money operation result"
           schema:
             $ref: '#/definitions/TransferMoneyResponse'
+        400:
+          description: "Validation Error"
+          schema:
+            $ref: '#/definitions/ApiErrorResponse'
+        500:
+          description: "Internal Request Processing Error"
+          schema:
+            $ref: '#/definitions/ApiErrorResponse'
 
 definitions:
   Money:
