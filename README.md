@@ -56,7 +56,6 @@ Following propeties can be configured during startup by properties:
 * host - service.host
 * port - service.port
 * max threads in pool - service.max.threads
-* currency used for all operations - service.currency
 
 For example, if you want to change port execute:
 ```
