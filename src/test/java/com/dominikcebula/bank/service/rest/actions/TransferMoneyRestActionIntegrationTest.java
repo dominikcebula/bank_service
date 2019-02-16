@@ -23,8 +23,8 @@ import static org.junit.Assert.assertEquals;
 @RunWith(MockitoJUnitRunner.class)
 public class TransferMoneyRestActionIntegrationTest extends SparkRestServerAwareTest {
 
-    private static final AccountId FROM = AccountId.createAccountNumber("1");
-    private static final AccountId TO = AccountId.createAccountNumber("2");
+    private static final AccountId FROM = AccountId.createRandomAccountId();
+    private static final AccountId TO = AccountId.createRandomAccountId();
 
     @Bind
     @Mock

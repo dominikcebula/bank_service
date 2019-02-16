@@ -8,6 +8,7 @@ import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,7 +45,7 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
 
     private void assertStateBeforeScenario(Accounts accountsBeforeScenario) {
         assertTrue(accountsBeforeScenario.getAccounts().isEmpty());
-        assertEquals(accountsBeforeScenario.getTotalDeposit(), BigDecimal.valueOf(0));
+        assertAmount(BigDecimal.valueOf(0), accountsBeforeScenario.getTotalDeposit());
     }
 
     private void assertStateBeforeTransfersScenario(Accounts accountsBeforeTransfers, AccountId account1, AccountId account2, AccountId account3) {
@@ -52,7 +53,7 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
         assertAccountDeposit(accountsBeforeTransfers, account1, BigDecimal.valueOf(500));
         assertAccountDeposit(accountsBeforeTransfers, account2, BigDecimal.valueOf(1000));
         assertAccountDeposit(accountsBeforeTransfers, account3, BigDecimal.valueOf(1500));
-        assertEquals(accountsBeforeTransfers.getTotalDeposit(), BigDecimal.valueOf(3000));
+        assertAmount(BigDecimal.valueOf(3000), accountsBeforeTransfers.getTotalDeposit());
     }
 
     private void assertStateAfterScenario(Accounts accountsAfterScenario, AccountId account1, AccountId account2, AccountId account3) {
@@ -60,7 +61,7 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
         assertAccountDeposit(accountsAfterScenario, account1, BigDecimal.valueOf(2200));
         assertAccountDeposit(accountsAfterScenario, account2, BigDecimal.valueOf(750));
         assertAccountDeposit(accountsAfterScenario, account3, BigDecimal.valueOf(50));
-        assertEquals(accountsAfterScenario.getTotalDeposit(), BigDecimal.valueOf(3000));
+        assertAmount(BigDecimal.valueOf(3000), accountsAfterScenario.getTotalDeposit());
     }
 
     private ListAccountsResponse getAccountsList() {
@@ -107,7 +108,14 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
     private void assertAccountDeposit(Accounts accountsInfo, AccountId accountId, BigDecimal expectedDeposit) {
         Account accountInfo = findAccountById(accountsInfo, accountId);
 
-        assertEquals(expectedDeposit, accountInfo.getBalance());
+        assertAmount(expectedDeposit, accountInfo.getBalance());
+    }
+
+    private void assertAmount(BigDecimal expectedDeposit, BigDecimal actualDeposit) {
+        assertEquals(
+                expectedDeposit.setScale(2, RoundingMode.DOWN),
+                actualDeposit
+        );
     }
 
     private Account findAccountById(Accounts accountsInfo, AccountId accountId) {
