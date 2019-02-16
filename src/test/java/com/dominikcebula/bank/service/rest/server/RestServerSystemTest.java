@@ -2,7 +2,7 @@ package com.dominikcebula.bank.service.rest.server;
 
 import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.dto.*;
-import com.dominikcebula.bank.service.rest.actions.OpenAccountRestAction;
+import com.dominikcebula.bank.service.rest.actions.CreateAccountRestAction;
 import com.dominikcebula.bank.service.rest.actions.TransferMoneyRestAction;
 import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
 import org.junit.Test;
@@ -68,13 +68,13 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
     }
 
     private AccountId openAccount(BigDecimal initialDeposit) {
-        AccountOpenRequest accountOpenRequest = new AccountOpenRequest();
-        accountOpenRequest.setInitialDeposit(initialDeposit);
+        AccountCreateRequest accountCreateRequest = new AccountCreateRequest();
+        accountCreateRequest.setInitialDeposit(initialDeposit);
 
-        AccountOpenResponse accountOpenResponse = resetClient().postForObject(OpenAccountRestAction.ACCOUNTS_OPEN_URI, accountOpenRequest,
-                AccountOpenRequest.class, AccountOpenResponse.class);
+        AccountCreateResponse accountCreateResponse = resetClient().postForObject(CreateAccountRestAction.ACCOUNTS_CREATE_URI, accountCreateRequest,
+                AccountCreateRequest.class, AccountCreateResponse.class);
 
-        return AccountId.createAccountNumber(accountOpenResponse.getAccount().getAccountId());
+        return AccountId.createAccountNumber(accountCreateResponse.getAccount().getAccountId());
     }
 
     private void transfer(AccountId from, AccountId to, BigDecimal amount) {

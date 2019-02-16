@@ -2,7 +2,7 @@ package com.dominikcebula.bank.service.bls.actions;
 
 import com.dominikcebula.bank.service.bls.dao.AccountDao;
 import com.dominikcebula.bank.service.bls.ds.AccountId;
-import com.dominikcebula.bank.service.bls.exception.AccountOpenException;
+import com.dominikcebula.bank.service.bls.exception.AccountCreateException;
 import com.dominikcebula.bank.service.bls.exception.TransferException;
 import com.dominikcebula.bank.service.bls.utils.AccountIdGenerator;
 import com.dominikcebula.bank.service.dto.Account;
@@ -57,7 +57,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldOpenAccounts() throws AccountOpenException {
+    public void shouldOpenAccounts() throws AccountCreateException {
         openAccounts();
 
         assertThat(accountDao.findAccountIdentifiers())
@@ -65,7 +65,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldListAccounts() throws AccountOpenException {
+    public void shouldListAccounts() throws AccountCreateException {
         openAccounts();
 
         Accounts accounts = bankActionsFacadeInvoker.listAccounts();
@@ -89,7 +89,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldTransferMoneyBetweenAccounts() throws AccountOpenException, TransferException {
+    public void shouldTransferMoneyBetweenAccounts() throws AccountCreateException, TransferException {
         openAccounts();
 
         bankActionsFacadeInvoker.transfer(ACCOUNT_ID_1, ACCOUNT_ID_2, money(BALANCE1));
@@ -100,7 +100,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldTransferRoundedMoneyBetweenAccounts() throws AccountOpenException, TransferException {
+    public void shouldTransferRoundedMoneyBetweenAccounts() throws AccountCreateException, TransferException {
         openAccounts();
 
         bankActionsFacadeInvoker.transfer(ACCOUNT_ID_1, ACCOUNT_ID_2, BigDecimal.valueOf(FLOAT_AMOUNT));
@@ -109,7 +109,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldFailTransferBecauseOfMissingAccount() throws AccountOpenException, TransferException {
+    public void shouldFailTransferBecauseOfMissingAccount() throws AccountCreateException, TransferException {
         expectedException.expect(TransferException.class);
         expectedException.expectMessage("Unable to locate account [" + NON_EXISTING_ACCOUNT + "]");
 
@@ -119,7 +119,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldFailTransferBecauseOfNoEnoughFunds() throws AccountOpenException, TransferException {
+    public void shouldFailTransferBecauseOfNoEnoughFunds() throws AccountCreateException, TransferException {
         expectedException.expect(TransferException.class);
         expectedException.expectMessage("Unable to withdraw amount [" + money(HUGE_AMOUNT) + "] from account that has balance [" + money(BALANCE1) + "]");
 
@@ -128,22 +128,22 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
         bankActionsFacadeInvoker.transfer(ACCOUNT_ID_1, ACCOUNT_ID_2, money(HUGE_AMOUNT));
     }
 
-    private void openAccounts() throws AccountOpenException {
+    private void openAccounts() throws AccountCreateException {
         mockAccountId(ACCOUNT_ID_1);
-        bankActionsFacadeInvoker.openAccount(money(BALANCE1));
+        bankActionsFacadeInvoker.createAccount(money(BALANCE1));
 
         mockAccountId(ACCOUNT_ID_2);
-        bankActionsFacadeInvoker.openAccount(money(BALANCE2));
+        bankActionsFacadeInvoker.createAccount(money(BALANCE2));
 
         mockAccountId(ACCOUNT_ID_3);
-        bankActionsFacadeInvoker.openAccount(money(BALANCE3));
+        bankActionsFacadeInvoker.createAccount(money(BALANCE3));
     }
 
     private BigDecimal money(int amount) {
         return BigDecimal.valueOf(amount);
     }
 
-    private void mockAccountId(AccountId accountId) throws AccountOpenException {
+    private void mockAccountId(AccountId accountId) throws AccountCreateException {
         Mockito.when(accountIdGenerator.generateAccountId(Mockito.anySet()))
                 .thenReturn(accountId);
     }

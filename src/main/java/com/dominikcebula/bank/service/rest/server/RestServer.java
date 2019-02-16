@@ -10,7 +10,7 @@ import spark.Spark;
 
 import static com.dominikcebula.bank.service.rest.actions.IndexRestAction.INDEX_ACTION_URI;
 import static com.dominikcebula.bank.service.rest.actions.ListAccountsRestAction.ACCOUNT_LIST_URI;
-import static com.dominikcebula.bank.service.rest.actions.OpenAccountRestAction.ACCOUNTS_OPEN_URI;
+import static com.dominikcebula.bank.service.rest.actions.CreateAccountRestAction.ACCOUNTS_CREATE_URI;
 import static com.dominikcebula.bank.service.rest.actions.TransferMoneyRestAction.TRANSFER_URI;
 
 public class RestServer {
@@ -20,21 +20,21 @@ public class RestServer {
     private final ErrorHandlingRestAction errorHandlingRestAction;
     private final ReportableExceptionHandler reportableExceptionHandler;
     private final IndexRestAction indexRestAction;
-    private final OpenAccountRestAction openAccountRestAction;
+    private final CreateAccountRestAction createAccountRestAction;
     private final TransferMoneyRestAction transferMoneyAction;
     private final ListAccountsRestAction listAccountsRestAction;
 
     @Inject
     public RestServer(Configuration configuration, ResponseFilter responseFilter,
                       ErrorHandlingRestAction errorHandlingRestAction, ReportableExceptionHandler reportableExceptionHandler,
-                      IndexRestAction indexRestAction, OpenAccountRestAction openAccountRestAction,
+                      IndexRestAction indexRestAction, CreateAccountRestAction createAccountRestAction,
                       TransferMoneyRestAction transferMoneyAction, ListAccountsRestAction listAccountsRestAction) {
         this.configuration = configuration;
         this.responseFilter = responseFilter;
         this.errorHandlingRestAction = errorHandlingRestAction;
         this.reportableExceptionHandler = reportableExceptionHandler;
         this.indexRestAction = indexRestAction;
-        this.openAccountRestAction = openAccountRestAction;
+        this.createAccountRestAction = createAccountRestAction;
         this.transferMoneyAction = transferMoneyAction;
         this.listAccountsRestAction = listAccountsRestAction;
     }
@@ -52,7 +52,7 @@ public class RestServer {
         Spark.exception(ReportableException.class, reportableExceptionHandler);
 
         Spark.get(INDEX_ACTION_URI, indexRestAction);
-        Spark.post(ACCOUNTS_OPEN_URI, openAccountRestAction);
+        Spark.post(ACCOUNTS_CREATE_URI, createAccountRestAction);
         Spark.post(TRANSFER_URI, transferMoneyAction);
         Spark.get(ACCOUNT_LIST_URI, listAccountsRestAction);
     }

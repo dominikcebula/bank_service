@@ -76,7 +76,7 @@ public class BankActionsFacadeMultiThreadTest extends ContextAwareTest {
 
     @SneakyThrows
     private Account openAccount(BigDecimal amount) {
-        return bankActionsFacadeInvoker.openAccount(amount);
+        return bankActionsFacadeInvoker.createAccount(amount);
     }
 
     private void performRandomTransfers(List<Account> sourceAccounts, List<Account> destinationAccounts) throws TransferException {

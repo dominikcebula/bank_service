@@ -1,7 +1,7 @@
 package com.dominikcebula.bank.service.bls.actions;
 
 import com.dominikcebula.bank.service.bls.ds.AccountId;
-import com.dominikcebula.bank.service.bls.exception.AccountOpenException;
+import com.dominikcebula.bank.service.bls.exception.AccountCreateException;
 import com.dominikcebula.bank.service.bls.exception.TransferException;
 import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.dto.Accounts;
@@ -19,8 +19,8 @@ public class BankActionsFacadeInvoker extends BankActionsFacadeIfc {
     }
 
     @Override
-    public Account openAccount(BigDecimal initialBalance) throws AccountOpenException {
-        return bankActionsFacade.openAccount(initialBalance);
+    public Account createAccount(BigDecimal initialBalance) throws AccountCreateException {
+        return bankActionsFacade.createAccount(initialBalance);
     }
 
     @Override

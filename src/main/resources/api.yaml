@@ -32,12 +32,12 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/AccountOpenRequest'
+            $ref: '#/definitions/AccountCreateRequest'
       responses:
         200:
           description: "Created Account details"
           schema:
-            $ref: '#/definitions/AccountOpenResponse'
+            $ref: '#/definitions/AccountCreateResponse'
 
   /transfer:
     post:
@@ -93,12 +93,12 @@ definitions:
       accounts:
         $ref: '#/definitions/Accounts'
 
-  AccountOpenRequest:
+  AccountCreateRequest:
     type: object
     properties:
       initialDeposit:
         $ref: '#/definitions/Money'
-  AccountOpenResponse:
+  AccountCreateResponse:
     type: "object"
     properties:
       status:
@@ -130,7 +130,7 @@ definitions:
     type: "string"
     enum:
       - FAILED
-      - ACCOUNT_OPENED
+      - ACCOUNT_CREATED
       - ACCOUNTS_LISTED
       - MONEY_TRANSFERED
   ApiResponse:

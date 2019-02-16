@@ -1,7 +1,7 @@
 package com.dominikcebula.bank.service.bls.actions;
 
 import com.dominikcebula.bank.service.bls.ds.AccountId;
-import com.dominikcebula.bank.service.bls.exception.AccountOpenException;
+import com.dominikcebula.bank.service.bls.exception.AccountCreateException;
 import com.dominikcebula.bank.service.bls.exception.TransferException;
 import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.dto.Accounts;
@@ -11,20 +11,20 @@ import java.math.BigDecimal;
 
 public class BankActionsFacade extends BankActionsFacadeIfc {
 
-    private final OpenAccountAction openAccountAction;
+    private final CreateAccountAction createAccountAction;
     private final TransferMoneyAction transferMoneyAction;
     private final ListAccountsAction listAccountsAction;
 
     @Inject
-    BankActionsFacade(OpenAccountAction openAccountAction, TransferMoneyAction transferMoneyAction, ListAccountsAction listAccountsAction) {
-        this.openAccountAction = openAccountAction;
+    BankActionsFacade(CreateAccountAction createAccountAction, TransferMoneyAction transferMoneyAction, ListAccountsAction listAccountsAction) {
+        this.createAccountAction = createAccountAction;
         this.transferMoneyAction = transferMoneyAction;
         this.listAccountsAction = listAccountsAction;
     }
 
     @Override
-    synchronized Account openAccount(BigDecimal initialBalance) throws AccountOpenException {
-        return openAccountAction.openAccount(initialBalance);
+    synchronized Account createAccount(BigDecimal initialBalance) throws AccountCreateException {
+        return createAccountAction.createAccount(initialBalance);
     }
 
     @Override

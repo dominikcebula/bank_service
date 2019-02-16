@@ -2,7 +2,7 @@ package com.dominikcebula.bank.service.bls.actions;
 
 import com.dominikcebula.bank.service.bls.dao.AccountDao;
 import com.dominikcebula.bank.service.bls.ds.AccountId;
-import com.dominikcebula.bank.service.bls.exception.AccountOpenException;
+import com.dominikcebula.bank.service.bls.exception.AccountCreateException;
 import com.dominikcebula.bank.service.bls.utils.AccountIdGenerator;
 import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.logging.Loggers;
@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 
-class OpenAccountAction {
+class CreateAccountAction {
 
     private Logger logger = LoggerFactory.getLogger(Loggers.BLS);
 
@@ -20,13 +20,13 @@ class OpenAccountAction {
     private final AccountIdGenerator accountIdGenerator;
 
     @Inject
-    OpenAccountAction(AccountDao accountDao, AccountIdGenerator accountIdGenerator) {
+    CreateAccountAction(AccountDao accountDao, AccountIdGenerator accountIdGenerator) {
         this.accountDao = accountDao;
         this.accountIdGenerator = accountIdGenerator;
     }
 
-    Account openAccount(BigDecimal initialBalance) throws AccountOpenException {
-        logger.info("Opening account");
+    Account createAccount(BigDecimal initialBalance) throws AccountCreateException {
+        logger.info("Creating account");
 
         logger.info("Generating account id and creating account");
         AccountId accountId = accountIdGenerator.generateAccountId(accountDao.findAccountIdentifiers());

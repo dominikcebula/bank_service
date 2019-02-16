@@ -1,7 +1,7 @@
 package com.dominikcebula.bank.service.bls.utils;
 
 import com.dominikcebula.bank.service.bls.ds.AccountId;
-import com.dominikcebula.bank.service.bls.exception.AccountOpenException;
+import com.dominikcebula.bank.service.bls.exception.AccountCreateException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -30,7 +30,7 @@ public class AccountIdGeneratorTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void shouldCreateAccountId() throws AccountOpenException {
+    public void shouldCreateAccountId() throws AccountCreateException {
         AccountId accountId = accountIdGenerator.generateAccountId(Collections.emptySet());
 
         assertThat(accountId.getAccountNumber())
@@ -38,10 +38,10 @@ public class AccountIdGeneratorTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenUnableToGenerateAccountNumber() throws AccountOpenException {
+    public void shouldThrowExceptionWhenUnableToGenerateAccountNumber() throws AccountCreateException {
         Mockito.when(accountIds.contains(Mockito.any(AccountId.class))).thenReturn(true);
 
-        expectedException.expect(AccountOpenException.class);
+        expectedException.expect(AccountCreateException.class);
         expectedException.expectMessage(MESSAGE_GENERATION_ERROR);
 
         accountIdGenerator.generateAccountId(accountIds);

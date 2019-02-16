@@ -1,6 +1,6 @@
 package com.dominikcebula.bank.service.rest.validator.validators;
 
-import com.dominikcebula.bank.service.dto.AccountOpenRequest;
+import com.dominikcebula.bank.service.dto.AccountCreateRequest;
 import com.dominikcebula.bank.service.rest.validator.exception.ValidatorException;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -11,23 +11,23 @@ import org.junit.runner.RunWith;
 
 import java.math.BigDecimal;
 
-import static com.dominikcebula.bank.service.rest.validator.validators.AccountOpenRequestValidator.MESSAGE_DEPOSIT_INCORRECT;
-import static com.dominikcebula.bank.service.rest.validator.validators.AccountOpenRequestValidator.MESSAGE_DEPOSIT_NOT_SPECIFIED;
+import static com.dominikcebula.bank.service.rest.validator.validators.AccountCreateRequestValidator.MESSAGE_DEPOSIT_INCORRECT;
+import static com.dominikcebula.bank.service.rest.validator.validators.AccountCreateRequestValidator.MESSAGE_DEPOSIT_NOT_SPECIFIED;
 
 @RunWith(JUnitParamsRunner.class)
-public class AccountOpenRequestValidatorTest {
+public class AccountCreateRequestValidatorTest {
 
-    private AccountOpenRequestValidator accountOpenRequestValidator = new AccountOpenRequestValidator();
+    private AccountCreateRequestValidator accountCreateRequestValidator = new AccountCreateRequestValidator();
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void shouldProcessRequestCorrectly() throws ValidatorException {
-        AccountOpenRequest accountOpenRequest = new AccountOpenRequest();
-        accountOpenRequest.setInitialDeposit(getMoney(5));
+        AccountCreateRequest accountCreateRequest = new AccountCreateRequest();
+        accountCreateRequest.setInitialDeposit(getMoney(5));
 
-        accountOpenRequestValidator.validate(accountOpenRequest);
+        accountCreateRequestValidator.validate(accountCreateRequest);
     }
 
     @Test
@@ -35,7 +35,7 @@ public class AccountOpenRequestValidatorTest {
         expectedException.expect(ValidatorException.class);
         expectedException.expectMessage(MESSAGE_DEPOSIT_NOT_SPECIFIED);
 
-        accountOpenRequestValidator.validate(new AccountOpenRequest());
+        accountCreateRequestValidator.validate(new AccountCreateRequest());
     }
 
     @Test
@@ -44,10 +44,10 @@ public class AccountOpenRequestValidatorTest {
         expectedException.expect(ValidatorException.class);
         expectedException.expectMessage(MESSAGE_DEPOSIT_INCORRECT);
 
-        AccountOpenRequest accountOpenRequest = new AccountOpenRequest();
-        accountOpenRequest.setInitialDeposit(getMoney(deposit));
+        AccountCreateRequest accountCreateRequest = new AccountCreateRequest();
+        accountCreateRequest.setInitialDeposit(getMoney(deposit));
 
-        accountOpenRequestValidator.validate(accountOpenRequest);
+        accountCreateRequestValidator.validate(accountCreateRequest);
     }
 
     private BigDecimal getMoney(int amount) {
