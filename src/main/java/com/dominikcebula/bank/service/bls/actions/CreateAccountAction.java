@@ -15,13 +15,14 @@ import java.math.BigDecimal;
 
 class CreateAccountAction {
 
-    private Logger logger = LoggerFactory.getLogger(Loggers.BLS);
+    private final Logger logger = LoggerFactory.getLogger(Loggers.BLS);
 
     private final AccountDao accountDao;
     private final AccountIdGenerator accountIdGenerator;
     private final MoneyAmountRound moneyAmountRound;
 
     @Inject
+    @SuppressWarnings("unused")
     CreateAccountAction(AccountDao accountDao, AccountIdGenerator accountIdGenerator, MoneyAmountRound moneyAmountRound) {
         this.accountDao = accountDao;
         this.accountIdGenerator = accountIdGenerator;

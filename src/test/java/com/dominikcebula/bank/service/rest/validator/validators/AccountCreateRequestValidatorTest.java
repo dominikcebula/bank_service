@@ -18,10 +18,10 @@ import static com.dominikcebula.bank.service.rest.validator.validators.AmountVal
 @RunWith(JUnitParamsRunner.class)
 public class AccountCreateRequestValidatorTest {
 
-    private AccountCreateRequestValidator accountCreateRequestValidator = new AccountCreateRequestValidator();
+    private final AccountCreateRequestValidator accountCreateRequestValidator = new AccountCreateRequestValidator();
 
     @Rule
-    public ExpectedException expectedException = ExpectedException.none();
+    public final ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void shouldProcessRequestCorrectly() throws ValidatorException {

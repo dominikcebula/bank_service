@@ -8,7 +8,7 @@ public class AccountCreateRequestValidator extends Validator<AccountCreateReques
 
     static final String MESSAGE_ACCOUNT_CREATE_NOT_SPECIFIED = "Account Create Object has to be specified";
 
-    private AmountValidator amountValidator = new AmountValidator();
+    private final AmountValidator amountValidator = new AmountValidator();
 
     @Override
     public void validate(AccountCreateRequest accountCreateRequest) throws ValidatorException {

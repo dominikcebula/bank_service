@@ -16,12 +16,13 @@ import java.math.BigDecimal;
 
 class TransferMoneyAction {
 
-    private Logger logger = LoggerFactory.getLogger(Loggers.BLS);
+    private final Logger logger = LoggerFactory.getLogger(Loggers.BLS);
 
     private final AccountDao accountDao;
     private final MoneyCalculator moneyCalculator;
 
     @Inject
+    @SuppressWarnings("unused")
     TransferMoneyAction(AccountDao accountDao, MoneyCalculator moneyCalculator) {
         this.accountDao = accountDao;
         this.moneyCalculator = moneyCalculator;

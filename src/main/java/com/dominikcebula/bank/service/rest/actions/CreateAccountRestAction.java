@@ -18,6 +18,7 @@ public class CreateAccountRestAction extends AbstractValidatingRestAction<Accoun
     private final BankActionsFacadeInvoker bankActionsFacadeInvoker;
 
     @Inject
+    @SuppressWarnings("unused")
     public CreateAccountRestAction(BankActionsFacadeInvoker bankActionsFacadeInvoker) {
         super(AccountCreateRequest.class, AccountCreateResponse.class);
         this.bankActionsFacadeInvoker = bankActionsFacadeInvoker;

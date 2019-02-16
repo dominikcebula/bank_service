@@ -24,10 +24,10 @@ public class TransferMoneyRequestValidatorTest {
     private static final AccountId TO = AccountId.createRandomAccountId();
     private static final BigDecimal AMOUNT_POSITIVE = BigDecimal.valueOf(5);
 
-    private TransferMoneyRequestValidator transferMoneyRequestValidator = new TransferMoneyRequestValidator();
+    private final TransferMoneyRequestValidator transferMoneyRequestValidator = new TransferMoneyRequestValidator();
 
     @Rule
-    public ExpectedException expectedException = ExpectedException.none();
+    public final ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void shouldProcessRequestCorrectly() throws ValidatorException {

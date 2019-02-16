@@ -7,7 +7,6 @@ import com.dominikcebula.bank.service.dto.ApiCode;
 import com.dominikcebula.bank.service.dto.ListAccountsResponse;
 import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
 import com.google.inject.testing.fieldbinder.Bind;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -29,12 +28,6 @@ public class ListAccountsRestActionIntegrationTest extends SparkRestServerAwareT
     @Mock
     @Bind
     private BankActionsFacadeInvoker bankActionsFacadeInvoker;
-
-    @Before
-    @Override
-    public void setUp() {
-        super.setUp();
-    }
 
     @Test
     public void shouldListOpenedAccounts() {

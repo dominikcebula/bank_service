@@ -16,10 +16,10 @@ import static com.dominikcebula.bank.service.rest.validator.validators.AmountVal
 @RunWith(JUnitParamsRunner.class)
 public class AmountValidatorTest {
 
-    private AmountValidator amountValidator = new AmountValidator();
+    private final AmountValidator amountValidator = new AmountValidator();
 
     @Rule
-    public ExpectedException expectedException = ExpectedException.none();
+    public final ExpectedException expectedException = ExpectedException.none();
 
     @Test
     @Parameters({

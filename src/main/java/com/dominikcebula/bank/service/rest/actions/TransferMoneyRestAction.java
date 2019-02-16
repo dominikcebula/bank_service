@@ -17,6 +17,7 @@ public class TransferMoneyRestAction extends AbstractValidatingRestAction<Transf
     private final BankActionsFacadeInvoker bankActionsFacadeInvoker;
 
     @Inject
+    @SuppressWarnings("unused")
     public TransferMoneyRestAction(BankActionsFacadeInvoker bankActionsFacadeInvoker) {
         super(TransferMoneyRequest.class, TransferMoneyResponse.class);
         this.bankActionsFacadeInvoker = bankActionsFacadeInvoker;

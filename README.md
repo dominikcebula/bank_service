@@ -52,7 +52,7 @@ java -jar bank-service-1.0-SNAPSHOT-jar-with-dependencies.jar
 
 # Runtime Configuration
 
-Following propeties can be configured during startup by properties:
+Following properties can be configured during startup by properties:
 * host - service.host
 * port - service.port
 * max threads in pool - service.max.threads

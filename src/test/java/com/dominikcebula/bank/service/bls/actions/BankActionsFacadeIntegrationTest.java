@@ -48,7 +48,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     private AccountIdGenerator accountIdGenerator;
 
     @Rule
-    public ExpectedException expectedException = ExpectedException.none();
+    public final ExpectedException expectedException = ExpectedException.none();
 
     @Before
     public void setUp() {

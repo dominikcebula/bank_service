@@ -9,6 +9,7 @@ public class IndexRestAction extends AbstractRestAction<Void, HealthCheckRespons
     public static final String INDEX_ACTION_URI = "/";
 
     @Inject
+    @SuppressWarnings("unused")
     public IndexRestAction() {
         super(Void.class, HealthCheckResponse.class);
     }

@@ -5,7 +5,7 @@ import com.google.inject.Module;
 
 import java.util.Arrays;
 
-public class ComposedServiceModule extends AbstractModule {
+class ComposedServiceModule extends AbstractModule {
     private final Module[] modules;
 
     public ComposedServiceModule(Module... modules) {

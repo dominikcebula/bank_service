@@ -10,6 +10,7 @@ public class ErrorHandlingRestAction extends AbstractRestAction<Void, ApiErrorRe
     static final String ERROR_MESSAGE = "Error occurred while processing request.";
 
     @Inject
+    @SuppressWarnings("unused")
     public ErrorHandlingRestAction() {
         super(Void.class, ApiErrorResponse.class);
     }

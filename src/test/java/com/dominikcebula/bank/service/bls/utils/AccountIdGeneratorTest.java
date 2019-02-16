@@ -21,13 +21,13 @@ public class AccountIdGeneratorTest {
 
     private static final String ACCOUNT_NUMBER_REGEXP = "^[0-9]{16}$";
 
-    private AccountIdGenerator accountIdGenerator = new AccountIdGenerator();
+    private final AccountIdGenerator accountIdGenerator = new AccountIdGenerator();
 
     @Mock
     private Set<AccountId> accountIds;
 
     @Rule
-    public ExpectedException expectedException = ExpectedException.none();
+    public final ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void shouldCreateAccountId() throws AccountCreateException {

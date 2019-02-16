@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 public class ServiceController {
 
-    private Logger logger = LoggerFactory.getLogger(Loggers.SERVER);
+    private final Logger logger = LoggerFactory.getLogger(Loggers.SERVER);
 
     private final AwaitServiceStopped awaitServiceStopped = new AwaitServiceStopped();
 

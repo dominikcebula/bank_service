@@ -11,7 +11,7 @@ import spark.Route;
 
 abstract class AbstractRestAction<I, R> implements Route {
 
-    private Logger logger = LoggerFactory.getLogger(Loggers.REST);
+    private final Logger logger = LoggerFactory.getLogger(Loggers.REST);
 
     private final Gson gson = new GsonBuilder().create();
 

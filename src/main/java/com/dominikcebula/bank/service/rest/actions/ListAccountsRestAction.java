@@ -14,6 +14,7 @@ public class ListAccountsRestAction extends AbstractRestAction<Void, ListAccount
     private final BankActionsFacadeInvoker bankActionsFacadeInvoker;
 
     @Inject
+    @SuppressWarnings("unused")
     public ListAccountsRestAction(BankActionsFacadeInvoker bankActionsFacadeInvoker) {
         super(Void.class, ListAccountsResponse.class);
         this.bankActionsFacadeInvoker = bankActionsFacadeInvoker;

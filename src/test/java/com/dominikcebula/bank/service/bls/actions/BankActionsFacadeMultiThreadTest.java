@@ -1,7 +1,6 @@
 package com.dominikcebula.bank.service.bls.actions;
 
 import com.dominikcebula.bank.service.bls.ds.AccountId;
-import com.dominikcebula.bank.service.bls.exception.TransferException;
 import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.dto.Accounts;
 import com.dominikcebula.bank.service.guice.ContextAwareTest;
@@ -46,7 +45,7 @@ public class BankActionsFacadeMultiThreadTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldTransferMoneyBetweenAccountsCorrectly() throws TransferException {
+    public void shouldTransferMoneyBetweenAccountsCorrectly() {
         List<Account> sourceAccounts = openRandomAccounts();
         List<Account> destinationAccounts = openRandomAccounts();
 
@@ -79,7 +78,7 @@ public class BankActionsFacadeMultiThreadTest extends ContextAwareTest {
         return bankActionsFacadeInvoker.createAccount(amount);
     }
 
-    private void performRandomTransfers(List<Account> sourceAccounts, List<Account> destinationAccounts) throws TransferException {
+    private void performRandomTransfers(List<Account> sourceAccounts, List<Account> destinationAccounts) {
         IntStream.range(0, NUMBER_OF_TRANSFERS)
                 .parallel()
                 .forEach(i -> performTransfer(sourceAccounts, destinationAccounts));

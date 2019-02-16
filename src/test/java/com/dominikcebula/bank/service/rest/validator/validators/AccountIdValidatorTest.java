@@ -14,10 +14,10 @@ import static com.dominikcebula.bank.service.rest.validator.validators.AccountId
 @RunWith(JUnitParamsRunner.class)
 public class AccountIdValidatorTest {
 
-    private AccountIdValidator accountIdValidator = new AccountIdValidator();
+    private final AccountIdValidator accountIdValidator = new AccountIdValidator();
 
     @Rule
-    public ExpectedException expectedException = ExpectedException.none();
+    public final ExpectedException expectedException = ExpectedException.none();
 
     @Test
     @Parameters({

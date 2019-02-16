@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @RunWith(JUnitParamsRunner.class)
 public class MoneyCalculatorTest {
 
-    private MoneyCalculator moneyCalculator = new MoneyCalculator(new MoneyAmountRound());
+    private final MoneyCalculator moneyCalculator = new MoneyCalculator(new MoneyAmountRound());
 
     @Test
     @Parameters({

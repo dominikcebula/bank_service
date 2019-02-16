@@ -14,11 +14,12 @@ import spark.Response;
 
 public class ReportableExceptionHandler implements ExceptionHandler<ReportableException> {
 
-    private Logger logger = LoggerFactory.getLogger(Loggers.REST);
+    private final Logger logger = LoggerFactory.getLogger(Loggers.REST);
 
     private final Gson gson;
 
     @Inject
+    @SuppressWarnings("unused")
     public ReportableExceptionHandler(Gson gson) {
         this.gson = gson;
     }

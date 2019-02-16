@@ -15,7 +15,6 @@ public class ConfigurationTest {
     private static final String SERVICE_HOST_VALUE = "my.server.com";
     private static final int SERVICE_PORT_VALUE = 8081;
     private static final int SERVICE_MAX_THREADS_VALUES = 500;
-    private static final String SERVICE_CURRENCY_VALUE = "GBP";
 
     private Properties properties;
     private Configuration configuration;

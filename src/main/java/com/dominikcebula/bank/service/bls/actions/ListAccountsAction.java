@@ -15,13 +15,14 @@ import java.util.List;
 
 class ListAccountsAction {
 
-    private Logger logger = LoggerFactory.getLogger(Loggers.BLS);
+    private final Logger logger = LoggerFactory.getLogger(Loggers.BLS);
 
     private final AccountDao accountDao;
     private final MoneyCalculator moneyCalculator;
     private final MoneyAmountRound moneyAmountRound;
 
     @Inject
+    @SuppressWarnings("unused")
     ListAccountsAction(AccountDao accountDao, MoneyCalculator moneyCalculator, MoneyAmountRound moneyAmountRound) {
         this.accountDao = accountDao;
         this.moneyCalculator = moneyCalculator;
