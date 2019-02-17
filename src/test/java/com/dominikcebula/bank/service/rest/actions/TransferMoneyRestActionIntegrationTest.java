@@ -5,7 +5,7 @@ import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.exception.TransferException;
 import com.dominikcebula.bank.service.dto.ApiCode;
 import com.dominikcebula.bank.service.dto.ApiErrorResponse;
-import com.dominikcebula.bank.service.dto.TransferMoneyRequest;
+import com.dominikcebula.bank.service.dto.MoneyTransfer;
 import com.dominikcebula.bank.service.dto.TransferMoneyResponse;
 import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
 import com.google.inject.testing.fieldbinder.Bind;
@@ -35,20 +35,20 @@ public class TransferMoneyRestActionIntegrationTest extends SparkRestServerAware
     public void shouldTransferMoney() {
         BigDecimal amount = BigDecimal.valueOf(600);
 
-        TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
-        transferMoneyRequest.setFrom(FROM.getAccountNumber());
-        transferMoneyRequest.setTo(TO.getAccountNumber());
-        transferMoneyRequest.setAmount(amount);
+        MoneyTransfer moneyTransfer = new MoneyTransfer();
+        moneyTransfer.setFrom(FROM.getAccountNumber());
+        moneyTransfer.setTo(TO.getAccountNumber());
+        moneyTransfer.setAmount(amount);
 
         TransferMoneyResponse transferMoneyResponse = resetClient().postForObject(
-                TransferMoneyRestAction.TRANSFER_URI, transferMoneyRequest,
-                TransferMoneyRequest.class, TransferMoneyResponse.class
+                TransferMoneyRestAction.TRANSFER_URI, moneyTransfer,
+                MoneyTransfer.class, TransferMoneyResponse.class
         );
 
         assertEquals(ApiCode.MONEY_TRANSFERRED, transferMoneyResponse.getStatus().getCode());
-        assertEquals(FROM.getAccountNumber(), transferMoneyResponse.getFrom());
-        assertEquals(TO.getAccountNumber(), transferMoneyResponse.getTo());
-        assertEquals(amount, transferMoneyResponse.getAmount());
+        assertEquals(FROM.getAccountNumber(), transferMoneyResponse.getMoneyTransfer().getFrom());
+        assertEquals(TO.getAccountNumber(), transferMoneyResponse.getMoneyTransfer().getTo());
+        assertEquals(amount, transferMoneyResponse.getMoneyTransfer().getAmount());
     }
 
     @Test
@@ -58,14 +58,14 @@ public class TransferMoneyRestActionIntegrationTest extends SparkRestServerAware
         Mockito.doThrow(new IllegalArgumentException("TEST"))
                 .when(bankActionsFacadeInvoker).transfer(FROM, TO, amount);
 
-        TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
-        transferMoneyRequest.setFrom(FROM.getAccountNumber());
-        transferMoneyRequest.setTo(TO.getAccountNumber());
-        transferMoneyRequest.setAmount(amount);
+        MoneyTransfer moneyTransfer = new MoneyTransfer();
+        moneyTransfer.setFrom(FROM.getAccountNumber());
+        moneyTransfer.setTo(TO.getAccountNumber());
+        moneyTransfer.setAmount(amount);
 
         ApiErrorResponse errorResponse = resetClient().postForObject(
-                TransferMoneyRestAction.TRANSFER_URI, transferMoneyRequest,
-                TransferMoneyRequest.class, ApiErrorResponse.class
+                TransferMoneyRestAction.TRANSFER_URI, moneyTransfer,
+                MoneyTransfer.class, ApiErrorResponse.class
         );
 
         assertEquals(ApiCode.FAILED, errorResponse.getStatus().getCode());
@@ -75,14 +75,14 @@ public class TransferMoneyRestActionIntegrationTest extends SparkRestServerAware
     public void shouldFailTransferMoneyValidation() {
         BigDecimal amount = BigDecimal.valueOf(0);
 
-        TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
-        transferMoneyRequest.setFrom(FROM.getAccountNumber());
-        transferMoneyRequest.setTo(TO.getAccountNumber());
-        transferMoneyRequest.setAmount(amount);
+        MoneyTransfer moneyTransfer = new MoneyTransfer();
+        moneyTransfer.setFrom(FROM.getAccountNumber());
+        moneyTransfer.setTo(TO.getAccountNumber());
+        moneyTransfer.setAmount(amount);
 
         ApiErrorResponse errorResponse = resetClient().postForObject(
-                TransferMoneyRestAction.TRANSFER_URI, transferMoneyRequest,
-                TransferMoneyRequest.class, ApiErrorResponse.class
+                TransferMoneyRestAction.TRANSFER_URI, moneyTransfer,
+                MoneyTransfer.class, ApiErrorResponse.class
         );
 
         assertEquals(ApiCode.FAILED, errorResponse.getStatus().getCode());
@@ -91,12 +91,12 @@ public class TransferMoneyRestActionIntegrationTest extends SparkRestServerAware
 
     @Test
     public void shouldFailTransferMoneyBeanValidation() {
-        TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
-        transferMoneyRequest.setTo(TO.getAccountNumber());
+        MoneyTransfer moneyTransfer = new MoneyTransfer();
+        moneyTransfer.setTo(TO.getAccountNumber());
 
         ApiErrorResponse errorResponse = resetClient().postForObject(
-                TransferMoneyRestAction.TRANSFER_URI, transferMoneyRequest,
-                TransferMoneyRequest.class, ApiErrorResponse.class
+                TransferMoneyRestAction.TRANSFER_URI, moneyTransfer,
+                MoneyTransfer.class, ApiErrorResponse.class
         );
 
         assertEquals(ApiCode.FAILED, errorResponse.getStatus().getCode());

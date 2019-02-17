@@ -75,7 +75,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/TransferMoneyRequest'
+            $ref: '#/definitions/MoneyTransfer'
       responses:
         200:
           description: "Transferred money operation result"
@@ -120,6 +120,19 @@ definitions:
           $ref: '#/definitions/Account'
       totalDeposit:
         $ref: '#/definitions/Money'
+  MoneyTransfer:
+    type: object
+    required:
+      - from
+      - to
+      - amount
+    properties:
+      from:
+        $ref: '#/definitions/AccountId'
+      to:
+        $ref: '#/definitions/AccountId'
+      amount:
+        $ref: '#/definitions/Money'
 
   HealthCheckResponse:
     type: "object"
@@ -160,34 +173,15 @@ definitions:
       account:
         $ref: '#/definitions/Account'
 
-  TransferMoneyRequest:
-    type: "object"
-    required:
-      - from
-      - to
-      - amount
-    properties:
-      from:
-        $ref: '#/definitions/AccountId'
-      to:
-        $ref: '#/definitions/AccountId'
-      amount:
-        $ref: '#/definitions/Money'
   TransferMoneyResponse:
     required:
       - status
-      - from
-      - to
-      - amount
+      - moneyTransfer
     properties:
       status:
         $ref: '#/definitions/ApiResponse'
-      from:
-        $ref: '#/definitions/AccountId'
-      to:
-        $ref: '#/definitions/AccountId'
-      amount:
-        $ref: '#/definitions/Money'
+      moneyTransfer:
+        $ref: '#/definitions/MoneyTransfer'
 
   ApiCode:
     type: "string"

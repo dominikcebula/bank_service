@@ -79,14 +79,14 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
     }
 
     private void transfer(AccountId from, AccountId to, BigDecimal amount) {
-        TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
-        transferMoneyRequest.setFrom(from.getAccountNumber());
-        transferMoneyRequest.setTo(to.getAccountNumber());
-        transferMoneyRequest.setAmount(amount);
+        MoneyTransfer moneyTransfer = new MoneyTransfer();
+        moneyTransfer.setFrom(from.getAccountNumber());
+        moneyTransfer.setTo(to.getAccountNumber());
+        moneyTransfer.setAmount(amount);
 
         TransferMoneyResponse transferMoneyResponse = resetClient().postForObject(
-                TransferMoneyRestAction.TRANSFER_URI, transferMoneyRequest,
-                TransferMoneyRequest.class, TransferMoneyResponse.class
+                TransferMoneyRestAction.TRANSFER_URI, moneyTransfer,
+                MoneyTransfer.class, TransferMoneyResponse.class
         );
 
         assertEquals(ApiCode.MONEY_TRANSFERRED, transferMoneyResponse.getStatus().getCode());

@@ -1,10 +1,10 @@
 package com.dominikcebula.bank.service.rest.validator.validators;
 
-import com.dominikcebula.bank.service.dto.TransferMoneyRequest;
+import com.dominikcebula.bank.service.dto.MoneyTransfer;
 import com.dominikcebula.bank.service.rest.validator.Validator;
 import com.dominikcebula.bank.service.rest.validator.exception.ValidatorException;
 
-public class TransferMoneyRequestValidator extends Validator<TransferMoneyRequest> {
+public class MoneyTransferValidator extends Validator<MoneyTransfer> {
 
     static final String MESSAGE_TRANSFER_REQUEST_NOT_SPECIFIED = "Transfer request object not specified";
     static final String MESSAGE_FROM_ACCOUNT_NOT_SPECIFIED = "From account has to be specified";
@@ -14,26 +14,26 @@ public class TransferMoneyRequestValidator extends Validator<TransferMoneyReques
     private final AmountValidator amountValidator = new AmountValidator();
 
     @Override
-    public void validate(TransferMoneyRequest transferMoneyRequest) throws ValidatorException {
+    public void validate(MoneyTransfer moneyTransfer) throws ValidatorException {
 
         assertConditionMet(
-                transferMoneyRequest != null,
+                moneyTransfer != null,
                 MESSAGE_TRANSFER_REQUEST_NOT_SPECIFIED
         );
 
         assertConditionMet(
-                transferMoneyRequest.getFrom() != null,
+                moneyTransfer.getFrom() != null,
                 MESSAGE_FROM_ACCOUNT_NOT_SPECIFIED
         );
 
         assertConditionMet(
-                transferMoneyRequest.getTo() != null,
+                moneyTransfer.getTo() != null,
                 MESSAGE_TO_ACCOUNT_NOT_SPECIFIED
         );
 
-        accountIdValidator.validate(transferMoneyRequest.getFrom());
-        accountIdValidator.validate(transferMoneyRequest.getTo());
+        accountIdValidator.validate(moneyTransfer.getFrom());
+        accountIdValidator.validate(moneyTransfer.getTo());
 
-        amountValidator.validate(transferMoneyRequest.getAmount());
+        amountValidator.validate(moneyTransfer.getAmount());
     }
 }
