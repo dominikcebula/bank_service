@@ -18,6 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.math.BigDecimal;
 
 import static com.dominikcebula.bank.service.rest.validator.validators.AmountValidator.MESSAGE_VALUE_ZERO;
+import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -86,5 +87,21 @@ public class TransferMoneyRestActionIntegrationTest extends SparkRestServerAware
 
         assertEquals(ApiCode.FAILED, errorResponse.getStatus().getCode());
         assertEquals(MESSAGE_VALUE_ZERO, errorResponse.getMessage());
+    }
+
+    @Test
+    public void shouldFailTransferMoneyBeanValidation() {
+        TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
+        transferMoneyRequest.setTo(TO.getAccountNumber());
+
+        ApiErrorResponse errorResponse = resetClient().postForObject(
+                TransferMoneyRestAction.TRANSFER_URI, transferMoneyRequest,
+                TransferMoneyRequest.class, ApiErrorResponse.class
+        );
+
+        assertEquals(ApiCode.FAILED, errorResponse.getStatus().getCode());
+        assertThat(errorResponse.getMessage())
+                .contains("Field [from]: must not be null")
+                .contains("Field [amount]: must not be null");
     }
 }

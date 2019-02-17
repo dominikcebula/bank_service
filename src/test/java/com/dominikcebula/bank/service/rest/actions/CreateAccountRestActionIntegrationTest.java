@@ -77,4 +77,17 @@ public class CreateAccountRestActionIntegrationTest extends SparkRestServerAware
         assertEquals(ApiCode.FAILED, errorResponse.getStatus().getCode());
         assertEquals(MESSAGE_VALUE_ZERO, errorResponse.getMessage());
     }
+
+    @Test
+    public void shouldFailBeanValidationDuringCreateAction() {
+        AccountCreateRequest accountCreateRequest = new AccountCreateRequest();
+
+        ApiErrorResponse errorResponse = resetClient().postForObject(
+                CreateAccountRestAction.ACCOUNTS_CREATE_URI, accountCreateRequest,
+                AccountCreateRequest.class, ApiErrorResponse.class
+        );
+
+        assertEquals(ApiCode.FAILED, errorResponse.getStatus().getCode());
+        assertEquals("Field [initialDeposit]: must not be null", errorResponse.getMessage());
+    }
 }
