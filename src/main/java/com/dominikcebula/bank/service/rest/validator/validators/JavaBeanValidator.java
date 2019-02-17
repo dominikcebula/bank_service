@@ -8,7 +8,7 @@ import javax.validation.Validation;
 import java.util.Set;
 
 public class JavaBeanValidator<T> extends Validator<T> {
-    private javax.validation.Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    private final javax.validation.Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Override
     public void validate(T value) throws ValidatorException {
