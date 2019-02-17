@@ -158,8 +158,10 @@ Response:
   "status": {
     "code": "MONEY_TRANSFERRED"
   },
-  "from": "8955895919049153",
-  "to": "0481998112065640",
-  "amount": 50
+  "moneyTransfer": {
+    "from": "1922183208146240",
+    "to": "2311254104558146",
+    "amount": 50
+  }
 }
 ```
