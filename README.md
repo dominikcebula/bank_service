@@ -71,11 +71,7 @@ java -Dservice.port=8081 -jar bank-service-1.0-SNAPSHOT-jar-with-dependencies.ja
 # API Specification
 
 API is described with OpenAPI 2.0, specification is available inside api.yaml.
-
 Based on this file DTOs were generated with usage of Swagger Codegen.
-SparkJava does not support automatic server generation based on api.yaml,
-also Bean Validation is not supported, so this part had to be written manually,
-to support small footprint requirement. 
 
 # Making Request
 
