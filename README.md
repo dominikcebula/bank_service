@@ -22,6 +22,7 @@ Below is the list of tools used during development:
 * SparkJava
 * OpenAPI
 * Swagger Codegen
+* JSR 303/380 Bean Validation
 * Mockito
 * ...
 
