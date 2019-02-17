@@ -7,8 +7,12 @@ import java.math.BigDecimal;
 
 public class AmountValidator extends Validator<BigDecimal> {
 
-    public static final String MESSAGE_VALUE_MISSING = "Amount value is missing";
-    public static final String MESSAGE_VALUE_INCORRECT = "Amount value is incorrect";
+    private static final String AMOUNT_VALUE_PATTERN = "^([0-9]+)|([0-9]+\\.[0-9]{1,2})$";
+
+    static final String MESSAGE_VALUE_MISSING = "Amount value is missing";
+    public static final String MESSAGE_VALUE_ZERO = "Amount value has to be greater then zero";
+    static final String MESSAGE_VALUE_NOT_MATCHING_PATTERN = "Amount value has to match pattern " + AMOUNT_VALUE_PATTERN;
+
 
     @Override
     public void validate(BigDecimal value) throws ValidatorException {
@@ -21,12 +25,12 @@ public class AmountValidator extends Validator<BigDecimal> {
 
         assertConditionMet(
                 value.compareTo(BigDecimal.ZERO) > 0,
-                MESSAGE_VALUE_INCORRECT
+                MESSAGE_VALUE_ZERO
         );
 
         assertConditionMet(
-                stringValue.matches("^([0-9]+)|([0-9]+\\.[0-9]{1,2})$"),
-                MESSAGE_VALUE_INCORRECT
+                stringValue.matches(AMOUNT_VALUE_PATTERN),
+                MESSAGE_VALUE_NOT_MATCHING_PATTERN
         );
     }
 }

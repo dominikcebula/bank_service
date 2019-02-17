@@ -15,7 +15,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.math.BigDecimal;
 
 import static com.dominikcebula.bank.service.dto.ApiCode.ACCOUNT_CREATED;
-import static com.dominikcebula.bank.service.rest.validator.validators.AmountValidator.MESSAGE_VALUE_INCORRECT;
+import static com.dominikcebula.bank.service.rest.validator.validators.AmountValidator.MESSAGE_VALUE_ZERO;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -75,6 +75,6 @@ public class CreateAccountRestActionIntegrationTest extends SparkRestServerAware
         );
 
         assertEquals(ApiCode.FAILED, errorResponse.getStatus().getCode());
-        assertEquals(MESSAGE_VALUE_INCORRECT, errorResponse.getMessage());
+        assertEquals(MESSAGE_VALUE_ZERO, errorResponse.getMessage());
     }
 }

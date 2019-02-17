@@ -13,8 +13,7 @@ import org.junit.runner.RunWith;
 import java.math.BigDecimal;
 
 import static com.dominikcebula.bank.service.rest.validator.validators.AccountIdValidator.MESSAGE_ACCOUNT_ID_INCORRECT;
-import static com.dominikcebula.bank.service.rest.validator.validators.AmountValidator.MESSAGE_VALUE_INCORRECT;
-import static com.dominikcebula.bank.service.rest.validator.validators.AmountValidator.MESSAGE_VALUE_MISSING;
+import static com.dominikcebula.bank.service.rest.validator.validators.AmountValidator.*;
 import static com.dominikcebula.bank.service.rest.validator.validators.TransferMoneyRequestValidator.*;
 
 @RunWith(JUnitParamsRunner.class)
@@ -60,10 +59,24 @@ public class TransferMoneyRequestValidatorTest {
     }
 
     @Test
-    @Parameters({"0", "-5", "5.123"})
+    @Parameters({"0", "-5"})
     public void shouldReportAmountValueIncorrect(BigDecimal amount) throws ValidatorException {
         expectedException.expect(ValidatorException.class);
-        expectedException.expectMessage(MESSAGE_VALUE_INCORRECT);
+        expectedException.expectMessage(MESSAGE_VALUE_ZERO);
+
+        TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
+        transferMoneyRequest.setFrom(FROM.getAccountNumber());
+        transferMoneyRequest.setTo(TO.getAccountNumber());
+        transferMoneyRequest.setAmount(amount);
+
+        transferMoneyRequestValidator.validate(transferMoneyRequest);
+    }
+
+    @Test
+    @Parameters({"4.567", "1.32354"})
+    public void shouldReportAmountPatternIncorrect(BigDecimal amount) throws ValidatorException {
+        expectedException.expect(ValidatorException.class);
+        expectedException.expectMessage(MESSAGE_VALUE_NOT_MATCHING_PATTERN);
 
         TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest();
         transferMoneyRequest.setFrom(FROM.getAccountNumber());

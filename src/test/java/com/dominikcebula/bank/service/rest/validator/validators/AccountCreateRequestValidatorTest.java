@@ -12,8 +12,7 @@ import org.junit.runner.RunWith;
 import java.math.BigDecimal;
 
 import static com.dominikcebula.bank.service.rest.validator.validators.AccountCreateRequestValidator.MESSAGE_ACCOUNT_CREATE_NOT_SPECIFIED;
-import static com.dominikcebula.bank.service.rest.validator.validators.AmountValidator.MESSAGE_VALUE_INCORRECT;
-import static com.dominikcebula.bank.service.rest.validator.validators.AmountValidator.MESSAGE_VALUE_MISSING;
+import static com.dominikcebula.bank.service.rest.validator.validators.AmountValidator.*;
 
 @RunWith(JUnitParamsRunner.class)
 public class AccountCreateRequestValidatorTest {
@@ -48,10 +47,22 @@ public class AccountCreateRequestValidatorTest {
     }
 
     @Test
-    @Parameters({"0", "-5", "1.456"})
-    public void shouldReportIncorrectDeposit(BigDecimal deposit) throws ValidatorException {
+    @Parameters({"0", "-5"})
+    public void shouldReportIncorrectDepositValue(BigDecimal deposit) throws ValidatorException {
         expectedException.expect(ValidatorException.class);
-        expectedException.expectMessage(MESSAGE_VALUE_INCORRECT);
+        expectedException.expectMessage(MESSAGE_VALUE_ZERO);
+
+        AccountCreateRequest accountCreateRequest = new AccountCreateRequest();
+        accountCreateRequest.setInitialDeposit(deposit);
+
+        accountCreateRequestValidator.validate(accountCreateRequest);
+    }
+
+    @Test
+    @Parameters({"5.84865", "1.456", "10000.0001", "8.123"})
+    public void shouldReportIncorrectDepositPattern(BigDecimal deposit) throws ValidatorException {
+        expectedException.expect(ValidatorException.class);
+        expectedException.expectMessage(MESSAGE_VALUE_NOT_MATCHING_PATTERN);
 
         AccountCreateRequest accountCreateRequest = new AccountCreateRequest();
         accountCreateRequest.setInitialDeposit(deposit);

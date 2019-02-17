@@ -12,15 +12,17 @@ public class JavaBeanValidator<T> extends Validator<T> {
 
     @Override
     public void validate(T value) throws ValidatorException {
-        Set<ConstraintViolation<T>> violations = validator.validate(value);
+        if (value != null) {
+            Set<ConstraintViolation<T>> violations = validator.validate(value);
 
-        if (violations.size() > 0) {
-            String violationMessage = violations.stream()
-                    .map(this::getMessage)
-                    .reduce(this::joinMessages)
-                    .get();
+            if (violations.size() > 0) {
+                String violationMessage = violations.stream()
+                        .map(this::getMessage)
+                        .reduce(this::joinMessages)
+                        .get();
 
-            throw new ValidatorException(violationMessage);
+                throw new ValidatorException(violationMessage);
+            }
         }
     }
 
