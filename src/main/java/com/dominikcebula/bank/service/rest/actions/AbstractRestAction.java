@@ -1,13 +1,19 @@
 package com.dominikcebula.bank.service.rest.actions;
 
 import com.dominikcebula.bank.service.logging.Loggers;
+import com.dominikcebula.bank.service.rest.processors.RequestProcessor;
+import com.dominikcebula.bank.service.rest.processors.ResponseProcessor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+
+import java.util.Collections;
+import java.util.List;
 
 abstract class AbstractRestAction<I, R> implements Route {
 
@@ -49,10 +55,30 @@ abstract class AbstractRestAction<I, R> implements Route {
         return json;
     }
 
-    void postProcessRequestObject(I requestObject) throws Exception {
+    private void postProcessRequestObject(I requestObject) {
+        getRequestProcessors().forEach(p -> callRequestProcessor(p, requestObject));
     }
 
-    void postProcessResponseObject(R responseObject) throws Exception {
+    private void postProcessResponseObject(R responseObject) {
+        getResponseProcessors().forEach(p -> callResponseProcessor(p, responseObject));
+    }
+
+    @SneakyThrows
+    private void callRequestProcessor(RequestProcessor<I> requestProcessor, I requestObject) {
+        requestProcessor.process(requestObject);
+    }
+
+    @SneakyThrows
+    private void callResponseProcessor(ResponseProcessor<R> responseProcessor, R responseObject) {
+        responseProcessor.process(responseObject);
+    }
+
+    List<RequestProcessor<I>> getRequestProcessors() {
+        return Collections.emptyList();
+    }
+
+    List<ResponseProcessor<R>> getResponseProcessors() {
+        return Collections.emptyList();
     }
 
     abstract R handleRequest(I request) throws Exception;
