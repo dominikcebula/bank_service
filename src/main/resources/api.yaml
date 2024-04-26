@@ -1,208 +1,219 @@
-swagger: "2.0"
+openapi: "3.0.0"
 info:
   description: "Simple Bank Service Rest API"
   version: "1.0.0"
   title: "Bank Service Rest API"
   contact:
     email: "dominikcebula@gmail.com"
+  license:
+    name: MIT
 paths:
   /:
     get:
       summary: "Index Action showing that service is up"
-      produces:
-        - application/json
       responses:
-        200:
+        '200':
           description: "Service is up"
-          schema:
-            $ref: '#/definitions/HealthCheckResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthCheckResponse'
 
   /accounts/list:
     get:
       summary: "List all accounts in the system"
-      produces:
-        - application/json
       responses:
-        200:
+        '200':
           description: "Accounts list"
-          schema:
-            $ref: '#/definitions/ListAccountsResponse'
-        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAccountsResponse'
+        '400':
           description: "Validation Error"
-          schema:
-            $ref: '#/definitions/ApiErrorResponse'
-        500:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
           description: "Internal Request Processing Error"
-          schema:
-            $ref: '#/definitions/ApiErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
 
   /accounts/create:
     post:
       summary: "Create new account"
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/AccountCreateRequest'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountCreateRequest'
       responses:
-        200:
+        '200':
           description: "Created Account details"
-          schema:
-            $ref: '#/definitions/AccountCreateResponse'
-        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountCreateResponse'
+        '400':
           description: "Validation Error"
-          schema:
-            $ref: '#/definitions/ApiErrorResponse'
-        500:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
           description: "Internal Request Processing Error"
-          schema:
-            $ref: '#/definitions/ApiErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
 
   /transfer:
     post:
       summary: "Transfer money between accounts"
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/MoneyTransfer'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MoneyTransfer'
       responses:
-        200:
+        '200':
           description: "Transferred money operation result"
-          schema:
-            $ref: '#/definitions/TransferMoneyResponse'
-        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferMoneyResponse'
+        '400':
           description: "Validation Error"
-          schema:
-            $ref: '#/definitions/ApiErrorResponse'
-        500:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
           description: "Internal Request Processing Error"
-          schema:
-            $ref: '#/definitions/ApiErrorResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
 
-definitions:
-  Money:
-    type: "number"
-    format: "float"
-    minimum: 0
-  AccountId:
-    type: "string"
-    pattern: "^[0-9]{16}$"
-  Account:
-    type: "object"
-    required:
-      - accountId
-      - balance
-    properties:
-      accountId:
-        $ref: '#/definitions/AccountId'
-      balance:
-        $ref: '#/definitions/Money'
-  Accounts:
-    type: object
-    required:
-      - accounts
-      - totalDeposit
-    properties:
-      accounts:
-        type: "array"
-        items:
-          $ref: '#/definitions/Account'
-      totalDeposit:
-        $ref: '#/definitions/Money'
-  MoneyTransfer:
-    type: object
-    required:
-      - from
-      - to
-      - amount
-    properties:
-      from:
-        $ref: '#/definitions/AccountId'
-      to:
-        $ref: '#/definitions/AccountId'
-      amount:
-        $ref: '#/definitions/Money'
+components:
+  schemas:
+    Money:
+      type: "number"
+      format: "float"
+      minimum: 0
+    AccountId:
+      type: "string"
+      pattern: "^[0-9]{16}$"
+    Account:
+      type: "object"
+      required:
+        - accountId
+        - balance
+      properties:
+        accountId:
+          $ref: '#/components/schemas/AccountId'
+        balance:
+          $ref: '#/components/schemas/Money'
+    Accounts:
+      type: object
+      required:
+        - accounts
+        - totalDeposit
+      properties:
+        accounts:
+          type: "array"
+          items:
+            $ref: '#/components/schemas/Account'
+        totalDeposit:
+          $ref: '#/components/schemas/Money'
+    MoneyTransfer:
+      type: object
+      required:
+        - from
+        - to
+        - amount
+      properties:
+        from:
+          $ref: '#/components/schemas/AccountId'
+        to:
+          $ref: '#/components/schemas/AccountId'
+        amount:
+          $ref: '#/components/schemas/Money'
 
-  HealthCheckResponse:
-    type: "object"
-    required:
-      - status
-    properties:
-      status:
-        type: "string"
-        enum:
-          - "up"
+    HealthCheckResponse:
+      type: "object"
+      required:
+        - status
+      properties:
+        status:
+          type: "string"
+          enum:
+            - "up"
 
-  ListAccountsResponse:
-    type: object
-    required:
-      - status
-      - accounts
-    properties:
-      status:
-        $ref: '#/definitions/ApiResponse'
-      accounts:
-        $ref: '#/definitions/Accounts'
+    ListAccountsResponse:
+      type: object
+      required:
+        - status
+        - accounts
+      properties:
+        status:
+          $ref: '#/components/schemas/ApiResponse'
+        accounts:
+          $ref: '#/components/schemas/Accounts'
 
-  AccountCreateRequest:
-    type: object
-    required:
-      - initialDeposit
-    properties:
-      initialDeposit:
-        $ref: '#/definitions/Money'
-  AccountCreateResponse:
-    type: "object"
-    required:
-      - status
-      - account
-    properties:
-      status:
-        $ref: '#/definitions/ApiResponse'
-      account:
-        $ref: '#/definitions/Account'
+    AccountCreateRequest:
+      type: object
+      required:
+        - initialDeposit
+      properties:
+        initialDeposit:
+          $ref: '#/components/schemas/Money'
+    AccountCreateResponse:
+      type: "object"
+      required:
+        - status
+        - account
+      properties:
+        status:
+          $ref: '#/components/schemas/ApiResponse'
+        account:
+          $ref: '#/components/schemas/Account'
 
-  TransferMoneyResponse:
-    required:
-      - status
-      - moneyTransfer
-    properties:
-      status:
-        $ref: '#/definitions/ApiResponse'
-      moneyTransfer:
-        $ref: '#/definitions/MoneyTransfer'
+    TransferMoneyResponse:
+      required:
+        - status
+        - moneyTransfer
+      properties:
+        status:
+          $ref: '#/components/schemas/ApiResponse'
+        moneyTransfer:
+          $ref: '#/components/schemas/MoneyTransfer'
 
-  ApiCode:
-    type: "string"
-    enum:
-      - FAILED
-      - ACCOUNT_CREATED
-      - ACCOUNTS_LISTED
-      - MONEY_TRANSFERRED
-  ApiResponse:
-    type: "object"
-    required:
-      - code
-    properties:
-      code:
-        $ref: '#/definitions/ApiCode'
-  ApiErrorResponse:
-    required:
-      - status
-      - message
-    properties:
-      status:
-        $ref: '#/definitions/ApiResponse'
-      message:
-        type: "string"
+    ApiCode:
+      type: "string"
+      enum:
+        - FAILED
+        - ACCOUNT_CREATED
+        - ACCOUNTS_LISTED
+        - MONEY_TRANSFERRED
+    ApiResponse:
+      type: "object"
+      required:
+        - code
+      properties:
+        code:
+          $ref: '#/components/schemas/ApiCode'
+    ApiErrorResponse:
+      required:
+        - status
+        - message
+      properties:
+        status:
+          $ref: '#/components/schemas/ApiResponse'
+        message:
+          type: "string"
