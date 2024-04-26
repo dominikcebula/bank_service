@@ -9,7 +9,7 @@ import com.google.inject.Inject;
 
 public class ListAccountsRestAction extends AbstractRestAction<Void, ListAccountsResponse> {
 
-    public static final String ACCOUNT_LIST_URI = "/accounts/list";
+    public static final String ACCOUNT_LIST_URI = "/accounts";
 
     private final BankActionsFacadeInvoker bankActionsFacadeInvoker;
 

@@ -18,8 +18,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HealthCheckResponse'
-
-  /accounts/list:
+  /accounts:
     get:
       summary: "List all accounts in the system"
       responses:
@@ -41,8 +40,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
-
-  /accounts/create:
     post:
       summary: "Create new account"
       requestBody:

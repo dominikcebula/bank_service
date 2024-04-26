@@ -13,7 +13,7 @@ import static com.dominikcebula.bank.service.dto.ApiCode.ACCOUNT_CREATED;
 
 public class CreateAccountRestAction extends AbstractValidatingRestAction<AccountCreateRequest, AccountCreateResponse> {
 
-    public static final String ACCOUNTS_CREATE_URI = "/accounts/create";
+    public static final String ACCOUNTS_CREATE_URI = "/accounts";
 
     private final BankActionsFacadeInvoker bankActionsFacadeInvoker;
 
