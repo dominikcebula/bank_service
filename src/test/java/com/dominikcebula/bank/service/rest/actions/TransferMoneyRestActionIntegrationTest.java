@@ -1,13 +1,13 @@
 package com.dominikcebula.bank.service.rest.actions;
 
-import com.dominikcebula.bank.service.bls.actions.BankActionsFacadeInvoker;
+import com.dominikcebula.bank.service.bls.actions.BankActionsFacade;
 import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.exception.TransferException;
 import com.dominikcebula.bank.service.dto.ApiCode;
 import com.dominikcebula.bank.service.dto.ApiErrorResponse;
 import com.dominikcebula.bank.service.dto.MoneyTransfer;
 import com.dominikcebula.bank.service.dto.TransferMoneyResponse;
-import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
+import com.dominikcebula.bank.service.rest.actions.base.NoActionsFacadeInContextIntegrationTest;
 import com.google.inject.testing.fieldbinder.Bind;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,14 +22,14 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TransferMoneyRestActionIntegrationTest extends SparkRestServerAwareTest {
+public class TransferMoneyRestActionIntegrationTest extends NoActionsFacadeInContextIntegrationTest {
 
     private static final AccountId FROM = AccountId.createRandomAccountId();
     private static final AccountId TO = AccountId.createRandomAccountId();
 
     @Bind
     @Mock
-    private BankActionsFacadeInvoker bankActionsFacadeInvoker;
+    private BankActionsFacade bankActionsFacade;
 
     @Test
     public void shouldTransferMoney() {
@@ -56,7 +56,7 @@ public class TransferMoneyRestActionIntegrationTest extends SparkRestServerAware
         BigDecimal amount = BigDecimal.valueOf(600);
 
         Mockito.doThrow(new IllegalArgumentException("TEST"))
-                .when(bankActionsFacadeInvoker).transfer(FROM, TO, amount);
+                .when(bankActionsFacade).transfer(FROM, TO, amount);
 
         MoneyTransfer moneyTransfer = new MoneyTransfer();
         moneyTransfer.setFrom(FROM.getAccountNumber());

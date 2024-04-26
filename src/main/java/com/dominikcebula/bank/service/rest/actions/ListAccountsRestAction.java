@@ -1,6 +1,6 @@
 package com.dominikcebula.bank.service.rest.actions;
 
-import com.dominikcebula.bank.service.bls.actions.BankActionsFacadeInvoker;
+import com.dominikcebula.bank.service.bls.actions.BankActionsFacade;
 import com.dominikcebula.bank.service.dto.Accounts;
 import com.dominikcebula.bank.service.dto.ApiCode;
 import com.dominikcebula.bank.service.dto.ListAccountsResponse;
@@ -11,18 +11,18 @@ public class ListAccountsRestAction extends AbstractRestAction<Void, ListAccount
 
     public static final String ACCOUNT_LIST_URI = "/accounts";
 
-    private final BankActionsFacadeInvoker bankActionsFacadeInvoker;
+    private final BankActionsFacade bankActionsFacade;
 
     @Inject
     @SuppressWarnings("unused")
-    public ListAccountsRestAction(BankActionsFacadeInvoker bankActionsFacadeInvoker) {
+    public ListAccountsRestAction(BankActionsFacade bankActionsFacade) {
         super(Void.class, ListAccountsResponse.class);
-        this.bankActionsFacadeInvoker = bankActionsFacadeInvoker;
+        this.bankActionsFacade = bankActionsFacade;
     }
 
     @Override
     ListAccountsResponse handleRequest(Void request) {
-        Accounts accounts = bankActionsFacadeInvoker.listAccounts();
+        Accounts accounts = bankActionsFacade.listAccounts();
 
         return new ListAccountsResponse()
                 .status(new ModelApiResponse().code(ApiCode.ACCOUNTS_LISTED))

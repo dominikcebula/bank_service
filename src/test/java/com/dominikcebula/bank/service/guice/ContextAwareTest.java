@@ -13,13 +13,17 @@ public abstract class ContextAwareTest {
 
     @Before
     public void setUp() {
-        injector = Guice.createInjector(getServiceModule());
+        injector = Guice.createInjector(getComposedServiceModule());
     }
 
-    private Module getServiceModule() {
+    private Module getComposedServiceModule() {
         return new ComposedServiceModule(
-                new ServiceModule(),
+                getServiceModule(),
                 BoundFieldModule.of(this)
         );
+    }
+
+    protected ServiceModule getServiceModule() {
+        return new ServiceModule();
     }
 }

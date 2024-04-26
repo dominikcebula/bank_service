@@ -1,10 +1,10 @@
 package com.dominikcebula.bank.service.rest.actions;
 
-import com.dominikcebula.bank.service.bls.actions.BankActionsFacadeInvoker;
+import com.dominikcebula.bank.service.bls.actions.BankActionsFacade;
 import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.bls.exception.AccountCreateException;
 import com.dominikcebula.bank.service.dto.*;
-import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
+import com.dominikcebula.bank.service.rest.actions.base.NoActionsFacadeInContextIntegrationTest;
 import com.google.inject.testing.fieldbinder.Bind;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,19 +19,19 @@ import static com.dominikcebula.bank.service.rest.validator.validators.AmountVal
 import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CreateAccountRestActionIntegrationTest extends SparkRestServerAwareTest {
+public class CreateAccountRestActionIntegrationTest extends NoActionsFacadeInContextIntegrationTest {
 
     private static final BigDecimal DEPOSIT = BigDecimal.valueOf(5000.85);
     private static final AccountId ACCOUNT_ID = AccountId.createRandomAccountId();
 
     @Mock
     @Bind
-    private BankActionsFacadeInvoker bankActionsFacadeInvoker;
+    private BankActionsFacade bankActionsFacade;
 
     @Test
     public void shouldCreateAccount() throws AccountCreateException, InterruptedException {
         Account account = new Account().accountId(ACCOUNT_ID.getAccountNumber()).balance(DEPOSIT);
-        Mockito.when(bankActionsFacadeInvoker.createAccount(DEPOSIT)).thenReturn(account);
+        Mockito.when(bankActionsFacade.createAccount(DEPOSIT)).thenReturn(account);
 
         AccountCreateRequest accountCreateRequest = new AccountCreateRequest();
 
@@ -50,7 +50,7 @@ public class CreateAccountRestActionIntegrationTest extends SparkRestServerAware
 
     @Test
     public void shouldFailedToCreateAccount() throws AccountCreateException, InterruptedException {
-        Mockito.when(bankActionsFacadeInvoker.createAccount(DEPOSIT)).thenThrow(new IllegalArgumentException("TEST"));
+        Mockito.when(bankActionsFacade.createAccount(DEPOSIT)).thenThrow(new IllegalArgumentException("TEST"));
 
         AccountCreateRequest accountCreateRequest = new AccountCreateRequest();
 

@@ -1,6 +1,6 @@
 package com.dominikcebula.bank.service.rest.actions;
 
-import com.dominikcebula.bank.service.bls.actions.BankActionsFacadeInvoker;
+import com.dominikcebula.bank.service.bls.actions.BankActionsFacade;
 import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.dto.AccountCreateRequest;
 import com.dominikcebula.bank.service.dto.AccountCreateResponse;
@@ -15,13 +15,13 @@ public class CreateAccountRestAction extends AbstractValidatingRestAction<Accoun
 
     public static final String ACCOUNTS_CREATE_URI = "/accounts";
 
-    private final BankActionsFacadeInvoker bankActionsFacadeInvoker;
+    private final BankActionsFacade bankActionsFacade;
 
     @Inject
     @SuppressWarnings("unused")
-    public CreateAccountRestAction(BankActionsFacadeInvoker bankActionsFacadeInvoker) {
+    public CreateAccountRestAction(BankActionsFacade bankActionsFacade) {
         super(AccountCreateRequest.class, AccountCreateResponse.class);
-        this.bankActionsFacadeInvoker = bankActionsFacadeInvoker;
+        this.bankActionsFacade = bankActionsFacade;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class CreateAccountRestAction extends AbstractValidatingRestAction<Accoun
 
     @Override
     public AccountCreateResponse handleRequest(AccountCreateRequest accountCreateRequest) throws Exception {
-        Account account = bankActionsFacadeInvoker.createAccount(accountCreateRequest.getInitialDeposit());
+        Account account = bankActionsFacade.createAccount(accountCreateRequest.getInitialDeposit());
         ModelApiResponse status = new ModelApiResponse().code(ACCOUNT_CREATED);
 
         return new AccountCreateResponse()

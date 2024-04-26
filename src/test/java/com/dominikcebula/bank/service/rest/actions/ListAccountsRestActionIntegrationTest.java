@@ -1,11 +1,11 @@
 package com.dominikcebula.bank.service.rest.actions;
 
-import com.dominikcebula.bank.service.bls.actions.BankActionsFacadeInvoker;
+import com.dominikcebula.bank.service.bls.actions.BankActionsFacade;
 import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.dto.Accounts;
 import com.dominikcebula.bank.service.dto.ApiCode;
 import com.dominikcebula.bank.service.dto.ListAccountsResponse;
-import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
+import com.dominikcebula.bank.service.rest.actions.base.NoActionsFacadeInContextIntegrationTest;
 import com.google.inject.testing.fieldbinder.Bind;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,17 +21,17 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ListAccountsRestActionIntegrationTest extends SparkRestServerAwareTest {
+public class ListAccountsRestActionIntegrationTest extends NoActionsFacadeInContextIntegrationTest {
 
     private static final int TOTAL_DEPOSIT = 600;
 
     @Mock
     @Bind
-    private BankActionsFacadeInvoker bankActionsFacadeInvoker;
+    private BankActionsFacade bankActionsFacade;
 
     @Test
     public void shouldListCreatedAccounts() {
-        Mockito.when(bankActionsFacadeInvoker.listAccounts()).thenReturn(getAccounts());
+        Mockito.when(bankActionsFacade.listAccounts()).thenReturn(getAccounts());
 
         ListAccountsResponse listAccountsResponse = resetClient().getForObject(ACCOUNT_LIST_URI, ListAccountsResponse.class);
 

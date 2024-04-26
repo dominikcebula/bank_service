@@ -1,6 +1,6 @@
 package com.dominikcebula.bank.service.rest.actions;
 
-import com.dominikcebula.bank.service.bls.actions.BankActionsFacadeInvoker;
+import com.dominikcebula.bank.service.bls.actions.BankActionsFacade;
 import com.dominikcebula.bank.service.bls.ds.AccountId;
 import com.dominikcebula.bank.service.dto.ApiCode;
 import com.dominikcebula.bank.service.dto.ModelApiResponse;
@@ -14,13 +14,13 @@ public class TransferMoneyRestAction extends AbstractValidatingRestAction<MoneyT
 
     public static final String TRANSFER_URI = "/transfer";
 
-    private final BankActionsFacadeInvoker bankActionsFacadeInvoker;
+    private final BankActionsFacade bankActionsFacade;
 
     @Inject
     @SuppressWarnings("unused")
-    public TransferMoneyRestAction(BankActionsFacadeInvoker bankActionsFacadeInvoker) {
+    public TransferMoneyRestAction(BankActionsFacade bankActionsFacade) {
         super(MoneyTransfer.class, TransferMoneyResponse.class);
-        this.bankActionsFacadeInvoker = bankActionsFacadeInvoker;
+        this.bankActionsFacade = bankActionsFacade;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class TransferMoneyRestAction extends AbstractValidatingRestAction<MoneyT
 
     @Override
     TransferMoneyResponse handleRequest(MoneyTransfer request) throws Exception {
-        bankActionsFacadeInvoker.transfer(AccountId.createAccountNumber(request.getFrom()), AccountId.createAccountNumber(request.getTo()), request.getAmount());
+        bankActionsFacade.transfer(AccountId.createAccountNumber(request.getFrom()), AccountId.createAccountNumber(request.getTo()), request.getAmount());
 
         return new TransferMoneyResponse()
                 .moneyTransfer(request)

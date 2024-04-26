@@ -35,9 +35,6 @@ public class ServiceController {
             logger.info("Stopping service");
             restServer.stop();
 
-            // https://github.com/perwendel/spark/issues/705
-            awaitServiceStopped.await(configuration);
-
             restServer = null;
         }
     }

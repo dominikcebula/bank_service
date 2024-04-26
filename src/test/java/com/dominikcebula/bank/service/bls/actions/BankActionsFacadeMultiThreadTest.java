@@ -26,19 +26,19 @@ public class BankActionsFacadeMultiThreadTest extends ContextAwareTest {
     private static final int DEFAULT_DEPOSIT = 148;
     private static final int TOTAL_DEPOSIT = NUMBER_OF_ACCOUNTS * DEFAULT_DEPOSIT;
 
-    private BankActionsFacadeInvoker bankActionsFacadeInvoker;
+    private BankActionsFacade bankActionsFacade;
 
     @Before
     public void setUp() {
         super.setUp();
-        bankActionsFacadeInvoker = injector.getInstance(BankActionsFacadeInvoker.class);
+        bankActionsFacade = injector.getInstance(BankActionsFacade.class);
     }
 
     @Test
     public void shouldCreateAccountsCorrectly() {
         createDefaultAccounts();
 
-        Accounts accounts = bankActionsFacadeInvoker.listAccounts();
+        Accounts accounts = bankActionsFacade.listAccounts();
 
         assertEquals(NUMBER_OF_ACCOUNTS, accounts.getAccounts().size());
         assertEquals(TOTAL_DEPOSIT, accounts.getTotalDeposit().intValue());
@@ -49,11 +49,11 @@ public class BankActionsFacadeMultiThreadTest extends ContextAwareTest {
         List<Account> sourceAccounts = createRandomAccounts();
         List<Account> destinationAccounts = createRandomAccounts();
 
-        Accounts accountsBeforeTransfer = bankActionsFacadeInvoker.listAccounts();
+        Accounts accountsBeforeTransfer = bankActionsFacade.listAccounts();
 
         performRandomTransfers(sourceAccounts, destinationAccounts);
 
-        Accounts accountsAfterTransfer = bankActionsFacadeInvoker.listAccounts();
+        Accounts accountsAfterTransfer = bankActionsFacade.listAccounts();
 
         assertEquals(accountsBeforeTransfer.getAccounts().size(), accountsAfterTransfer.getAccounts().size());
         assertEquals(accountsBeforeTransfer.getTotalDeposit(), accountsAfterTransfer.getTotalDeposit());
@@ -75,7 +75,7 @@ public class BankActionsFacadeMultiThreadTest extends ContextAwareTest {
 
     @SneakyThrows
     private Account createAccount(BigDecimal amount) {
-        return bankActionsFacadeInvoker.createAccount(amount);
+        return bankActionsFacade.createAccount(amount);
     }
 
     private void performRandomTransfers(List<Account> sourceAccounts, List<Account> destinationAccounts) {
@@ -89,7 +89,7 @@ public class BankActionsFacadeMultiThreadTest extends ContextAwareTest {
         Account sourceAccount = getRandomAccount(sourceAccounts);
         Account destinationAccount = getRandomAccount(destinationAccounts);
 
-        bankActionsFacadeInvoker.transfer(
+        bankActionsFacade.transfer(
                 AccountId.createAccountNumber(sourceAccount.getAccountId()),
                 AccountId.createAccountNumber(destinationAccount.getAccountId()),
                 randomTransfer()

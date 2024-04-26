@@ -9,7 +9,7 @@ import com.google.inject.Inject;
 
 import java.math.BigDecimal;
 
-public class BankActionsFacade extends BankActionsFacadeIfc {
+public class BankActionsFacade {
 
     private final CreateAccountAction createAccountAction;
     private final TransferMoneyAction transferMoneyAction;
@@ -22,18 +22,15 @@ public class BankActionsFacade extends BankActionsFacadeIfc {
         this.listAccountsAction = listAccountsAction;
     }
 
-    @Override
-    Account createAccount(BigDecimal initialBalance) throws AccountCreateException, InterruptedException {
+    public Account createAccount(BigDecimal initialBalance) throws AccountCreateException, InterruptedException {
         return createAccountAction.createAccount(initialBalance);
     }
 
-    @Override
-    void transfer(AccountId from, AccountId to, BigDecimal amount) throws TransferException {
+    public void transfer(AccountId from, AccountId to, BigDecimal amount) throws TransferException {
         transferMoneyAction.transfer(from, to, amount);
     }
 
-    @Override
-    Accounts listAccounts() {
+    public Accounts listAccounts() {
         return listAccountsAction.listAccounts();
     }
 }

@@ -41,7 +41,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     private static final BigDecimal FLOAT_AMOUNT = BigDecimal.valueOf(5.671);
     private static final BigDecimal FLOAT_AMOUNT_ROUNDED = BigDecimal.valueOf(5.67);
 
-    private BankActionsFacadeInvoker bankActionsFacadeInvoker;
+    private BankActionsFacade bankActionsFacade;
     private AccountDao accountDao;
     @Mock
     @Bind
@@ -53,7 +53,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     @Before
     public void setUp() {
         super.setUp();
-        bankActionsFacadeInvoker = injector.getInstance(BankActionsFacadeInvoker.class);
+        bankActionsFacade = injector.getInstance(BankActionsFacade.class);
         accountDao = injector.getInstance(AccountDao.class);
     }
 
@@ -69,7 +69,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     public void shouldListAccounts() throws AccountCreateException, InterruptedException {
         createAccounts();
 
-        Accounts accounts = bankActionsFacadeInvoker.listAccounts();
+        Accounts accounts = bankActionsFacade.listAccounts();
 
         assertThat(accounts.getAccounts())
                 .containsOnly(
@@ -83,7 +83,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     @Test
     public void shouldListAccountsWhenNoneCreated() {
 
-        Accounts accounts = bankActionsFacadeInvoker.listAccounts();
+        Accounts accounts = bankActionsFacade.listAccounts();
 
         assertTrue(accounts.getAccounts().isEmpty());
         assertEquals(NO_MONEY, accounts.getTotalDeposit());
@@ -93,7 +93,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     public void shouldTransferMoneyBetweenAccounts() throws AccountCreateException, TransferException, InterruptedException {
         createAccounts();
 
-        bankActionsFacadeInvoker.transfer(ACCOUNT_ID_1, ACCOUNT_ID_2, BALANCE1);
+        bankActionsFacade.transfer(ACCOUNT_ID_1, ACCOUNT_ID_2, BALANCE1);
 
         assertEquals(NO_MONEY, accountDao.findAccount(ACCOUNT_ID_1).getBalance());
         assertEquals(BALANCE1.add(BALANCE2), accountDao.findAccount(ACCOUNT_ID_2).getBalance());
@@ -104,7 +104,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     public void shouldTransferRoundedMoneyBetweenAccounts() throws AccountCreateException, TransferException, InterruptedException {
         createAccounts();
 
-        bankActionsFacadeInvoker.transfer(ACCOUNT_ID_1, ACCOUNT_ID_2, FLOAT_AMOUNT);
+        bankActionsFacade.transfer(ACCOUNT_ID_1, ACCOUNT_ID_2, FLOAT_AMOUNT);
 
         assertEquals(BALANCE2.add(FLOAT_AMOUNT_ROUNDED).floatValue(), accountDao.findAccount(ACCOUNT_ID_2).getBalance().floatValue(), 0f);
     }
@@ -116,7 +116,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
 
         createAccounts();
 
-        bankActionsFacadeInvoker.transfer(NON_EXISTING_ACCOUNT, ACCOUNT_ID_2, BALANCE1);
+        bankActionsFacade.transfer(NON_EXISTING_ACCOUNT, ACCOUNT_ID_2, BALANCE1);
     }
 
     @Test
@@ -126,18 +126,18 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
 
         createAccounts();
 
-        bankActionsFacadeInvoker.transfer(ACCOUNT_ID_1, ACCOUNT_ID_2, HUGE_AMOUNT);
+        bankActionsFacade.transfer(ACCOUNT_ID_1, ACCOUNT_ID_2, HUGE_AMOUNT);
     }
 
     private void createAccounts() throws AccountCreateException, InterruptedException {
         mockAccountId(ACCOUNT_ID_1);
-        bankActionsFacadeInvoker.createAccount(BALANCE1);
+        bankActionsFacade.createAccount(BALANCE1);
 
         mockAccountId(ACCOUNT_ID_2);
-        bankActionsFacadeInvoker.createAccount(BALANCE2);
+        bankActionsFacade.createAccount(BALANCE2);
 
         mockAccountId(ACCOUNT_ID_3);
-        bankActionsFacadeInvoker.createAccount(BALANCE3);
+        bankActionsFacade.createAccount(BALANCE3);
     }
 
     private void mockAccountId(AccountId accountId) throws AccountCreateException {
