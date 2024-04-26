@@ -3,11 +3,13 @@
 This repository contains implementation of RESTful Bank Service for money transfer between accounts.
 
 Implementation was created with focus on following requirements:
+
 * Focus on small footprint
 * Fast startup time
 * Avoid usages of heavy framework
 
 Currently service supports following operations:
+
 * Creating Account
 * Listing Accounts with their balance
 * List Total Deposit
@@ -16,12 +18,14 @@ Currently service supports following operations:
 # Tools used
 
 Below is the list of tools used during development:
-* IntelliJ
-* Java 8
-* Guice
+
+* Java 21
+* Maven
 * SparkJava
+* Guice
 * OpenAPI
 * Swagger Codegen
+* Lombok
 * JSR 303/380 Bean Validation
 * Mockito
 * ...
@@ -29,6 +33,7 @@ Below is the list of tools used during development:
 # Compiling project
 
 To compile project type:
+
 ```
 mvn clean install
 ```
@@ -36,12 +41,14 @@ mvn clean install
 # Running Project
 
 There are two ways to run project:
+
 * Directly from maven
 * Using executable JAR
 
 ## Running Project with Maven
 
 To run project from maven, execute:
+
 ```
 mvn exec:java
 ```
@@ -49,6 +56,7 @@ mvn exec:java
 ## Running Project with Executable JAR
 
 To run project from Executable JAR, go to target folder and type:
+
 ```
 java -jar bank-service-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
@@ -56,15 +64,19 @@ java -jar bank-service-1.0-SNAPSHOT-jar-with-dependencies.jar
 # Runtime Configuration
 
 Following properties can be configured during startup by properties:
+
 * host - service.host
 * port - service.port
 * max threads in pool - service.max.threads
 
 For example, if you want to change port execute:
+
 ```
 mvn exec:java -Dservice.port=8081
 ```
+
 or from, when using jar:
+
 ```
 java -Dservice.port=8081 -jar bank-service-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
@@ -79,11 +91,13 @@ Based on this file DTOs were generated with usage of Swagger Codegen.
 ## Checking if service is up
 
 Request:
+
 ```
 $ curl http://localhost:8080/ -X GET
 ```
 
 Response:
+
 ```
 {
   "status": "up"
@@ -93,6 +107,7 @@ Response:
 ## Creating Account
 
 Request:
+
 ```
 $ curl http://localhost:8080/accounts/create -X POST -d '{
   "initialDeposit": "100.00"
@@ -100,6 +115,7 @@ $ curl http://localhost:8080/accounts/create -X POST -d '{
 ```
 
 Response:
+
 ```json
 {
   "status": {
@@ -115,11 +131,13 @@ Response:
 ## Listing Accounts and Total Deposit
 
 Request:
+
 ```
 $ curl http://localhost:8080/accounts/list -X GET
 ```
 
 Response:
+
 ```json
 {
   "status": {
@@ -144,6 +162,7 @@ Response:
 ## Transferring Money
 
 Request:
+
 ```
 $ curl http://localhost:8080/transfer -X POST -d '{
   "from": "8955895919049153",
@@ -153,6 +172,7 @@ $ curl http://localhost:8080/transfer -X POST -d '{
 ```
 
 Response:
+
 ```json
 {
   "status": {
