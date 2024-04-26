@@ -1,7 +1,7 @@
 package com.dominikcebula.bank.service.rest.actions;
 
-import com.dominikcebula.bank.service.bls.actions.BankActionsFacade;
-import com.dominikcebula.bank.service.bls.ds.AccountId;
+import com.dominikcebula.bank.service.application.actions.BankActionsFacade;
+import com.dominikcebula.bank.service.application.ds.AccountId;
 import com.dominikcebula.bank.service.dto.ApiCode;
 import com.dominikcebula.bank.service.dto.ModelApiResponse;
 import com.dominikcebula.bank.service.dto.MoneyTransfer;

@@ -1,6 +1,6 @@
-package com.dominikcebula.bank.service.bls.actions;
+package com.dominikcebula.bank.service.application.actions;
 
-import com.dominikcebula.bank.service.bls.ds.AccountId;
+import com.dominikcebula.bank.service.application.ds.AccountId;
 import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.dto.Accounts;
 import com.dominikcebula.bank.service.guice.ContextAwareTest;

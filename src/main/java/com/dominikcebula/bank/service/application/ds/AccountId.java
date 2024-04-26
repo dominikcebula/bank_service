@@ -1,4 +1,4 @@
-package com.dominikcebula.bank.service.bls.ds;
+package com.dominikcebula.bank.service.application.ds;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

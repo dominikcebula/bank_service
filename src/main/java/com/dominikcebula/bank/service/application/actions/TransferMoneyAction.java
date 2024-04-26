@@ -1,12 +1,12 @@
-package com.dominikcebula.bank.service.bls.actions;
+package com.dominikcebula.bank.service.application.actions;
 
-import com.dominikcebula.bank.service.bls.dao.AccountDao;
-import com.dominikcebula.bank.service.bls.ds.AccountId;
-import com.dominikcebula.bank.service.bls.exception.AccountLockException;
-import com.dominikcebula.bank.service.bls.exception.AccountMissingException;
-import com.dominikcebula.bank.service.bls.exception.TransferException;
-import com.dominikcebula.bank.service.bls.exception.WithdrawException;
-import com.dominikcebula.bank.service.bls.utils.MoneyCalculator;
+import com.dominikcebula.bank.service.application.dao.AccountDao;
+import com.dominikcebula.bank.service.application.ds.AccountId;
+import com.dominikcebula.bank.service.application.exception.AccountLockException;
+import com.dominikcebula.bank.service.application.exception.AccountMissingException;
+import com.dominikcebula.bank.service.application.exception.TransferException;
+import com.dominikcebula.bank.service.application.exception.WithdrawException;
+import com.dominikcebula.bank.service.application.utils.MoneyCalculator;
 import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.logging.Loggers;
 import com.google.inject.Inject;

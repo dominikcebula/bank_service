@@ -1,6 +1,6 @@
 package com.dominikcebula.bank.service.rest.validator.validators;
 
-import com.dominikcebula.bank.service.bls.ds.AccountId;
+import com.dominikcebula.bank.service.application.ds.AccountId;
 import com.dominikcebula.bank.service.rest.validator.exception.ValidatorException;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;

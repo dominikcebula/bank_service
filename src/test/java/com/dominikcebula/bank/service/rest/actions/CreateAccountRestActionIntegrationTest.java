@@ -1,8 +1,8 @@
 package com.dominikcebula.bank.service.rest.actions;
 
-import com.dominikcebula.bank.service.bls.actions.BankActionsFacade;
-import com.dominikcebula.bank.service.bls.ds.AccountId;
-import com.dominikcebula.bank.service.bls.exception.AccountCreateException;
+import com.dominikcebula.bank.service.application.actions.BankActionsFacade;
+import com.dominikcebula.bank.service.application.ds.AccountId;
+import com.dominikcebula.bank.service.application.exception.AccountCreateException;
 import com.dominikcebula.bank.service.dto.*;
 import com.dominikcebula.bank.service.rest.actions.base.NoActionsFacadeInContextIntegrationTest;
 import com.google.inject.testing.fieldbinder.Bind;

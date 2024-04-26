@@ -1,4 +1,4 @@
-package com.dominikcebula.bank.service.bls.utils;
+package com.dominikcebula.bank.service.application.utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

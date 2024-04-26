@@ -1,6 +1,6 @@
-package com.dominikcebula.bank.service.bls.exception;
+package com.dominikcebula.bank.service.application.exception;
 
-import com.dominikcebula.bank.service.bls.ds.AccountId;
+import com.dominikcebula.bank.service.application.ds.AccountId;
 import com.dominikcebula.bank.service.exception.ReportableException;
 
 public class AccountLockException extends ReportableException {

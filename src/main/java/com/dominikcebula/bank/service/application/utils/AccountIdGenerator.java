@@ -1,7 +1,7 @@
-package com.dominikcebula.bank.service.bls.utils;
+package com.dominikcebula.bank.service.application.utils;
 
-import com.dominikcebula.bank.service.bls.ds.AccountId;
-import com.dominikcebula.bank.service.bls.exception.AccountCreateException;
+import com.dominikcebula.bank.service.application.ds.AccountId;
+import com.dominikcebula.bank.service.application.exception.AccountCreateException;
 
 import java.util.Set;
 

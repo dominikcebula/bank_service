@@ -1,10 +1,10 @@
-package com.dominikcebula.bank.service.bls.actions;
+package com.dominikcebula.bank.service.application.actions;
 
-import com.dominikcebula.bank.service.bls.dao.AccountDao;
-import com.dominikcebula.bank.service.bls.ds.AccountId;
-import com.dominikcebula.bank.service.bls.exception.AccountCreateException;
-import com.dominikcebula.bank.service.bls.utils.AccountIdGenerator;
-import com.dominikcebula.bank.service.bls.utils.MoneyAmountRound;
+import com.dominikcebula.bank.service.application.dao.AccountDao;
+import com.dominikcebula.bank.service.application.ds.AccountId;
+import com.dominikcebula.bank.service.application.exception.AccountCreateException;
+import com.dominikcebula.bank.service.application.utils.AccountIdGenerator;
+import com.dominikcebula.bank.service.application.utils.MoneyAmountRound;
 import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.logging.Loggers;
 import com.google.inject.Inject;

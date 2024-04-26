@@ -1,6 +1,6 @@
 package com.dominikcebula.bank.service.rest.actions;
 
-import com.dominikcebula.bank.service.bls.actions.BankActionsFacade;
+import com.dominikcebula.bank.service.application.actions.BankActionsFacade;
 import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.dto.AccountCreateRequest;
 import com.dominikcebula.bank.service.dto.AccountCreateResponse;

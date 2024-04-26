@@ -1,8 +1,8 @@
-package com.dominikcebula.bank.service.bls.actions;
+package com.dominikcebula.bank.service.application.actions;
 
-import com.dominikcebula.bank.service.bls.dao.AccountDao;
-import com.dominikcebula.bank.service.bls.utils.MoneyAmountRound;
-import com.dominikcebula.bank.service.bls.utils.MoneyCalculator;
+import com.dominikcebula.bank.service.application.dao.AccountDao;
+import com.dominikcebula.bank.service.application.utils.MoneyAmountRound;
+import com.dominikcebula.bank.service.application.utils.MoneyCalculator;
 import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.dto.Accounts;
 import com.dominikcebula.bank.service.logging.Loggers;

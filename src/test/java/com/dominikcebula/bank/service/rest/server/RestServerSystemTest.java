@@ -1,6 +1,6 @@
 package com.dominikcebula.bank.service.rest.server;
 
-import com.dominikcebula.bank.service.bls.ds.AccountId;
+import com.dominikcebula.bank.service.application.ds.AccountId;
 import com.dominikcebula.bank.service.dto.*;
 import com.dominikcebula.bank.service.rest.actions.CreateAccountRestAction;
 import com.dominikcebula.bank.service.rest.actions.TransferMoneyRestAction;

@@ -1,7 +1,7 @@
-package com.dominikcebula.bank.service.bls.utils;
+package com.dominikcebula.bank.service.application.utils;
 
-import com.dominikcebula.bank.service.bls.ds.AccountId;
-import com.dominikcebula.bank.service.bls.exception.AccountCreateException;
+import com.dominikcebula.bank.service.application.ds.AccountId;
+import com.dominikcebula.bank.service.application.exception.AccountCreateException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -13,7 +13,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.Collections;
 import java.util.Set;
 
-import static com.dominikcebula.bank.service.bls.utils.AccountIdGenerator.MESSAGE_GENERATION_ERROR;
+import static com.dominikcebula.bank.service.application.utils.AccountIdGenerator.MESSAGE_GENERATION_ERROR;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)

@@ -1,6 +1,6 @@
-package com.dominikcebula.bank.service.bls.dao;
+package com.dominikcebula.bank.service.application.dao;
 
-import com.dominikcebula.bank.service.bls.ds.AccountId;
+import com.dominikcebula.bank.service.application.ds.AccountId;
 import com.dominikcebula.bank.service.configuration.Configuration;
 import com.dominikcebula.bank.service.dto.Account;
 import com.google.inject.Inject;

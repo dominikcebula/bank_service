@@ -3,7 +3,7 @@ package com.dominikcebula.bank.service.rest.validator.validators;
 import com.dominikcebula.bank.service.rest.validator.Validator;
 import com.dominikcebula.bank.service.rest.validator.exception.ValidatorException;
 
-import static com.dominikcebula.bank.service.bls.ds.AccountId.ACCOUNT_ID_LENGTH;
+import static com.dominikcebula.bank.service.application.ds.AccountId.ACCOUNT_ID_LENGTH;
 
 public class AccountIdValidator extends Validator<String> {
 
