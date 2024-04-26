@@ -109,7 +109,7 @@ Response:
 Request:
 
 ```
-$ curl http://localhost:8080/accounts/create -X POST -d '{
+$ curl http://localhost:8080/accounts -X POST -d '{
   "initialDeposit": "100.00"
 }'
 ```
@@ -133,7 +133,7 @@ Response:
 Request:
 
 ```
-$ curl http://localhost:8080/accounts/list -X GET
+$ curl http://localhost:8080/accounts -X GET
 ```
 
 Response:
@@ -185,3 +185,11 @@ Response:
   }
 }
 ```
+
+# Author
+
+Dominik Cebula
+
+* https://dominikcebula.com/
+* https://blog.dominikcebula.com/
+* https://www.udemy.com/user/dominik-cebula/
