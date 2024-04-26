@@ -33,7 +33,7 @@ public class AnyExceptionHandler implements ExceptionHandler<Exception> {
                 gson.toJson(
                         new ApiErrorResponse()
                                 .status(new ModelApiResponse().code(ApiCode.FAILED))
-                                .message("Unexpected error occurred while processing request.")
+                                .message("Error occurred while processing request.")
                 )
         );
     }
