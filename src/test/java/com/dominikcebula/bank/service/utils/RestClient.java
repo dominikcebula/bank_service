@@ -13,6 +13,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
@@ -32,10 +33,12 @@ public class RestClient {
         return executeForEntity(httpGet, responseClass);
     }
 
-    public Header[] getForHeaders(String uri) {
+    public Header[] getForHeaders(String uri) throws IOException {
         HttpGet httpGet = new HttpGet(uri);
 
-        return executeForResponse(httpGet).getAllHeaders();
+        try (CloseableHttpResponse closeableHttpResponse = executeForResponse(httpGet)) {
+            return closeableHttpResponse.getAllHeaders();
+        }
     }
 
     public <I, O> O postForObject(String uri, Object requestObject, Class<I> requestClass, Class<O> responseClass) {

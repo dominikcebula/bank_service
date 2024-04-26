@@ -57,9 +57,9 @@ public class AccountDaoTest {
     public void shouldGiveImmutableAccounts() {
         accountDao.store(ACCOUNT1);
 
-        accountDao.findAllAccounts().iterator().next().setBalance(BigDecimal.valueOf(555));
+        accountDao.findAllAccounts().getFirst().setBalance(BigDecimal.valueOf(555));
 
-        assertEquals(ACCOUNT1_BALANCE, accountDao.findAllAccounts().iterator().next().getBalance());
+        assertEquals(ACCOUNT1_BALANCE, accountDao.findAllAccounts().getFirst().getBalance());
     }
 
     @Test

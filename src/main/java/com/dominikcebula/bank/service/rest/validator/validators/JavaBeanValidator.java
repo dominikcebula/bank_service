@@ -2,9 +2,9 @@ package com.dominikcebula.bank.service.rest.validator.validators;
 
 import com.dominikcebula.bank.service.rest.validator.Validator;
 import com.dominikcebula.bank.service.rest.validator.exception.ValidatorException;
-
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
+
 import java.util.Set;
 
 public class JavaBeanValidator<T> extends Validator<T> {
