@@ -5,7 +5,7 @@ import com.dominikcebula.bank.service.rest.service.ServiceShutdownHook;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-class Runner {
+public class Runner {
 
     public static void main(String... args) {
 
