@@ -20,6 +20,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
+import static lombok.AccessLevel.PACKAGE;
+
 @RequiredArgsConstructor(onConstructor_ = @__({@Inject}))
 public class AccountDao {
     private final Map<AccountId, LockableAccount> accounts = new HashMap<>();
@@ -90,16 +92,10 @@ public class AccountDao {
 
             AccountId accountNumber = AccountId.createAccountNumber(account.getAccountId());
 
-            if (accountExists(accountNumber)) {
-                LockableAccount existingAccount = accounts.get(accountNumber);
-                existingAccount.tryLock(configuration.getAccountWaitForLockMaxTimeMillis(), TimeUnit.MILLISECONDS);
-                try {
-                    existingAccount.setAccount(account);
-                } finally {
-                    existingAccount.unlock();
-                }
+            if (!accountExists(accountNumber)) {
+                createAccount(accountNumber, account);
             } else {
-                accounts.put(accountNumber, new LockableAccount(account));
+                updateAccount(accountNumber, account);
             }
         } finally {
             writeLock.unlock();
@@ -123,19 +119,36 @@ public class AccountDao {
         return newAccount;
     }
 
+    private void createAccount(AccountId accountNumber, Account account) {
+        accounts.put(accountNumber, new LockableAccount(account));
+    }
+
+    private void updateAccount(AccountId accountNumber, Account account) throws InterruptedException {
+        LockableAccount existingAccount = accounts.get(accountNumber);
+        if (!existingAccount.tryLock(configuration.getAccountWaitForLockMaxTimeMillis(), TimeUnit.MILLISECONDS)) {
+            throw new IllegalStateException(String.format("Unable to lock account [%s]", accountNumber));
+        }
+
+        try {
+            existingAccount.setAccount(account);
+        } finally {
+            existingAccount.unlock();
+        }
+    }
+
     @AllArgsConstructor
     private static class LockableAccount {
         private final Lock lock = new ReentrantLock();
 
-        @Setter
-        @Getter
+        @Setter(PACKAGE)
+        @Getter(PACKAGE)
         private Account account;
 
-        public boolean tryLock(long timeout, TimeUnit timeUnit) throws InterruptedException {
+        boolean tryLock(long timeout, TimeUnit timeUnit) throws InterruptedException {
             return lock.tryLock(timeout, timeUnit);
         }
 
-        public void unlock() {
+        void unlock() {
             lock.unlock();
         }
     }
