@@ -23,17 +23,17 @@ public class BankActionsFacade extends BankActionsFacadeIfc {
     }
 
     @Override
-    synchronized Account createAccount(BigDecimal initialBalance) throws AccountCreateException {
+    Account createAccount(BigDecimal initialBalance) throws AccountCreateException, InterruptedException {
         return createAccountAction.createAccount(initialBalance);
     }
 
     @Override
-    synchronized void transfer(AccountId from, AccountId to, BigDecimal amount) throws TransferException {
+    void transfer(AccountId from, AccountId to, BigDecimal amount) throws TransferException {
         transferMoneyAction.transfer(from, to, amount);
     }
 
     @Override
-    synchronized Accounts listAccounts() {
+    Accounts listAccounts() {
         return listAccountsAction.listAccounts();
     }
 }

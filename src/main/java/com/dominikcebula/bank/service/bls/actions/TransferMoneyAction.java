@@ -2,6 +2,7 @@ package com.dominikcebula.bank.service.bls.actions;
 
 import com.dominikcebula.bank.service.bls.dao.AccountDao;
 import com.dominikcebula.bank.service.bls.ds.AccountId;
+import com.dominikcebula.bank.service.bls.exception.AccountLockException;
 import com.dominikcebula.bank.service.bls.exception.AccountMissingException;
 import com.dominikcebula.bank.service.bls.exception.TransferException;
 import com.dominikcebula.bank.service.bls.exception.WithdrawException;
@@ -32,32 +33,60 @@ class TransferMoneyAction {
         try {
             logger.info(String.format("Transferring [%s] amount from [%s] to [%s]", from, to, amount));
 
-            logger.info("Fetching accounts");
-            Account fromAccount = getExistingAccountForTransfer(from);
-            Account toAccount = getExistingAccountForTransfer(to);
+            logger.info("Validating that accounts exists");
+            validateAccountExists(from);
+            validateAccountExists(to);
 
-            logger.info("Performing transfer");
-            fromAccount.setBalance(
-                    withdraw(fromAccount.getBalance(), amount)
-            );
+            logger.info("Trying to lock accounts");
+            tryLockAccount(from);
+            try {
+                tryLockAccount(to);
+                try {
+                    logger.info("Fetching accounts");
+                    Account fromAccount = getExistingAccountForTransfer(from);
+                    Account toAccount = getExistingAccountForTransfer(to);
 
-            toAccount.setBalance(
-                    deposit(toAccount.getBalance(), amount)
-            );
+                    logger.info("Performing transfer");
+                    fromAccount.setBalance(
+                            withdraw(fromAccount.getBalance(), amount)
+                    );
 
-            logger.info("Saving new accounts balance");
-            accountDao.store(fromAccount);
-            accountDao.store(toAccount);
+                    toAccount.setBalance(
+                            deposit(toAccount.getBalance(), amount)
+                    );
 
-        } catch (WithdrawException | AccountMissingException e) {
+                    logger.info("Saving new accounts balance");
+                    accountDao.store(fromAccount);
+                    accountDao.store(toAccount);
+                } finally {
+                    unlockAccount(to);
+                }
+            } finally {
+                unlockAccount(from);
+            }
+
+        } catch (WithdrawException | AccountMissingException | AccountLockException | InterruptedException e) {
             throw new TransferException(String.format("Unable to transfer amount [%s] from [%s] to [%s]: %s", amount, from, to, e.getMessage()), e);
         }
     }
 
+    private void tryLockAccount(AccountId accountId) throws InterruptedException, AccountLockException {
+        if (!accountDao.tryLockAccount(accountId)) {
+            throw new AccountLockException(accountId);
+        }
+    }
+
+    private void unlockAccount(AccountId accountId) {
+        accountDao.unlockAccount(accountId);
+    }
+
     private Account getExistingAccountForTransfer(AccountId accountId) throws AccountMissingException {
-        if (accountDao.accountExists(accountId))
-            return accountDao.findAccount(accountId);
-        else
+        validateAccountExists(accountId);
+        return accountDao.findAccount(accountId);
+    }
+
+    private void validateAccountExists(AccountId accountId) throws AccountMissingException {
+        if (!accountDao.accountExists(accountId))
             throw new AccountMissingException(String.format("Unable to locate account [%s]", accountId));
     }
 

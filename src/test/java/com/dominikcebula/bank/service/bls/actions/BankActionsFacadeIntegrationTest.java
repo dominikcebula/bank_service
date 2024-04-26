@@ -58,7 +58,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldCreateAccounts() throws AccountCreateException {
+    public void shouldCreateAccounts() throws AccountCreateException, InterruptedException {
         createAccounts();
 
         assertThat(accountDao.findAccountIdentifiers())
@@ -66,7 +66,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldListAccounts() throws AccountCreateException {
+    public void shouldListAccounts() throws AccountCreateException, InterruptedException {
         createAccounts();
 
         Accounts accounts = bankActionsFacadeInvoker.listAccounts();
@@ -90,7 +90,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldTransferMoneyBetweenAccounts() throws AccountCreateException, TransferException {
+    public void shouldTransferMoneyBetweenAccounts() throws AccountCreateException, TransferException, InterruptedException {
         createAccounts();
 
         bankActionsFacadeInvoker.transfer(ACCOUNT_ID_1, ACCOUNT_ID_2, BALANCE1);
@@ -101,7 +101,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldTransferRoundedMoneyBetweenAccounts() throws AccountCreateException, TransferException {
+    public void shouldTransferRoundedMoneyBetweenAccounts() throws AccountCreateException, TransferException, InterruptedException {
         createAccounts();
 
         bankActionsFacadeInvoker.transfer(ACCOUNT_ID_1, ACCOUNT_ID_2, FLOAT_AMOUNT);
@@ -110,7 +110,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldFailTransferBecauseOfMissingAccount() throws AccountCreateException, TransferException {
+    public void shouldFailTransferBecauseOfMissingAccount() throws AccountCreateException, TransferException, InterruptedException {
         expectedException.expect(TransferException.class);
         expectedException.expectMessage("Unable to locate account [" + NON_EXISTING_ACCOUNT + "]");
 
@@ -120,7 +120,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldFailTransferBecauseOfNoEnoughFunds() throws AccountCreateException, TransferException {
+    public void shouldFailTransferBecauseOfNoEnoughFunds() throws AccountCreateException, TransferException, InterruptedException {
         expectedException.expect(TransferException.class);
         expectedException.expectMessage("Unable to transfer amount [" + HUGE_AMOUNT + "] from [" + ACCOUNT_ID_1 + "] to [" + ACCOUNT_ID_2 + "]");
 
@@ -129,7 +129,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
         bankActionsFacadeInvoker.transfer(ACCOUNT_ID_1, ACCOUNT_ID_2, HUGE_AMOUNT);
     }
 
-    private void createAccounts() throws AccountCreateException {
+    private void createAccounts() throws AccountCreateException, InterruptedException {
         mockAccountId(ACCOUNT_ID_1);
         bankActionsFacadeInvoker.createAccount(BALANCE1);
 

@@ -29,7 +29,7 @@ class CreateAccountAction {
         this.moneyAmountRound = moneyAmountRound;
     }
 
-    Account createAccount(BigDecimal initialBalance) throws AccountCreateException {
+    Account createAccount(BigDecimal initialBalance) throws AccountCreateException, InterruptedException {
         logger.info("Creating account");
 
         logger.info("Generating account id and creating account");

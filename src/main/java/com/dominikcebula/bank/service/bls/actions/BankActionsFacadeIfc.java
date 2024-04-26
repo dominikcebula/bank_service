@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 
 abstract class BankActionsFacadeIfc {
 
-    abstract Account createAccount(BigDecimal initialBalance) throws AccountCreateException;
+    abstract Account createAccount(BigDecimal initialBalance) throws AccountCreateException, InterruptedException;
 
     abstract void transfer(AccountId from, AccountId to, BigDecimal amount) throws TransferException;
 

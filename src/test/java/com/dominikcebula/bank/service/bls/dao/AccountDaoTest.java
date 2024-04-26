@@ -1,6 +1,7 @@
 package com.dominikcebula.bank.service.bls.dao;
 
 import com.dominikcebula.bank.service.bls.ds.AccountId;
+import com.dominikcebula.bank.service.configuration.Configuration;
 import com.dominikcebula.bank.service.dto.Account;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +17,7 @@ public class AccountDaoTest {
 
     @Before
     public void setUp() {
-        accountDao = new AccountDao();
+        accountDao = new AccountDao(new Configuration());
     }
 
     @Test
@@ -27,14 +28,14 @@ public class AccountDaoTest {
     }
 
     @Test
-    public void shouldStoreOneAccount() {
+    public void shouldStoreOneAccount() throws InterruptedException {
         accountDao.store(ACCOUNT1);
 
         assertEquals(ACCOUNT1, accountDao.findAccount(ACCOUNT1_ID));
     }
 
     @Test
-    public void shouldStoreThreeAccount() {
+    public void shouldStoreThreeAccount() throws InterruptedException {
         accountDao.store(ACCOUNT1);
         accountDao.store(ACCOUNT2);
         accountDao.store(ACCOUNT3);
@@ -45,7 +46,7 @@ public class AccountDaoTest {
     }
 
     @Test
-    public void shouldGiveImmutableAccount() {
+    public void shouldGiveImmutableAccount() throws InterruptedException {
         accountDao.store(ACCOUNT1);
 
         accountDao.findAccount(ACCOUNT1_ID).setBalance(BigDecimal.valueOf(555));
@@ -54,7 +55,7 @@ public class AccountDaoTest {
     }
 
     @Test
-    public void shouldGiveImmutableAccounts() {
+    public void shouldGiveImmutableAccounts() throws InterruptedException {
         accountDao.store(ACCOUNT1);
 
         accountDao.findAllAccounts().getFirst().setBalance(BigDecimal.valueOf(555));
@@ -70,7 +71,7 @@ public class AccountDaoTest {
     }
 
     @Test
-    public void shouldCorrectlyCheckForExistence() {
+    public void shouldCorrectlyCheckForExistence() throws InterruptedException {
         accountDao.store(ACCOUNT1);
         accountDao.store(ACCOUNT3);
 
@@ -81,7 +82,7 @@ public class AccountDaoTest {
     }
 
     @Test
-    public void shouldCorrectlyFetchAccountIdentifiers() {
+    public void shouldCorrectlyFetchAccountIdentifiers() throws InterruptedException {
         accountDao.store(ACCOUNT1);
         accountDao.store(ACCOUNT2);
 
@@ -90,7 +91,7 @@ public class AccountDaoTest {
     }
 
     @Test
-    public void shouldCorrectlyFindAllAccounts() {
+    public void shouldCorrectlyFindAllAccounts() throws InterruptedException {
         accountDao.store(ACCOUNT1);
         accountDao.store(ACCOUNT2);
 
@@ -99,7 +100,7 @@ public class AccountDaoTest {
     }
 
     @Test
-    public void shouldCorrectlyFindAllAccountsInfo() {
+    public void shouldCorrectlyFindAllAccountsInfo() throws InterruptedException {
         accountDao.store(ACCOUNT1);
         accountDao.store(ACCOUNT2);
 

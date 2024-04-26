@@ -1,41 +1,116 @@
 package com.dominikcebula.bank.service.bls.dao;
 
 import com.dominikcebula.bank.service.bls.ds.AccountId;
+import com.dominikcebula.bank.service.bls.ds.LockableAccount;
+import com.dominikcebula.bank.service.configuration.Configuration;
 import com.dominikcebula.bank.service.dto.Account;
+import com.google.inject.Inject;
+import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor(onConstructor_ = @__({@Inject}))
 public class AccountDao {
-    private final Map<AccountId, Account> accounts = new HashMap<>();
+    private final Map<AccountId, LockableAccount> accounts = new HashMap<>();
+    private final ReadWriteLock lock = new ReentrantReadWriteLock();
+    private final Lock readLock = lock.readLock();
+    private final Lock writeLock = lock.writeLock();
+
+    private final Configuration configuration;
 
     public List<Account> findAllAccounts() {
-        return accounts.values().stream()
-                .map(this::copyAccount)
-                .collect(Collectors.toList());
+        try {
+            readLock.lock();
+
+            return accounts.values().stream()
+                    .map(LockableAccount::getAccount)
+                    .map(this::copyAccount)
+                    .collect(Collectors.toList());
+        } finally {
+            readLock.unlock();
+        }
     }
 
     public Account findAccount(AccountId accountId) {
-        Account account = accounts.get(accountId);
-        if (account != null)
-            return copyAccount(account);
-        else
-            return null;
+        try {
+            readLock.lock();
+
+            LockableAccount lockableAccount = accounts.get(accountId);
+            if (lockableAccount != null) {
+                Account account = lockableAccount.getAccount();
+                if (account != null)
+                    return copyAccount(account);
+                else
+                    return null;
+            } else {
+                return null;
+            }
+        } finally {
+            readLock.unlock();
+        }
     }
 
     public Set<AccountId> findAccountIdentifiers() {
-        return accounts.keySet();
+        try {
+            readLock.lock();
+
+            return accounts.keySet().stream()
+                    .map(AccountId::getAccountNumber)
+                    .map(AccountId::createAccountNumber)
+                    .collect(Collectors.toSet());
+        } finally {
+            readLock.unlock();
+        }
     }
 
     public boolean accountExists(AccountId accountId) {
-        return accounts.containsKey(accountId);
+        try {
+            readLock.lock();
+
+            return accounts.containsKey(accountId);
+        } finally {
+            readLock.unlock();
+        }
     }
 
-    public void store(Account account) {
-        accounts.put(AccountId.createAccountNumber(account.getAccountId()), account);
+    public void store(Account account) throws InterruptedException {
+        try {
+            writeLock.lock();
+
+            AccountId accountNumber = AccountId.createAccountNumber(account.getAccountId());
+
+            if (accountExists(accountNumber)) {
+                LockableAccount existingAccount = accounts.get(accountNumber);
+                try {
+                    existingAccount.tryLock(configuration.getAccountWaitForLockMaxTimeMillis(), TimeUnit.MILLISECONDS);
+                    accounts.put(accountNumber, new LockableAccount(account));
+                } finally {
+                    existingAccount.unlock();
+                }
+            } else {
+                accounts.put(accountNumber, new LockableAccount(account));
+            }
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    public boolean tryLockAccount(AccountId accountId) throws InterruptedException {
+        LockableAccount lockableAccount = accounts.get(accountId);
+        return lockableAccount.tryLock(configuration.getAccountWaitForLockMaxTimeMillis(), TimeUnit.MILLISECONDS);
+    }
+
+    public void unlockAccount(AccountId accountId) {
+        LockableAccount lockableAccount = accounts.get(accountId);
+        lockableAccount.unlock();
     }
 
     private Account copyAccount(Account account) {

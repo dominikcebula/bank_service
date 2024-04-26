@@ -19,7 +19,7 @@ public class BankActionsFacadeInvoker extends BankActionsFacadeIfc {
     }
 
     @Override
-    public Account createAccount(BigDecimal initialBalance) throws AccountCreateException {
+    public Account createAccount(BigDecimal initialBalance) throws AccountCreateException, InterruptedException {
         return bankActionsFacade.createAccount(initialBalance);
     }
 
