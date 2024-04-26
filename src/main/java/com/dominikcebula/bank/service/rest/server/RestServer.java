@@ -8,9 +8,9 @@ import com.dominikcebula.bank.service.rest.filters.ResponseFilter;
 import com.google.inject.Inject;
 import spark.Spark;
 
+import static com.dominikcebula.bank.service.rest.actions.CreateAccountRestAction.ACCOUNTS_CREATE_URI;
 import static com.dominikcebula.bank.service.rest.actions.IndexRestAction.INDEX_ACTION_URI;
 import static com.dominikcebula.bank.service.rest.actions.ListAccountsRestAction.ACCOUNT_LIST_URI;
-import static com.dominikcebula.bank.service.rest.actions.CreateAccountRestAction.ACCOUNTS_CREATE_URI;
 import static com.dominikcebula.bank.service.rest.actions.TransferMoneyRestAction.TRANSFER_URI;
 
 public class RestServer {
@@ -55,9 +55,12 @@ public class RestServer {
         Spark.post(ACCOUNTS_CREATE_URI, createAccountRestAction);
         Spark.post(TRANSFER_URI, transferMoneyAction);
         Spark.get(ACCOUNT_LIST_URI, listAccountsRestAction);
+
+        Spark.awaitInitialization();
     }
 
     public void stop() {
         Spark.stop();
+        Spark.awaitStop();
     }
 }
