@@ -83,7 +83,7 @@ java -Dservice.port=8081 -jar bank-service-1.0-SNAPSHOT-jar-with-dependencies.ja
 
 # API Specification
 
-API is described with OpenAPI 2.0, specification is available inside api.yaml.
+API is described with OpenAPI, specification is available inside [api.yaml](src%2Fmain%2Fresources%2Fapi.yaml).
 Based on this file DTOs were generated with usage of Swagger Codegen.
 
 # Making Request
