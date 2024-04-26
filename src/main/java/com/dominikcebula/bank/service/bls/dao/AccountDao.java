@@ -1,11 +1,13 @@
 package com.dominikcebula.bank.service.bls.dao;
 
 import com.dominikcebula.bank.service.bls.ds.AccountId;
-import com.dominikcebula.bank.service.bls.ds.LockableAccount;
 import com.dominikcebula.bank.service.configuration.Configuration;
 import com.dominikcebula.bank.service.dto.Account;
 import com.google.inject.Inject;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
@@ -89,9 +92,9 @@ public class AccountDao {
 
             if (accountExists(accountNumber)) {
                 LockableAccount existingAccount = accounts.get(accountNumber);
+                existingAccount.tryLock(configuration.getAccountWaitForLockMaxTimeMillis(), TimeUnit.MILLISECONDS);
                 try {
-                    existingAccount.tryLock(configuration.getAccountWaitForLockMaxTimeMillis(), TimeUnit.MILLISECONDS);
-                    accounts.put(accountNumber, new LockableAccount(account));
+                    existingAccount.setAccount(account);
                 } finally {
                     existingAccount.unlock();
                 }
@@ -118,5 +121,22 @@ public class AccountDao {
         newAccount.setAccountId(account.getAccountId());
         newAccount.setBalance(account.getBalance());
         return newAccount;
+    }
+
+    @AllArgsConstructor
+    private static class LockableAccount {
+        private final Lock lock = new ReentrantLock();
+
+        @Setter
+        @Getter
+        private Account account;
+
+        public boolean tryLock(long timeout, TimeUnit timeUnit) throws InterruptedException {
+            return lock.tryLock(timeout, timeUnit);
+        }
+
+        public void unlock() {
+            lock.unlock();
+        }
     }
 }
