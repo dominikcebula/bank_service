@@ -15,7 +15,7 @@ import java.util.List;
 
 class ListAccountsAction {
 
-    private final Logger logger = LoggerFactory.getLogger(Loggers.BLS);
+    private final Logger logger = LoggerFactory.getLogger(Loggers.APPLICATION);
 
     private final AccountDao accountDao;
     private final MoneyCalculator moneyCalculator;

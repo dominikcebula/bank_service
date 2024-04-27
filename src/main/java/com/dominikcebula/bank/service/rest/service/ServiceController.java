@@ -11,8 +11,6 @@ public class ServiceController {
 
     private final Logger logger = LoggerFactory.getLogger(Loggers.SERVER);
 
-    private final AwaitServiceStopped awaitServiceStopped = new AwaitServiceStopped();
-
     private final Injector injector;
     private final Configuration configuration;
 

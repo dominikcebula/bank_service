@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 
 class CreateAccountAction {
 
-    private final Logger logger = LoggerFactory.getLogger(Loggers.BLS);
+    private final Logger logger = LoggerFactory.getLogger(Loggers.APPLICATION);
 
     private final AccountDao accountDao;
     private final AccountIdGenerator accountIdGenerator;
