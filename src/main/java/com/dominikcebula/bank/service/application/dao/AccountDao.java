@@ -9,9 +9,9 @@ import java.util.Set;
 public interface AccountDao {
     List<Account> findAllAccounts();
 
-    Account findAccount(AccountId accountId);
-
     Set<AccountId> findAccountIdentifiers();
+
+    Account findAccount(AccountId accountId);
 
     boolean accountExists(AccountId accountId);
 

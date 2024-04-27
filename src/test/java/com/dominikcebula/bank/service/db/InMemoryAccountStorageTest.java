@@ -1,5 +1,6 @@
-package com.dominikcebula.bank.service.application.dao;
+package com.dominikcebula.bank.service.db;
 
+import com.dominikcebula.bank.service.application.dao.AccountDao;
 import com.dominikcebula.bank.service.application.ds.AccountId;
 import com.dominikcebula.bank.service.configuration.Configuration;
 import com.dominikcebula.bank.service.dto.Account;

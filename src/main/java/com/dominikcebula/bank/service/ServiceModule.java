@@ -2,8 +2,8 @@ package com.dominikcebula.bank.service;
 
 import com.dominikcebula.bank.service.application.actions.BankActionsFacade;
 import com.dominikcebula.bank.service.application.dao.AccountDao;
-import com.dominikcebula.bank.service.application.dao.InMemoryAccountStorage;
 import com.dominikcebula.bank.service.configuration.Configuration;
+import com.dominikcebula.bank.service.db.InMemoryAccountStorage;
 import com.dominikcebula.bank.service.rest.server.RestServer;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;

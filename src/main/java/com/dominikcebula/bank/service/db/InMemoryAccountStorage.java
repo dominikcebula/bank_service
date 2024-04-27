@@ -1,5 +1,6 @@
-package com.dominikcebula.bank.service.application.dao;
+package com.dominikcebula.bank.service.db;
 
+import com.dominikcebula.bank.service.application.dao.AccountDao;
 import com.dominikcebula.bank.service.application.ds.AccountId;
 import com.dominikcebula.bank.service.application.exception.AccountLockException;
 import com.dominikcebula.bank.service.configuration.Configuration;
@@ -47,6 +48,20 @@ public class InMemoryAccountStorage implements AccountDao {
     }
 
     @Override
+    public Set<AccountId> findAccountIdentifiers() {
+        try {
+            readLock.lock();
+
+            return accounts.keySet().stream()
+                    .map(AccountId::getAccountNumber)
+                    .map(AccountId::createAccountNumber)
+                    .collect(Collectors.toSet());
+        } finally {
+            readLock.unlock();
+        }
+    }
+
+    @Override
     public Account findAccount(AccountId accountId) {
         try {
             readLock.lock();
@@ -61,20 +76,6 @@ public class InMemoryAccountStorage implements AccountDao {
             } else {
                 return null;
             }
-        } finally {
-            readLock.unlock();
-        }
-    }
-
-    @Override
-    public Set<AccountId> findAccountIdentifiers() {
-        try {
-            readLock.lock();
-
-            return accounts.keySet().stream()
-                    .map(AccountId::getAccountNumber)
-                    .map(AccountId::createAccountNumber)
-                    .collect(Collectors.toSet());
         } finally {
             readLock.unlock();
         }
