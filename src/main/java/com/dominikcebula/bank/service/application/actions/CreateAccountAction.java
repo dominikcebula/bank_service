@@ -31,15 +31,17 @@ class CreateAccountAction {
     Account createAccount(BigDecimal initialBalance) throws InterruptedException {
         logger.info("Creating account");
 
-        logger.info("Generating account id and creating account");
-        AccountId accountId = accountIdGenerator.generateAccountId(accountDao.findAccountIdentifiers());
-        Account account = new Account();
-        account.setAccountId(accountId.getAccountNumber());
-        account.setBalance(moneyAmountRound.round(initialBalance));
+        return accountDao.runInReadWriteTransaction(() -> {
+            logger.info("Generating account id and creating account");
+            AccountId accountId = accountIdGenerator.generateAccountId(accountDao.findAccountIdentifiers());
+            Account account = new Account();
+            account.setAccountId(accountId.getAccountNumber());
+            account.setBalance(moneyAmountRound.round(initialBalance));
 
-        logger.info("Saving account");
-        accountDao.store(account);
+            logger.info("Saving account");
+            accountDao.store(account);
 
-        return account;
+            return account;
+        });
     }
 }

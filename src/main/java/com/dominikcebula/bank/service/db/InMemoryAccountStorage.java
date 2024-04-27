@@ -35,9 +35,8 @@ public class InMemoryAccountStorage implements AccountDao {
 
     @Override
     public List<Account> findAllAccounts() {
+        readLock.lock();
         try {
-            readLock.lock();
-
             return accounts.values().stream()
                     .map(LockableAccount::getAccount)
                     .map(this::copyAccount)
@@ -49,9 +48,8 @@ public class InMemoryAccountStorage implements AccountDao {
 
     @Override
     public Set<AccountId> findAccountIdentifiers() {
+        readLock.lock();
         try {
-            readLock.lock();
-
             return accounts.keySet().stream()
                     .map(AccountId::getAccountNumber)
                     .map(AccountId::createAccountNumber)
@@ -63,9 +61,8 @@ public class InMemoryAccountStorage implements AccountDao {
 
     @Override
     public Account findAccount(AccountId accountId) {
+        readLock.lock();
         try {
-            readLock.lock();
-
             LockableAccount lockableAccount = accounts.get(accountId);
             if (lockableAccount != null) {
                 Account account = lockableAccount.getAccount();
@@ -83,9 +80,8 @@ public class InMemoryAccountStorage implements AccountDao {
 
     @Override
     public boolean accountExists(AccountId accountId) {
+        readLock.lock();
         try {
-            readLock.lock();
-
             return accounts.containsKey(accountId);
         } finally {
             readLock.unlock();
@@ -94,9 +90,8 @@ public class InMemoryAccountStorage implements AccountDao {
 
     @Override
     public void store(Account account) throws InterruptedException {
+        writeLock.lock();
         try {
-            writeLock.lock();
-
             AccountId accountNumber = AccountId.createAccountNumber(account.getAccountId());
 
             if (!accountExists(accountNumber)) {
@@ -104,6 +99,16 @@ public class InMemoryAccountStorage implements AccountDao {
             } else {
                 updateAccount(accountNumber, account);
             }
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    @Override
+    public <R> R runInReadWriteTransaction(ReadWriteTransactionOperation<R> operation) throws InterruptedException {
+        writeLock.lock();
+        try {
+            return operation.execute();
         } finally {
             writeLock.unlock();
         }

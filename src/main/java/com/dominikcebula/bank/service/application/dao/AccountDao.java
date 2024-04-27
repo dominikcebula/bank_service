@@ -17,7 +17,14 @@ public interface AccountDao {
 
     void store(Account account) throws InterruptedException;
 
+    <R> R runInReadWriteTransaction(ReadWriteTransactionOperation<R> operation) throws InterruptedException;
+
     void tryLockAccount(AccountId accountId) throws InterruptedException;
 
     void unlockAccount(AccountId accountId);
+
+    @FunctionalInterface
+    interface ReadWriteTransactionOperation<R> {
+        R execute() throws InterruptedException;
+    }
 }
