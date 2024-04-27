@@ -1,4 +1,4 @@
-![Bank Service CI Pipeline](https://github.com/dominikcebula/bank_service/actions/workflows/maven.yml/badge.svg)
+[![Bank Service CI Pipeline](https://github.com/dominikcebula/bank_service/actions/workflows/maven.yml/badge.svg)](https://github.com/dominikcebula/bank_service/actions/workflows/maven.yml)
 
 # Intro
 
