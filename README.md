@@ -1,3 +1,5 @@
+![Bank Service CI Pipeline](https://github.com/dominikcebula/bank_service/actions/workflows/maven.yml/badge.svg)
+
 # Intro
 
 This repository contains implementation of RESTful Bank Service for money transfer between accounts.
