@@ -2,6 +2,7 @@ package com.dominikcebula.bank.service;
 
 import com.dominikcebula.bank.service.application.actions.BankActionsFacade;
 import com.dominikcebula.bank.service.application.dao.AccountDao;
+import com.dominikcebula.bank.service.application.dao.InMemoryAccountStorage;
 import com.dominikcebula.bank.service.configuration.Configuration;
 import com.dominikcebula.bank.service.rest.server.RestServer;
 import com.google.inject.AbstractModule;
@@ -25,7 +26,7 @@ public class ServiceModule extends AbstractModule {
     }
 
     private void configureAccountDao() {
-        bind(AccountDao.class).in(Singleton.class);
+        bind(AccountDao.class).to(InMemoryAccountStorage.class).in(Singleton.class);
     }
 
     protected void configureBankActionsFacade() {

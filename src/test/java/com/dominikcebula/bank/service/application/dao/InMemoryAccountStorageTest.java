@@ -11,13 +11,13 @@ import java.math.BigDecimal;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
-public class AccountDaoTest {
+public class InMemoryAccountStorageTest {
 
     private AccountDao accountDao;
 
     @Before
     public void setUp() {
-        accountDao = new AccountDao(new Configuration());
+        accountDao = new InMemoryAccountStorage(new Configuration());
     }
 
     @Test
