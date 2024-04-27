@@ -2,6 +2,7 @@ package com.dominikcebula.bank.service.rest.actions;
 
 import com.dominikcebula.bank.service.dto.HealthCheckResponse;
 import com.dominikcebula.bank.service.dto.HealthCheckResponse.StatusEnum;
+import com.dominikcebula.bank.service.rest.actions.base.AbstractRestAction;
 import com.google.inject.Inject;
 
 public class IndexRestAction extends AbstractRestAction<Void, HealthCheckResponse> {
@@ -15,7 +16,7 @@ public class IndexRestAction extends AbstractRestAction<Void, HealthCheckRespons
     }
 
     @Override
-    HealthCheckResponse handleRequest(Void request) {
+    protected HealthCheckResponse handleRequest(Void request) {
         return new HealthCheckResponse()
                 .status(StatusEnum.UP);
     }

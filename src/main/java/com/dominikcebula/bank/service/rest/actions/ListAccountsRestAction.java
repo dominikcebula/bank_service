@@ -5,6 +5,7 @@ import com.dominikcebula.bank.service.dto.Accounts;
 import com.dominikcebula.bank.service.dto.ApiCode;
 import com.dominikcebula.bank.service.dto.ListAccountsResponse;
 import com.dominikcebula.bank.service.dto.ModelApiResponse;
+import com.dominikcebula.bank.service.rest.actions.base.AbstractRestAction;
 import com.google.inject.Inject;
 
 public class ListAccountsRestAction extends AbstractRestAction<Void, ListAccountsResponse> {
@@ -21,7 +22,7 @@ public class ListAccountsRestAction extends AbstractRestAction<Void, ListAccount
     }
 
     @Override
-    ListAccountsResponse handleRequest(Void request) {
+    protected ListAccountsResponse handleRequest(Void request) {
         Accounts accounts = bankActionsFacade.listAccounts();
 
         return new ListAccountsResponse()

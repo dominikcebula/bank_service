@@ -1,4 +1,4 @@
-package com.dominikcebula.bank.service.rest.actions;
+package com.dominikcebula.bank.service.rest.actions.base;
 
 import com.dominikcebula.bank.service.rest.processors.RequestProcessor;
 import com.dominikcebula.bank.service.rest.processors.ResponseProcessor;
@@ -11,9 +11,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-abstract class AbstractValidatingRestAction<I, R> extends AbstractRestAction<I, R> {
+public abstract class AbstractValidatingRestAction<I, R> extends AbstractRestAction<I, R> {
 
-    AbstractValidatingRestAction(Class<I> requestClass, Class<R> responseClass) {
+    protected AbstractValidatingRestAction(Class<I> requestClass, Class<R> responseClass) {
         super(requestClass, responseClass);
     }
 
@@ -36,5 +36,5 @@ abstract class AbstractValidatingRestAction<I, R> extends AbstractRestAction<I, 
         return new JavaBeanValidator<>();
     }
 
-    abstract Validator<I> getRequestValidator();
+    protected abstract Validator<I> getRequestValidator();
 }

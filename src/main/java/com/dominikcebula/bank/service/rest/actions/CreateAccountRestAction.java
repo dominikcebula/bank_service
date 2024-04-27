@@ -5,6 +5,7 @@ import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.dto.AccountCreateRequest;
 import com.dominikcebula.bank.service.dto.AccountCreateResponse;
 import com.dominikcebula.bank.service.dto.ModelApiResponse;
+import com.dominikcebula.bank.service.rest.actions.base.AbstractValidatingRestAction;
 import com.dominikcebula.bank.service.rest.validator.Validator;
 import com.dominikcebula.bank.service.rest.validator.validators.AccountCreateRequestValidator;
 import com.google.inject.Inject;
@@ -25,12 +26,12 @@ public class CreateAccountRestAction extends AbstractValidatingRestAction<Accoun
     }
 
     @Override
-    public Validator<AccountCreateRequest> getRequestValidator() {
+    protected Validator<AccountCreateRequest> getRequestValidator() {
         return new AccountCreateRequestValidator();
     }
 
     @Override
-    public AccountCreateResponse handleRequest(AccountCreateRequest accountCreateRequest) throws InterruptedException {
+    protected AccountCreateResponse handleRequest(AccountCreateRequest accountCreateRequest) throws InterruptedException {
         Account account = bankActionsFacade.createAccount(accountCreateRequest.getInitialDeposit());
         ModelApiResponse status = new ModelApiResponse().code(ACCOUNT_CREATED);
 

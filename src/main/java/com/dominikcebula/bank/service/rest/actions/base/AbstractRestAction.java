@@ -1,4 +1,4 @@
-package com.dominikcebula.bank.service.rest.actions;
+package com.dominikcebula.bank.service.rest.actions.base;
 
 import com.dominikcebula.bank.service.logging.Loggers;
 import com.dominikcebula.bank.service.rest.processors.RequestProcessor;
@@ -15,7 +15,7 @@ import spark.Route;
 import java.util.Collections;
 import java.util.List;
 
-abstract class AbstractRestAction<I, R> implements Route {
+public abstract class AbstractRestAction<I, R> implements Route {
 
     private final Logger logger = LoggerFactory.getLogger(Loggers.REST);
 
@@ -24,7 +24,7 @@ abstract class AbstractRestAction<I, R> implements Route {
     private final Class<I> requestClass;
     private final Class<R> responseClass;
 
-    AbstractRestAction(Class<I> requestClass, Class<R> responseClass) {
+    protected AbstractRestAction(Class<I> requestClass, Class<R> responseClass) {
         this.requestClass = requestClass;
         this.responseClass = responseClass;
     }
@@ -81,9 +81,9 @@ abstract class AbstractRestAction<I, R> implements Route {
         return Collections.emptyList();
     }
 
-    abstract R handleRequest(I request) throws Exception;
+    protected abstract R handleRequest(I request) throws Exception;
 
-    int getStatusCode() {
+    protected int getStatusCode() {
         return 200;
     }
 }
