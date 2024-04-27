@@ -2,7 +2,6 @@ package com.dominikcebula.bank.service.rest.actions;
 
 import com.dominikcebula.bank.service.application.actions.BankActionsFacade;
 import com.dominikcebula.bank.service.application.ds.AccountId;
-import com.dominikcebula.bank.service.application.exception.TransferException;
 import com.dominikcebula.bank.service.dto.ApiCode;
 import com.dominikcebula.bank.service.dto.ApiErrorResponse;
 import com.dominikcebula.bank.service.dto.MoneyTransfer;
@@ -52,7 +51,7 @@ public class TransferMoneyRestActionIntegrationTest extends NoActionsFacadeInCon
     }
 
     @Test
-    public void shouldFailToTransferMoney() throws TransferException {
+    public void shouldFailToTransferMoney() {
         BigDecimal amount = BigDecimal.valueOf(600);
 
         Mockito.doThrow(new IllegalArgumentException("TEST"))

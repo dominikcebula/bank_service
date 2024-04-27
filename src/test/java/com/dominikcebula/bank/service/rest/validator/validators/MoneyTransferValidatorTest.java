@@ -29,7 +29,7 @@ public class MoneyTransferValidatorTest {
     public final ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void shouldProcessRequestCorrectly() throws ValidatorException {
+    public void shouldProcessRequestCorrectly() {
         MoneyTransfer moneyTransfer = new MoneyTransfer();
         moneyTransfer.setFrom(FROM.getAccountNumber());
         moneyTransfer.setTo(TO.getAccountNumber());
@@ -39,7 +39,7 @@ public class MoneyTransferValidatorTest {
     }
 
     @Test
-    public void shouldReportTransferObjectMissing() throws ValidatorException {
+    public void shouldReportTransferObjectMissing() {
         expectedException.expect(ValidatorException.class);
         expectedException.expectMessage(MESSAGE_TRANSFER_REQUEST_NOT_SPECIFIED);
 
@@ -47,7 +47,7 @@ public class MoneyTransferValidatorTest {
     }
 
     @Test
-    public void shouldReportAmountMissing() throws ValidatorException {
+    public void shouldReportAmountMissing() {
         expectedException.expect(ValidatorException.class);
         expectedException.expectMessage(MESSAGE_VALUE_MISSING);
 
@@ -60,7 +60,7 @@ public class MoneyTransferValidatorTest {
 
     @Test
     @Parameters({"0", "-5"})
-    public void shouldReportAmountValueIncorrect(BigDecimal amount) throws ValidatorException {
+    public void shouldReportAmountValueIncorrect(BigDecimal amount) {
         expectedException.expect(ValidatorException.class);
         expectedException.expectMessage(MESSAGE_VALUE_ZERO);
 
@@ -74,7 +74,7 @@ public class MoneyTransferValidatorTest {
 
     @Test
     @Parameters({"4.567", "1.32354"})
-    public void shouldReportAmountPatternIncorrect(BigDecimal amount) throws ValidatorException {
+    public void shouldReportAmountPatternIncorrect(BigDecimal amount) {
         expectedException.expect(ValidatorException.class);
         expectedException.expectMessage(MESSAGE_VALUE_NOT_MATCHING_PATTERN);
 
@@ -87,7 +87,7 @@ public class MoneyTransferValidatorTest {
     }
 
     @Test
-    public void shouldReportFromMissing() throws ValidatorException {
+    public void shouldReportFromMissing() {
         expectedException.expect(ValidatorException.class);
         expectedException.expectMessage(MESSAGE_FROM_ACCOUNT_NOT_SPECIFIED);
 
@@ -99,7 +99,7 @@ public class MoneyTransferValidatorTest {
     }
 
     @Test
-    public void shouldReportToMissing() throws ValidatorException {
+    public void shouldReportToMissing() {
         expectedException.expect(ValidatorException.class);
         expectedException.expectMessage(MESSAGE_TO_ACCOUNT_NOT_SPECIFIED);
 
@@ -111,7 +111,7 @@ public class MoneyTransferValidatorTest {
     }
 
     @Test
-    public void shouldReportFromIncorrect() throws ValidatorException {
+    public void shouldReportFromIncorrect() {
         expectedException.expect(ValidatorException.class);
         expectedException.expectMessage(MESSAGE_ACCOUNT_ID_INCORRECT);
 
@@ -124,7 +124,7 @@ public class MoneyTransferValidatorTest {
     }
 
     @Test
-    public void shouldReportToIncorrect() throws ValidatorException {
+    public void shouldReportToIncorrect() {
         expectedException.expect(ValidatorException.class);
         expectedException.expectMessage(MESSAGE_ACCOUNT_ID_INCORRECT);
 

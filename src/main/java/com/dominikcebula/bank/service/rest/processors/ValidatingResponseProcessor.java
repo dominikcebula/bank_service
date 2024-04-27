@@ -11,7 +11,7 @@ public class ValidatingResponseProcessor<T> implements ResponseProcessor<T> {
     }
 
     @Override
-    public void process(T requestObject) throws Exception {
+    public void process(T requestObject) {
         validator.validate(requestObject);
     }
 }

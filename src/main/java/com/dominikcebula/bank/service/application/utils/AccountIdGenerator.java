@@ -9,7 +9,7 @@ public class AccountIdGenerator {
     private static final int MAX_NUMBER_OF_TRIES = 100;
     static final String MESSAGE_GENERATION_ERROR = "Unable to generate account id";
 
-    public AccountId generateAccountId(Set<AccountId> alreadyGeneratedAccounts) throws AccountCreateException {
+    public AccountId generateAccountId(Set<AccountId> alreadyGeneratedAccounts) {
         int tryNo = 0;
 
         while (tryNo++ < MAX_NUMBER_OF_TRIES) {

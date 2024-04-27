@@ -2,7 +2,6 @@ package com.dominikcebula.bank.service.rest.validator.validators;
 
 import com.dominikcebula.bank.service.dto.AccountCreateRequest;
 import com.dominikcebula.bank.service.rest.validator.Validator;
-import com.dominikcebula.bank.service.rest.validator.exception.ValidatorException;
 
 public class AccountCreateRequestValidator extends Validator<AccountCreateRequest> {
 
@@ -11,7 +10,7 @@ public class AccountCreateRequestValidator extends Validator<AccountCreateReques
     private final AmountValidator amountValidator = new AmountValidator();
 
     @Override
-    public void validate(AccountCreateRequest accountCreateRequest) throws ValidatorException {
+    public void validate(AccountCreateRequest accountCreateRequest) {
         assertConditionMet(
                 accountCreateRequest != null,
                 MESSAGE_ACCOUNT_CREATE_NOT_SPECIFIED

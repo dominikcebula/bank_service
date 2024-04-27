@@ -1,6 +1,6 @@
 package com.dominikcebula.bank.service.exception;
 
-public class ReportableException extends Exception {
+public class ReportableException extends RuntimeException {
     public ReportableException(String message) {
         super(message);
     }

@@ -1,7 +1,6 @@
 package com.dominikcebula.bank.service.rest.validator.validators;
 
 import com.dominikcebula.bank.service.rest.validator.Validator;
-import com.dominikcebula.bank.service.rest.validator.exception.ValidatorException;
 
 import java.math.BigDecimal;
 
@@ -15,7 +14,7 @@ public class AmountValidator extends Validator<BigDecimal> {
 
 
     @Override
-    public void validate(BigDecimal value) throws ValidatorException {
+    public void validate(BigDecimal value) {
         String stringValue = String.valueOf(value);
 
         assertConditionMet(

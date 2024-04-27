@@ -1,6 +1,7 @@
 package com.dominikcebula.bank.service.application.dao;
 
 import com.dominikcebula.bank.service.application.ds.AccountId;
+import com.dominikcebula.bank.service.application.exception.AccountLockException;
 import com.dominikcebula.bank.service.configuration.Configuration;
 import com.dominikcebula.bank.service.dto.Account;
 import com.google.inject.Inject;
@@ -102,13 +103,24 @@ public class AccountDao {
         }
     }
 
-    public boolean tryLockAccount(AccountId accountId) throws InterruptedException {
+    public void tryLockAccount(AccountId accountId) throws InterruptedException {
         LockableAccount lockableAccount = accounts.get(accountId);
-        return lockableAccount.tryLock(configuration.getAccountWaitForLockMaxTimeMillis(), TimeUnit.MILLISECONDS);
+        tryLockAccount(lockableAccount);
+    }
+
+    private void tryLockAccount(LockableAccount lockableAccount) throws InterruptedException {
+        boolean lockAccountResult = lockableAccount.tryLock(configuration.getAccountWaitForLockMaxTimeMillis(), TimeUnit.MILLISECONDS);
+
+        if (!lockAccountResult)
+            throw new AccountLockException(AccountId.createAccountNumber(lockableAccount.getAccount().getAccountId()));
     }
 
     public void unlockAccount(AccountId accountId) {
         LockableAccount lockableAccount = accounts.get(accountId);
+        unlockAccount(lockableAccount);
+    }
+
+    private void unlockAccount(LockableAccount lockableAccount) {
         lockableAccount.unlock();
     }
 
@@ -125,14 +137,12 @@ public class AccountDao {
 
     private void updateAccount(AccountId accountNumber, Account account) throws InterruptedException {
         LockableAccount existingAccount = accounts.get(accountNumber);
-        if (!existingAccount.tryLock(configuration.getAccountWaitForLockMaxTimeMillis(), TimeUnit.MILLISECONDS)) {
-            throw new IllegalStateException(String.format("Unable to lock account [%s]", accountNumber));
-        }
+        tryLockAccount(existingAccount);
 
         try {
             existingAccount.setAccount(account);
         } finally {
-            existingAccount.unlock();
+            unlockAccount(existingAccount);
         }
     }
 

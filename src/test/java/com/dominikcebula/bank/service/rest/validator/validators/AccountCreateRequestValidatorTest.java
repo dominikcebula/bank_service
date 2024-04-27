@@ -23,7 +23,7 @@ public class AccountCreateRequestValidatorTest {
     public final ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void shouldProcessRequestCorrectly() throws ValidatorException {
+    public void shouldProcessRequestCorrectly() {
         AccountCreateRequest accountCreateRequest = new AccountCreateRequest();
         accountCreateRequest.setInitialDeposit(BigDecimal.valueOf(5));
 
@@ -31,7 +31,7 @@ public class AccountCreateRequestValidatorTest {
     }
 
     @Test
-    public void shouldReportMissingRequestObject() throws ValidatorException {
+    public void shouldReportMissingRequestObject() {
         expectedException.expect(ValidatorException.class);
         expectedException.expectMessage(MESSAGE_ACCOUNT_CREATE_NOT_SPECIFIED);
 
@@ -39,7 +39,7 @@ public class AccountCreateRequestValidatorTest {
     }
 
     @Test
-    public void shouldReportMissingDeposit() throws ValidatorException {
+    public void shouldReportMissingDeposit() {
         expectedException.expect(ValidatorException.class);
         expectedException.expectMessage(MESSAGE_VALUE_MISSING);
 
@@ -48,7 +48,7 @@ public class AccountCreateRequestValidatorTest {
 
     @Test
     @Parameters({"0", "-5"})
-    public void shouldReportIncorrectDepositValue(BigDecimal deposit) throws ValidatorException {
+    public void shouldReportIncorrectDepositValue(BigDecimal deposit) {
         expectedException.expect(ValidatorException.class);
         expectedException.expectMessage(MESSAGE_VALUE_ZERO);
 
@@ -60,7 +60,7 @@ public class AccountCreateRequestValidatorTest {
 
     @Test
     @Parameters({"5.84865", "1.456", "10000.0001", "8.123"})
-    public void shouldReportIncorrectDepositPattern(BigDecimal deposit) throws ValidatorException {
+    public void shouldReportIncorrectDepositPattern(BigDecimal deposit) {
         expectedException.expect(ValidatorException.class);
         expectedException.expectMessage(MESSAGE_VALUE_NOT_MATCHING_PATTERN);
 

@@ -1,8 +1,6 @@
 package com.dominikcebula.bank.service.application.actions;
 
 import com.dominikcebula.bank.service.application.ds.AccountId;
-import com.dominikcebula.bank.service.application.exception.AccountCreateException;
-import com.dominikcebula.bank.service.application.exception.TransferException;
 import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.dto.Accounts;
 import com.google.inject.Inject;
@@ -22,11 +20,11 @@ public class BankActionsFacade {
         this.listAccountsAction = listAccountsAction;
     }
 
-    public Account createAccount(BigDecimal initialBalance) throws AccountCreateException, InterruptedException {
+    public Account createAccount(BigDecimal initialBalance) throws InterruptedException {
         return createAccountAction.createAccount(initialBalance);
     }
 
-    public void transfer(AccountId from, AccountId to, BigDecimal amount) throws TransferException {
+    public void transfer(AccountId from, AccountId to, BigDecimal amount) {
         transferMoneyAction.transfer(from, to, amount);
     }
 

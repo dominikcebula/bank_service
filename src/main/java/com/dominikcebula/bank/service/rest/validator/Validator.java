@@ -5,7 +5,7 @@ import com.dominikcebula.bank.service.rest.validator.exception.ValidatorExceptio
 public abstract class Validator<T> {
     public abstract void validate(T value) throws ValidatorException;
 
-    protected void assertConditionMet(boolean result, String messageIfNotMet) throws ValidatorException {
+    protected void assertConditionMet(boolean result, String messageIfNotMet) {
         if (!result)
             throw new ValidatorException(messageIfNotMet);
     }

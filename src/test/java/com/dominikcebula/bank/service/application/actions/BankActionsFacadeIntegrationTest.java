@@ -2,7 +2,6 @@ package com.dominikcebula.bank.service.application.actions;
 
 import com.dominikcebula.bank.service.application.dao.AccountDao;
 import com.dominikcebula.bank.service.application.ds.AccountId;
-import com.dominikcebula.bank.service.application.exception.AccountCreateException;
 import com.dominikcebula.bank.service.application.exception.TransferException;
 import com.dominikcebula.bank.service.application.utils.AccountIdGenerator;
 import com.dominikcebula.bank.service.dto.Account;
@@ -58,7 +57,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldCreateAccounts() throws AccountCreateException, InterruptedException {
+    public void shouldCreateAccounts() throws InterruptedException {
         createAccounts();
 
         assertThat(accountDao.findAccountIdentifiers())
@@ -66,7 +65,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldListAccounts() throws AccountCreateException, InterruptedException {
+    public void shouldListAccounts() throws InterruptedException {
         createAccounts();
 
         Accounts accounts = bankActionsFacade.listAccounts();
@@ -90,7 +89,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldTransferMoneyBetweenAccounts() throws AccountCreateException, TransferException, InterruptedException {
+    public void shouldTransferMoneyBetweenAccounts() throws InterruptedException {
         createAccounts();
 
         bankActionsFacade.transfer(ACCOUNT_ID_1, ACCOUNT_ID_2, BALANCE1);
@@ -101,7 +100,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldTransferRoundedMoneyBetweenAccounts() throws AccountCreateException, TransferException, InterruptedException {
+    public void shouldTransferRoundedMoneyBetweenAccounts() throws InterruptedException {
         createAccounts();
 
         bankActionsFacade.transfer(ACCOUNT_ID_1, ACCOUNT_ID_2, FLOAT_AMOUNT);
@@ -110,7 +109,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldFailTransferBecauseOfMissingAccount() throws AccountCreateException, TransferException, InterruptedException {
+    public void shouldFailTransferBecauseOfMissingAccount() throws InterruptedException {
         expectedException.expect(TransferException.class);
         expectedException.expectMessage("Unable to locate account [" + NON_EXISTING_ACCOUNT + "]");
 
@@ -120,7 +119,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldFailTransferBecauseOfNoEnoughFunds() throws AccountCreateException, TransferException, InterruptedException {
+    public void shouldFailTransferBecauseOfNoEnoughFunds() throws InterruptedException {
         expectedException.expect(TransferException.class);
         expectedException.expectMessage("Unable to transfer amount [" + HUGE_AMOUNT + "] from [" + ACCOUNT_ID_1 + "] to [" + ACCOUNT_ID_2 + "]");
 
@@ -129,7 +128,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
         bankActionsFacade.transfer(ACCOUNT_ID_1, ACCOUNT_ID_2, HUGE_AMOUNT);
     }
 
-    private void createAccounts() throws AccountCreateException, InterruptedException {
+    private void createAccounts() throws InterruptedException {
         mockAccountId(ACCOUNT_ID_1);
         bankActionsFacade.createAccount(BALANCE1);
 
@@ -140,7 +139,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
         bankActionsFacade.createAccount(BALANCE3);
     }
 
-    private void mockAccountId(AccountId accountId) throws AccountCreateException {
+    private void mockAccountId(AccountId accountId) {
         Mockito.when(accountIdGenerator.generateAccountId(Mockito.anySet()))
                 .thenReturn(accountId);
     }

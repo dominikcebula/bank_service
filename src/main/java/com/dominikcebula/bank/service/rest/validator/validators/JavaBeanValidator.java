@@ -11,7 +11,7 @@ public class JavaBeanValidator<T> extends Validator<T> {
     private final jakarta.validation.Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Override
-    public void validate(T value) throws ValidatorException {
+    public void validate(T value) {
         if (value != null) {
             Set<ConstraintViolation<T>> violations = validator.validate(value);
 

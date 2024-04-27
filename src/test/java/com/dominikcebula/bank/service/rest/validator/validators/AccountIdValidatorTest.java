@@ -25,12 +25,12 @@ public class AccountIdValidatorTest {
             "6538908384675403",
             "4803402993553314"
     })
-    public void shouldValidateAccount(String accountNumber) throws ValidatorException {
+    public void shouldValidateAccount(String accountNumber) {
         accountIdValidator.validate(accountNumber);
     }
 
     @Test
-    public void shouldValidateRandomlyGenerateAccount() throws ValidatorException {
+    public void shouldValidateRandomlyGenerateAccount() {
         accountIdValidator.validate(String.valueOf(AccountId.createRandomAccountId()));
     }
 
@@ -44,7 +44,7 @@ public class AccountIdValidatorTest {
             "123456789012345;",
             "123456'890123456"
     })
-    public void shouldReportInvalidAccount(String accountNumber) throws ValidatorException {
+    public void shouldReportInvalidAccount(String accountNumber) {
         expectedException.expect(ValidatorException.class);
         expectedException.expectMessage(MESSAGE_ACCOUNT_ID_INCORRECT);
 
@@ -52,7 +52,7 @@ public class AccountIdValidatorTest {
     }
 
     @Test
-    public void shouldReportNullAsInvalidAccount() throws ValidatorException {
+    public void shouldReportNullAsInvalidAccount() {
         expectedException.expect(ValidatorException.class);
         expectedException.expectMessage(MESSAGE_ACCOUNT_ID_INCORRECT);
 

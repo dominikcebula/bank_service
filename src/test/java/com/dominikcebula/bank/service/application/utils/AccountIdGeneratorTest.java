@@ -30,7 +30,7 @@ public class AccountIdGeneratorTest {
     public final ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void shouldCreateAccountId() throws AccountCreateException {
+    public void shouldCreateAccountId() {
         AccountId accountId = accountIdGenerator.generateAccountId(Collections.emptySet());
 
         assertThat(accountId.getAccountNumber())
@@ -38,7 +38,7 @@ public class AccountIdGeneratorTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenUnableToGenerateAccountNumber() throws AccountCreateException {
+    public void shouldThrowExceptionWhenUnableToGenerateAccountNumber() {
         Mockito.when(accountIds.contains(Mockito.any(AccountId.class))).thenReturn(true);
 
         expectedException.expect(AccountCreateException.class);

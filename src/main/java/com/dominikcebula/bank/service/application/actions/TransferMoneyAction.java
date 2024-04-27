@@ -29,7 +29,7 @@ class TransferMoneyAction {
         this.moneyCalculator = moneyCalculator;
     }
 
-    void transfer(AccountId from, AccountId to, BigDecimal amount) throws TransferException {
+    void transfer(AccountId from, AccountId to, BigDecimal amount) {
         try {
             logger.info(String.format("Transferring [%s] amount from [%s] to [%s]", from, to, amount));
 
@@ -56,41 +56,41 @@ class TransferMoneyAction {
                     );
 
                     logger.info("Saving new accounts balance");
-                    accountDao.store(fromAccount);
-                    accountDao.store(toAccount);
+                    store(fromAccount);
+                    store(toAccount);
                 } finally {
                     unlockAccount(to);
                 }
             } finally {
                 unlockAccount(from);
             }
-
-        } catch (WithdrawException | AccountMissingException | AccountLockException | InterruptedException e) {
+        } catch (WithdrawException | AccountMissingException | AccountLockException e) {
             throw new TransferException(String.format("Unable to transfer amount [%s] from [%s] to [%s]: %s", amount, from, to, e.getMessage()), e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new TransferException(String.format("Money transfer of amount [%s] from [%s] to [%s] was interrupted: %s", amount, from, to, e.getMessage()), e);
         }
     }
 
-    private void tryLockAccount(AccountId accountId) throws InterruptedException, AccountLockException {
-        if (!accountDao.tryLockAccount(accountId)) {
-            throw new AccountLockException(accountId);
-        }
+    private void validateAccountExists(AccountId accountId) {
+        if (!accountDao.accountExists(accountId))
+            throw new AccountMissingException(String.format("Unable to locate account [%s]", accountId));
+    }
+
+    private void tryLockAccount(AccountId accountId) throws InterruptedException {
+        accountDao.tryLockAccount(accountId);
     }
 
     private void unlockAccount(AccountId accountId) {
         accountDao.unlockAccount(accountId);
     }
 
-    private Account getExistingAccountForTransfer(AccountId accountId) throws AccountMissingException {
+    private Account getExistingAccountForTransfer(AccountId accountId) {
         validateAccountExists(accountId);
         return accountDao.findAccount(accountId);
     }
 
-    private void validateAccountExists(AccountId accountId) throws AccountMissingException {
-        if (!accountDao.accountExists(accountId))
-            throw new AccountMissingException(String.format("Unable to locate account [%s]", accountId));
-    }
-
-    private BigDecimal withdraw(BigDecimal accountBalance, BigDecimal amount) throws WithdrawException {
+    private BigDecimal withdraw(BigDecimal accountBalance, BigDecimal amount) {
         if (accountBalance.compareTo(amount) >= 0)
             return moneyCalculator.subtract(accountBalance, amount);
         else
@@ -99,5 +99,9 @@ class TransferMoneyAction {
 
     private BigDecimal deposit(BigDecimal accountBalance, BigDecimal amount) {
         return moneyCalculator.add(accountBalance, amount);
+    }
+
+    private void store(Account toAccount) throws InterruptedException {
+        accountDao.store(toAccount);
     }
 }

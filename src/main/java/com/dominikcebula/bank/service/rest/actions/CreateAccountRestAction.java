@@ -30,7 +30,7 @@ public class CreateAccountRestAction extends AbstractValidatingRestAction<Accoun
     }
 
     @Override
-    public AccountCreateResponse handleRequest(AccountCreateRequest accountCreateRequest) throws Exception {
+    public AccountCreateResponse handleRequest(AccountCreateRequest accountCreateRequest) throws InterruptedException {
         Account account = bankActionsFacade.createAccount(accountCreateRequest.getInitialDeposit());
         ModelApiResponse status = new ModelApiResponse().code(ACCOUNT_CREATED);
 

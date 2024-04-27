@@ -35,7 +35,7 @@ public class AmountValidatorTest {
             "9.99",
             "9.00"
     })
-    public void shouldReportCorrectAmount(BigDecimal amount) throws ValidatorException {
+    public void shouldReportCorrectAmount(BigDecimal amount) {
         amountValidator.validate(amount);
     }
 
@@ -45,7 +45,7 @@ public class AmountValidatorTest {
             "-5",
             "0"
     })
-    public void shouldReportIncorrectAmountValue(BigDecimal amount) throws ValidatorException {
+    public void shouldReportIncorrectAmountValue(BigDecimal amount) {
         expectedException.expect(ValidatorException.class);
         expectedException.expectMessage(MESSAGE_VALUE_ZERO);
 
@@ -58,7 +58,7 @@ public class AmountValidatorTest {
             "5.999",
             "10500.5914"
     })
-    public void shouldReportIncorrectAmountPattern(BigDecimal amount) throws ValidatorException {
+    public void shouldReportIncorrectAmountPattern(BigDecimal amount) {
         expectedException.expect(ValidatorException.class);
         expectedException.expectMessage(MESSAGE_VALUE_NOT_MATCHING_PATTERN);
 
@@ -66,7 +66,7 @@ public class AmountValidatorTest {
     }
 
     @Test
-    public void shouldReportMissingAmount() throws ValidatorException {
+    public void shouldReportMissingAmount() {
         expectedException.expect(ValidatorException.class);
         expectedException.expectMessage(MESSAGE_VALUE_MISSING);
 

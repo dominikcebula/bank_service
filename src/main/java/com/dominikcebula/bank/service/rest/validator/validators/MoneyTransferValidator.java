@@ -2,7 +2,6 @@ package com.dominikcebula.bank.service.rest.validator.validators;
 
 import com.dominikcebula.bank.service.dto.MoneyTransfer;
 import com.dominikcebula.bank.service.rest.validator.Validator;
-import com.dominikcebula.bank.service.rest.validator.exception.ValidatorException;
 
 public class MoneyTransferValidator extends Validator<MoneyTransfer> {
 
@@ -14,7 +13,7 @@ public class MoneyTransferValidator extends Validator<MoneyTransfer> {
     private final AmountValidator amountValidator = new AmountValidator();
 
     @Override
-    public void validate(MoneyTransfer moneyTransfer) throws ValidatorException {
+    public void validate(MoneyTransfer moneyTransfer) {
 
         assertConditionMet(
                 moneyTransfer != null,

@@ -2,7 +2,6 @@ package com.dominikcebula.bank.service.rest.actions;
 
 import com.dominikcebula.bank.service.application.actions.BankActionsFacade;
 import com.dominikcebula.bank.service.application.ds.AccountId;
-import com.dominikcebula.bank.service.application.exception.AccountCreateException;
 import com.dominikcebula.bank.service.dto.*;
 import com.dominikcebula.bank.service.rest.actions.base.NoActionsFacadeInContextIntegrationTest;
 import com.google.inject.testing.fieldbinder.Bind;
@@ -29,7 +28,7 @@ public class CreateAccountRestActionIntegrationTest extends NoActionsFacadeInCon
     private BankActionsFacade bankActionsFacade;
 
     @Test
-    public void shouldCreateAccount() throws AccountCreateException, InterruptedException {
+    public void shouldCreateAccount() throws InterruptedException {
         Account account = new Account().accountId(ACCOUNT_ID.getAccountNumber()).balance(DEPOSIT);
         Mockito.when(bankActionsFacade.createAccount(DEPOSIT)).thenReturn(account);
 
@@ -49,7 +48,7 @@ public class CreateAccountRestActionIntegrationTest extends NoActionsFacadeInCon
     }
 
     @Test
-    public void shouldFailedToCreateAccount() throws AccountCreateException, InterruptedException {
+    public void shouldFailedToCreateAccount() throws InterruptedException {
         Mockito.when(bankActionsFacade.createAccount(DEPOSIT)).thenThrow(new IllegalArgumentException("TEST"));
 
         AccountCreateRequest accountCreateRequest = new AccountCreateRequest();

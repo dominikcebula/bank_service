@@ -29,7 +29,7 @@ public class TransferMoneyRestAction extends AbstractValidatingRestAction<MoneyT
     }
 
     @Override
-    TransferMoneyResponse handleRequest(MoneyTransfer request) throws Exception {
+    TransferMoneyResponse handleRequest(MoneyTransfer request) {
         bankActionsFacade.transfer(AccountId.createAccountNumber(request.getFrom()), AccountId.createAccountNumber(request.getTo()), request.getAmount());
 
         return new TransferMoneyResponse()
