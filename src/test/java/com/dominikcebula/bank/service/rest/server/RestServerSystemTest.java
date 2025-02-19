@@ -5,7 +5,7 @@ import com.dominikcebula.bank.service.dto.*;
 import com.dominikcebula.bank.service.rest.actions.CreateAccountRestAction;
 import com.dominikcebula.bank.service.rest.actions.TransferMoneyRestAction;
 import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -13,14 +13,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.dominikcebula.bank.service.rest.actions.ListAccountsRestAction.ACCOUNT_LIST_URI;
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class RestServerSystemTest extends SparkRestServerAwareTest {
+
+class RestServerSystemTest extends SparkRestServerAwareTest {
 
     @Test
-    public void shouldExecuteScenarioCorrectly() {
+    void shouldExecuteScenarioCorrectly() {
         Accounts accountsBeforeScenario = getAccountsList().getAccounts();
 
         AccountId account1 = createAccount(BigDecimal.valueOf(500));
@@ -93,9 +94,8 @@ public class RestServerSystemTest extends SparkRestServerAwareTest {
     }
 
     private void assertAccountsExists(Accounts accountsInfo, AccountId... accountIds) {
-        assertThat(
-                getAccountIdsSet(accountsInfo)
-        ).containsOnly(accountIds);
+        assertThat(getAccountIdsSet(accountsInfo))
+                .containsOnly(accountIds);
     }
 
     private Set<AccountId> getAccountIdsSet(Accounts accountsInfo) {

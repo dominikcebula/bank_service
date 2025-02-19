@@ -8,7 +8,7 @@ import java.util.Arrays;
 class ComposedServiceModule extends AbstractModule {
     private final Module[] modules;
 
-    public ComposedServiceModule(Module... modules) {
+    ComposedServiceModule(Module... modules) {
         this.modules = modules;
     }
 

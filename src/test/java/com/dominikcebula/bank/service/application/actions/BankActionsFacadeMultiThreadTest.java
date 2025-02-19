@@ -6,8 +6,8 @@ import com.dominikcebula.bank.service.dto.Accounts;
 import com.dominikcebula.bank.service.guice.ContextAwareTest;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomUtils;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -16,9 +16,10 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class BankActionsFacadeMultiThreadTest extends ContextAwareTest {
+
+class BankActionsFacadeMultiThreadTest extends ContextAwareTest {
 
     private static final int NUMBER_OF_ACCOUNTS = 10000;
     private static final int NUMBER_OF_RANDOM_ACCOUNTS = 10000;
@@ -28,14 +29,14 @@ public class BankActionsFacadeMultiThreadTest extends ContextAwareTest {
 
     private BankActionsFacade bankActionsFacade;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    protected void setUp() {
         super.setUp();
         bankActionsFacade = injector.getInstance(BankActionsFacade.class);
     }
 
     @Test
-    public void shouldCreateAccountsCorrectly() {
+    void shouldCreateAccountsCorrectly() {
         createDefaultAccounts();
 
         Accounts accounts = bankActionsFacade.listAccounts();
@@ -45,7 +46,7 @@ public class BankActionsFacadeMultiThreadTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldTransferMoneyBetweenAccountsCorrectly() {
+    void shouldTransferMoneyBetweenAccountsCorrectly() {
         List<Account> sourceAccounts = createRandomAccounts();
         List<Account> destinationAccounts = createRandomAccounts();
 

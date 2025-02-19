@@ -8,24 +8,22 @@ import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.dto.Accounts;
 import com.dominikcebula.bank.service.guice.ContextAwareTest;
 import com.google.inject.testing.fieldbinder.Bind;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(MockitoJUnitRunner.class)
-public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
+
+@ExtendWith(MockitoExtension.class)
+class BankActionsFacadeIntegrationTest extends ContextAwareTest {
 
     private static final AccountId ACCOUNT_ID_1 = AccountId.createAccountNumber("1");
     private static final AccountId ACCOUNT_ID_2 = AccountId.createAccountNumber("2");
@@ -46,18 +44,15 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     @Bind
     private AccountIdGenerator accountIdGenerator;
 
-    @Rule
-    public final ExpectedException expectedException = ExpectedException.none();
-
-    @Before
-    public void setUp() {
+    @BeforeEach
+    protected void setUp() {
         super.setUp();
         bankActionsFacade = injector.getInstance(BankActionsFacade.class);
         accountDao = injector.getInstance(AccountDao.class);
     }
 
     @Test
-    public void shouldCreateAccounts() throws InterruptedException {
+    void shouldCreateAccounts() throws InterruptedException {
         createAccounts();
 
         assertThat(accountDao.findAccountIdentifiers())
@@ -65,7 +60,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldListAccounts() throws InterruptedException {
+    void shouldListAccounts() throws InterruptedException {
         createAccounts();
 
         Accounts accounts = bankActionsFacade.listAccounts();
@@ -80,7 +75,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldListAccountsWhenNoneCreated() {
+    void shouldListAccountsWhenNoneCreated() {
 
         Accounts accounts = bankActionsFacade.listAccounts();
 
@@ -89,7 +84,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldTransferMoneyBetweenAccounts() throws InterruptedException {
+    void shouldTransferMoneyBetweenAccounts() throws InterruptedException {
         createAccounts();
 
         bankActionsFacade.transfer(ACCOUNT_ID_1, ACCOUNT_ID_2, BALANCE1);
@@ -100,7 +95,7 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldTransferRoundedMoneyBetweenAccounts() throws InterruptedException {
+    void shouldTransferRoundedMoneyBetweenAccounts() throws InterruptedException {
         createAccounts();
 
         bankActionsFacade.transfer(ACCOUNT_ID_1, ACCOUNT_ID_2, FLOAT_AMOUNT);
@@ -109,23 +104,27 @@ public class BankActionsFacadeIntegrationTest extends ContextAwareTest {
     }
 
     @Test
-    public void shouldFailTransferBecauseOfMissingAccount() throws InterruptedException {
-        expectedException.expect(TransferException.class);
-        expectedException.expectMessage("Unable to locate account [" + NON_EXISTING_ACCOUNT + "]");
-
+    void shouldFailTransferBecauseOfMissingAccount() throws InterruptedException {
         createAccounts();
 
-        bankActionsFacade.transfer(NON_EXISTING_ACCOUNT, ACCOUNT_ID_2, BALANCE1);
+        TransferException thrownException = assertThrows(TransferException.class, () -> {
+            bankActionsFacade.transfer(NON_EXISTING_ACCOUNT, ACCOUNT_ID_2, BALANCE1);
+        });
+
+        assertThat(thrownException.getMessage())
+                .contains("Unable to locate account [" + NON_EXISTING_ACCOUNT + "]");
     }
 
     @Test
-    public void shouldFailTransferBecauseOfNoEnoughFunds() throws InterruptedException {
-        expectedException.expect(TransferException.class);
-        expectedException.expectMessage("Unable to transfer amount [" + HUGE_AMOUNT + "] from [" + ACCOUNT_ID_1 + "] to [" + ACCOUNT_ID_2 + "]");
-
+    void shouldFailTransferBecauseOfNoEnoughFunds() throws InterruptedException {
         createAccounts();
 
-        bankActionsFacade.transfer(ACCOUNT_ID_1, ACCOUNT_ID_2, HUGE_AMOUNT);
+        TransferException thrownException = assertThrows(TransferException.class, () -> {
+            bankActionsFacade.transfer(ACCOUNT_ID_1, ACCOUNT_ID_2, HUGE_AMOUNT);
+        });
+
+        assertThat(thrownException.getMessage())
+                .contains("Unable to transfer amount [" + HUGE_AMOUNT + "] from [" + ACCOUNT_ID_1 + "] to [" + ACCOUNT_ID_2 + "]");
     }
 
     private void createAccounts() throws InterruptedException {

@@ -5,14 +5,15 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
+
 
 public abstract class ContextAwareTest {
 
     protected Injector injector;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    protected void setUp() {
         injector = Guice.createInjector(getComposedServiceModule());
     }
 

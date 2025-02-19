@@ -5,26 +5,27 @@ import com.dominikcebula.bank.service.dto.ApiErrorResponse;
 import com.dominikcebula.bank.service.spark.SparkRestServerAwareTest;
 import com.google.inject.testing.fieldbinder.Bind;
 import org.apache.http.Header;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.dominikcebula.bank.service.assertions.HeadersAssert.assertHeadersContain;
 import static com.dominikcebula.bank.service.rest.actions.ErrorHandlingRestAction.ERROR_MESSAGE;
 import static com.dominikcebula.bank.service.rest.actions.ListAccountsRestAction.ACCOUNT_LIST_URI;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(MockitoJUnitRunner.class)
-public class ErrorHandlingRestActionIntegrationTest extends SparkRestServerAwareTest {
+
+@ExtendWith(MockitoExtension.class)
+class ErrorHandlingRestActionIntegrationTest extends SparkRestServerAwareTest {
 
     @Mock
     @Bind
     private ListAccountsRestAction listAccountsRestAction;
 
     @Test
-    public void shouldShowRestErrorOnNotFoundError() {
+    void shouldShowRestErrorOnNotFoundError() {
         ApiErrorResponse errorResponse = resetClient().getForObject("/non-existing-uri", ApiErrorResponse.class);
 
         assertEquals(ApiCode.FAILED, errorResponse.getStatus().getCode());
@@ -32,7 +33,7 @@ public class ErrorHandlingRestActionIntegrationTest extends SparkRestServerAware
     }
 
     @Test
-    public void shouldShowRestErrorOnInternalError() throws Exception {
+    void shouldShowRestErrorOnInternalError() throws Exception {
         mockExceptionThrown();
 
         ApiErrorResponse errorResponse = resetClient().getForObject(ACCOUNT_LIST_URI, ApiErrorResponse.class);
@@ -44,7 +45,7 @@ public class ErrorHandlingRestActionIntegrationTest extends SparkRestServerAware
     }
 
     @Test
-    public void shouldIncludeJsonResponseTypeOnError() throws Exception {
+    void shouldIncludeJsonResponseTypeOnError() throws Exception {
         mockExceptionThrown();
 
         Header[] headers = resetClient().getForHeaders(ACCOUNT_LIST_URI);

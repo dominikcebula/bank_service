@@ -7,21 +7,22 @@ import com.dominikcebula.bank.service.dto.ApiCode;
 import com.dominikcebula.bank.service.dto.ListAccountsResponse;
 import com.dominikcebula.bank.service.rest.actions.base.NoActionsFacadeInContextIntegrationTest;
 import com.google.inject.testing.fieldbinder.Bind;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 
 import static com.dominikcebula.bank.service.rest.actions.ListAccountsRestAction.ACCOUNT_LIST_URI;
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(MockitoJUnitRunner.class)
-public class ListAccountsRestActionIntegrationTest extends NoActionsFacadeInContextIntegrationTest {
+
+@ExtendWith(MockitoExtension.class)
+class ListAccountsRestActionIntegrationTest extends NoActionsFacadeInContextIntegrationTest {
 
     private static final int TOTAL_DEPOSIT = 600;
 
@@ -30,7 +31,7 @@ public class ListAccountsRestActionIntegrationTest extends NoActionsFacadeInCont
     private BankActionsFacade bankActionsFacade;
 
     @Test
-    public void shouldListCreatedAccounts() {
+    void shouldListCreatedAccounts() {
         Mockito.when(bankActionsFacade.listAccounts()).thenReturn(getAccounts());
 
         ListAccountsResponse listAccountsResponse = resetClient().getForObject(ACCOUNT_LIST_URI, ListAccountsResponse.class);

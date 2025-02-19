@@ -5,22 +5,23 @@ import com.dominikcebula.bank.service.guice.ContextAwareTest;
 import com.dominikcebula.bank.service.rest.service.ServiceController;
 import com.dominikcebula.bank.service.utils.RestClient;
 import com.google.gson.GsonBuilder;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+
 
 public abstract class SparkRestServerAwareTest extends ContextAwareTest {
 
     private ServiceController serviceController;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    protected void setUp() {
         super.setUp();
         serviceController = new ServiceController(injector);
         serviceController.start();
     }
 
-    @After
-    public void tearDown() {
+    @AfterEach
+    protected void tearDown() {
         serviceController.stop();
     }
 

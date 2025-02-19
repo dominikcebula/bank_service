@@ -4,39 +4,40 @@ import com.dominikcebula.bank.service.application.dao.AccountDao;
 import com.dominikcebula.bank.service.application.ds.AccountId;
 import com.dominikcebula.bank.service.configuration.Configuration;
 import com.dominikcebula.bank.service.dto.Account;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class InMemoryAccountStorageTest {
+
+class InMemoryAccountStorageTest {
 
     private AccountDao accountDao;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         accountDao = new InMemoryAccountStorage(new Configuration());
     }
 
     @Test
-    public void shouldBeEmpty() {
+    void shouldBeEmpty() {
         assertTrue(accountDao.findAllAccounts().isEmpty());
         assertTrue(accountDao.findAccountIdentifiers().isEmpty());
         assertFalse(accountDao.accountExists(ACCOUNT1_ID));
     }
 
     @Test
-    public void shouldStoreOneAccount() throws InterruptedException {
+    void shouldStoreOneAccount() throws InterruptedException {
         accountDao.store(ACCOUNT1);
 
         assertEquals(ACCOUNT1, accountDao.findAccount(ACCOUNT1_ID));
     }
 
     @Test
-    public void shouldStoreThreeAccount() throws InterruptedException {
+    void shouldStoreThreeAccount() throws InterruptedException {
         accountDao.store(ACCOUNT1);
         accountDao.store(ACCOUNT2);
         accountDao.store(ACCOUNT3);
@@ -47,7 +48,7 @@ public class InMemoryAccountStorageTest {
     }
 
     @Test
-    public void shouldGiveImmutableAccount() throws InterruptedException {
+    void shouldGiveImmutableAccount() throws InterruptedException {
         accountDao.store(ACCOUNT1);
 
         accountDao.findAccount(ACCOUNT1_ID).setBalance(BigDecimal.valueOf(555));
@@ -56,7 +57,7 @@ public class InMemoryAccountStorageTest {
     }
 
     @Test
-    public void shouldGiveImmutableAccounts() throws InterruptedException {
+    void shouldGiveImmutableAccounts() throws InterruptedException {
         accountDao.store(ACCOUNT1);
 
         accountDao.findAllAccounts().getFirst().setBalance(BigDecimal.valueOf(555));
@@ -65,14 +66,14 @@ public class InMemoryAccountStorageTest {
     }
 
     @Test
-    public void shouldReturnNullWhenSearchingNonExistingAccount() {
+    void shouldReturnNullWhenSearchingNonExistingAccount() {
         Account account = accountDao.findAccount(ACCOUNT1_ID);
 
         assertNull(account);
     }
 
     @Test
-    public void shouldCorrectlyCheckForExistence() throws InterruptedException {
+    void shouldCorrectlyCheckForExistence() throws InterruptedException {
         accountDao.store(ACCOUNT1);
         accountDao.store(ACCOUNT3);
 
@@ -83,7 +84,7 @@ public class InMemoryAccountStorageTest {
     }
 
     @Test
-    public void shouldCorrectlyFetchAccountIdentifiers() throws InterruptedException {
+    void shouldCorrectlyFetchAccountIdentifiers() throws InterruptedException {
         accountDao.store(ACCOUNT1);
         accountDao.store(ACCOUNT2);
 
@@ -92,7 +93,7 @@ public class InMemoryAccountStorageTest {
     }
 
     @Test
-    public void shouldCorrectlyFindAllAccounts() throws InterruptedException {
+    void shouldCorrectlyFindAllAccounts() throws InterruptedException {
         accountDao.store(ACCOUNT1);
         accountDao.store(ACCOUNT2);
 
@@ -101,7 +102,7 @@ public class InMemoryAccountStorageTest {
     }
 
     @Test
-    public void shouldCorrectlyFindAllAccountsInfo() throws InterruptedException {
+    void shouldCorrectlyFindAllAccountsInfo() throws InterruptedException {
         accountDao.store(ACCOUNT1);
         accountDao.store(ACCOUNT2);
 

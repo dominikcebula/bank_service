@@ -2,22 +2,21 @@ package com.dominikcebula.bank.service.application.utils;
 
 import com.dominikcebula.bank.service.application.ds.AccountId;
 import com.dominikcebula.bank.service.application.exception.AccountCreateException;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.Set;
 
 import static com.dominikcebula.bank.service.application.utils.AccountIdGenerator.MESSAGE_GENERATION_ERROR;
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(MockitoJUnitRunner.class)
-public class AccountIdGeneratorTest {
+@ExtendWith(MockitoExtension.class)
+class AccountIdGeneratorTest {
 
     private static final String ACCOUNT_NUMBER_REGEXP = "^[0-9]{16}$";
 
@@ -26,11 +25,8 @@ public class AccountIdGeneratorTest {
     @Mock
     private Set<AccountId> accountIds;
 
-    @Rule
-    public final ExpectedException expectedException = ExpectedException.none();
-
     @Test
-    public void shouldCreateAccountId() {
+    void shouldCreateAccountId() {
         AccountId accountId = accountIdGenerator.generateAccountId(Collections.emptySet());
 
         assertThat(accountId.getAccountNumber())
@@ -38,12 +34,14 @@ public class AccountIdGeneratorTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenUnableToGenerateAccountNumber() {
+    void shouldThrowExceptionWhenUnableToGenerateAccountNumber() {
         Mockito.when(accountIds.contains(Mockito.any(AccountId.class))).thenReturn(true);
 
-        expectedException.expect(AccountCreateException.class);
-        expectedException.expectMessage(MESSAGE_GENERATION_ERROR);
+        AccountCreateException thrownException = assertThrows(AccountCreateException.class,
+                () -> accountIdGenerator.generateAccountId(accountIds)
+        );
 
-        accountIdGenerator.generateAccountId(accountIds);
+        assertThat(thrownException.getMessage())
+                .isEqualTo(MESSAGE_GENERATION_ERROR);
     }
 }

@@ -6,9 +6,12 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class HeadersAssert {
+    private HeadersAssert() {
+    }
+
     public static void assertHeadersContain(Header[] headers, String... expectedHeaders) {
         assertThat(getHeaderEntriesSet(headers))
                 .contains(expectedHeaders);

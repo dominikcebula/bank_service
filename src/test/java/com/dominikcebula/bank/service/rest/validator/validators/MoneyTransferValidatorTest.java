@@ -3,21 +3,19 @@ package com.dominikcebula.bank.service.rest.validator.validators;
 import com.dominikcebula.bank.service.application.ds.AccountId;
 import com.dominikcebula.bank.service.dto.MoneyTransfer;
 import com.dominikcebula.bank.service.rest.validator.exception.ValidatorException;
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigDecimal;
 
 import static com.dominikcebula.bank.service.rest.validator.validators.AccountIdValidator.MESSAGE_ACCOUNT_ID_INCORRECT;
 import static com.dominikcebula.bank.service.rest.validator.validators.AmountValidator.*;
 import static com.dominikcebula.bank.service.rest.validator.validators.MoneyTransferValidator.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(JUnitParamsRunner.class)
-public class MoneyTransferValidatorTest {
+class MoneyTransferValidatorTest {
 
     private static final AccountId FROM = AccountId.createRandomAccountId();
     private static final AccountId TO = AccountId.createRandomAccountId();
@@ -25,11 +23,8 @@ public class MoneyTransferValidatorTest {
 
     private final MoneyTransferValidator moneyTransferValidator = new MoneyTransferValidator();
 
-    @Rule
-    public final ExpectedException expectedException = ExpectedException.none();
-
     @Test
-    public void shouldProcessRequestCorrectly() {
+    void shouldProcessRequestCorrectly() {
         MoneyTransfer moneyTransfer = new MoneyTransfer();
         moneyTransfer.setFrom(FROM.getAccountNumber());
         moneyTransfer.setTo(TO.getAccountNumber());
@@ -39,100 +34,100 @@ public class MoneyTransferValidatorTest {
     }
 
     @Test
-    public void shouldReportTransferObjectMissing() {
-        expectedException.expect(ValidatorException.class);
-        expectedException.expectMessage(MESSAGE_TRANSFER_REQUEST_NOT_SPECIFIED);
+    void shouldReportTransferObjectMissing() {
+        ValidatorException thrownException = assertThrows(ValidatorException.class, () -> moneyTransferValidator.validate(null));
 
-        moneyTransferValidator.validate(null);
+        assertThat(thrownException.getMessage())
+                .isEqualTo(MESSAGE_TRANSFER_REQUEST_NOT_SPECIFIED);
     }
 
     @Test
-    public void shouldReportAmountMissing() {
-        expectedException.expect(ValidatorException.class);
-        expectedException.expectMessage(MESSAGE_VALUE_MISSING);
-
+    void shouldReportAmountMissing() {
         MoneyTransfer moneyTransfer = new MoneyTransfer();
         moneyTransfer.setFrom(FROM.getAccountNumber());
         moneyTransfer.setTo(TO.getAccountNumber());
 
-        moneyTransferValidator.validate(moneyTransfer);
+        ValidatorException thrownException = assertThrows(ValidatorException.class, () -> moneyTransferValidator.validate(moneyTransfer));
+
+        assertThat(thrownException.getMessage())
+                .isEqualTo(MESSAGE_VALUE_MISSING);
     }
 
-    @Test
-    @Parameters({"0", "-5"})
-    public void shouldReportAmountValueIncorrect(BigDecimal amount) {
-        expectedException.expect(ValidatorException.class);
-        expectedException.expectMessage(MESSAGE_VALUE_ZERO);
-
+    @ParameterizedTest
+    @ValueSource(strings = {"0", "-5"})
+    void shouldReportAmountValueIncorrect(String amount) {
         MoneyTransfer moneyTransfer = new MoneyTransfer();
         moneyTransfer.setFrom(FROM.getAccountNumber());
         moneyTransfer.setTo(TO.getAccountNumber());
-        moneyTransfer.setAmount(amount);
+        moneyTransfer.setAmount(new BigDecimal(amount));
 
-        moneyTransferValidator.validate(moneyTransfer);
+        ValidatorException thrownException = assertThrows(ValidatorException.class, () -> moneyTransferValidator.validate(moneyTransfer));
+
+        assertThat(thrownException.getMessage())
+                .isEqualTo(MESSAGE_VALUE_ZERO);
     }
 
-    @Test
-    @Parameters({"4.567", "1.32354"})
-    public void shouldReportAmountPatternIncorrect(BigDecimal amount) {
-        expectedException.expect(ValidatorException.class);
-        expectedException.expectMessage(MESSAGE_VALUE_NOT_MATCHING_PATTERN);
-
+    @ParameterizedTest
+    @ValueSource(strings = {"4.567", "1.32354"})
+    void shouldReportAmountPatternIncorrect(String amount) {
         MoneyTransfer moneyTransfer = new MoneyTransfer();
         moneyTransfer.setFrom(FROM.getAccountNumber());
         moneyTransfer.setTo(TO.getAccountNumber());
-        moneyTransfer.setAmount(amount);
+        moneyTransfer.setAmount(new BigDecimal(amount));
 
-        moneyTransferValidator.validate(moneyTransfer);
+        ValidatorException thrownException = assertThrows(ValidatorException.class, () -> moneyTransferValidator.validate(moneyTransfer));
+
+        assertThat(thrownException.getMessage())
+                .isEqualTo(MESSAGE_VALUE_NOT_MATCHING_PATTERN);
     }
 
     @Test
-    public void shouldReportFromMissing() {
-        expectedException.expect(ValidatorException.class);
-        expectedException.expectMessage(MESSAGE_FROM_ACCOUNT_NOT_SPECIFIED);
-
+    void shouldReportFromMissing() {
         MoneyTransfer moneyTransfer = new MoneyTransfer();
         moneyTransfer.setTo(TO.getAccountNumber());
         moneyTransfer.setAmount(AMOUNT_POSITIVE);
 
-        moneyTransferValidator.validate(moneyTransfer);
+        ValidatorException thrownException = assertThrows(ValidatorException.class, () -> moneyTransferValidator.validate(moneyTransfer));
+
+        assertThat(thrownException.getMessage())
+                .isEqualTo(MESSAGE_FROM_ACCOUNT_NOT_SPECIFIED);
     }
 
     @Test
-    public void shouldReportToMissing() {
-        expectedException.expect(ValidatorException.class);
-        expectedException.expectMessage(MESSAGE_TO_ACCOUNT_NOT_SPECIFIED);
-
+    void shouldReportToMissing() {
         MoneyTransfer moneyTransfer = new MoneyTransfer();
         moneyTransfer.setFrom(FROM.getAccountNumber());
         moneyTransfer.setAmount(AMOUNT_POSITIVE);
 
-        moneyTransferValidator.validate(moneyTransfer);
+        ValidatorException thrownException = assertThrows(ValidatorException.class, () -> moneyTransferValidator.validate(moneyTransfer));
+
+        assertThat(thrownException.getMessage())
+                .isEqualTo(MESSAGE_TO_ACCOUNT_NOT_SPECIFIED);
     }
 
     @Test
-    public void shouldReportFromIncorrect() {
-        expectedException.expect(ValidatorException.class);
-        expectedException.expectMessage(MESSAGE_ACCOUNT_ID_INCORRECT);
-
+    void shouldReportFromIncorrect() {
         MoneyTransfer moneyTransfer = new MoneyTransfer();
         moneyTransfer.setFrom("123");
         moneyTransfer.setTo(TO.getAccountNumber());
         moneyTransfer.setAmount(AMOUNT_POSITIVE);
 
-        moneyTransferValidator.validate(moneyTransfer);
+        ValidatorException thrownException = assertThrows(ValidatorException.class, () -> moneyTransferValidator.validate(moneyTransfer));
+
+        assertThat(thrownException.getMessage())
+                .isEqualTo(MESSAGE_ACCOUNT_ID_INCORRECT);
     }
 
     @Test
-    public void shouldReportToIncorrect() {
-        expectedException.expect(ValidatorException.class);
-        expectedException.expectMessage(MESSAGE_ACCOUNT_ID_INCORRECT);
-
+    void shouldReportToIncorrect() {
         MoneyTransfer moneyTransfer = new MoneyTransfer();
         moneyTransfer.setFrom(FROM.getAccountNumber());
         moneyTransfer.setTo("12345678901234567");
         moneyTransfer.setAmount(AMOUNT_POSITIVE);
 
-        moneyTransferValidator.validate(moneyTransfer);
+        ValidatorException thrownException = assertThrows(ValidatorException.class, () -> moneyTransferValidator.validate(moneyTransfer));
+
+        assertThat(thrownException.getMessage())
+                .isEqualTo(MESSAGE_ACCOUNT_ID_INCORRECT);
     }
 }

@@ -8,20 +8,21 @@ import com.dominikcebula.bank.service.dto.MoneyTransfer;
 import com.dominikcebula.bank.service.dto.TransferMoneyResponse;
 import com.dominikcebula.bank.service.rest.actions.base.NoActionsFacadeInContextIntegrationTest;
 import com.google.inject.testing.fieldbinder.Bind;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 
 import static com.dominikcebula.bank.service.rest.validator.validators.AmountValidator.MESSAGE_VALUE_ZERO;
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(MockitoJUnitRunner.class)
-public class TransferMoneyRestActionIntegrationTest extends NoActionsFacadeInContextIntegrationTest {
+
+@ExtendWith(MockitoExtension.class)
+class TransferMoneyRestActionIntegrationTest extends NoActionsFacadeInContextIntegrationTest {
 
     private static final AccountId FROM = AccountId.createRandomAccountId();
     private static final AccountId TO = AccountId.createRandomAccountId();
@@ -31,7 +32,7 @@ public class TransferMoneyRestActionIntegrationTest extends NoActionsFacadeInCon
     private BankActionsFacade bankActionsFacade;
 
     @Test
-    public void shouldTransferMoney() {
+    void shouldTransferMoney() {
         BigDecimal amount = BigDecimal.valueOf(600);
 
         MoneyTransfer moneyTransfer = new MoneyTransfer();
@@ -51,7 +52,7 @@ public class TransferMoneyRestActionIntegrationTest extends NoActionsFacadeInCon
     }
 
     @Test
-    public void shouldFailToTransferMoney() {
+    void shouldFailToTransferMoney() {
         BigDecimal amount = BigDecimal.valueOf(600);
 
         Mockito.doThrow(new IllegalArgumentException("TEST"))
@@ -71,7 +72,7 @@ public class TransferMoneyRestActionIntegrationTest extends NoActionsFacadeInCon
     }
 
     @Test
-    public void shouldFailTransferMoneyValidation() {
+    void shouldFailTransferMoneyValidation() {
         BigDecimal amount = BigDecimal.valueOf(0);
 
         MoneyTransfer moneyTransfer = new MoneyTransfer();
@@ -89,7 +90,7 @@ public class TransferMoneyRestActionIntegrationTest extends NoActionsFacadeInCon
     }
 
     @Test
-    public void shouldFailTransferMoneyBeanValidation() {
+    void shouldFailTransferMoneyBeanValidation() {
         MoneyTransfer moneyTransfer = new MoneyTransfer();
         moneyTransfer.setTo(TO.getAccountNumber());
 

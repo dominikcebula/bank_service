@@ -5,20 +5,21 @@ import com.dominikcebula.bank.service.application.ds.AccountId;
 import com.dominikcebula.bank.service.dto.*;
 import com.dominikcebula.bank.service.rest.actions.base.NoActionsFacadeInContextIntegrationTest;
 import com.google.inject.testing.fieldbinder.Bind;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 
 import static com.dominikcebula.bank.service.dto.ApiCode.ACCOUNT_CREATED;
 import static com.dominikcebula.bank.service.rest.validator.validators.AmountValidator.MESSAGE_VALUE_ZERO;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(MockitoJUnitRunner.class)
-public class CreateAccountRestActionIntegrationTest extends NoActionsFacadeInContextIntegrationTest {
+
+@ExtendWith(MockitoExtension.class)
+class CreateAccountRestActionIntegrationTest extends NoActionsFacadeInContextIntegrationTest {
 
     private static final BigDecimal DEPOSIT = BigDecimal.valueOf(5000.85);
     private static final AccountId ACCOUNT_ID = AccountId.createRandomAccountId();
@@ -28,7 +29,7 @@ public class CreateAccountRestActionIntegrationTest extends NoActionsFacadeInCon
     private BankActionsFacade bankActionsFacade;
 
     @Test
-    public void shouldCreateAccount() throws InterruptedException {
+    void shouldCreateAccount() throws InterruptedException {
         Account account = new Account().accountId(ACCOUNT_ID.getAccountNumber()).balance(DEPOSIT);
         Mockito.when(bankActionsFacade.createAccount(DEPOSIT)).thenReturn(account);
 
@@ -48,7 +49,7 @@ public class CreateAccountRestActionIntegrationTest extends NoActionsFacadeInCon
     }
 
     @Test
-    public void shouldFailedToCreateAccount() throws InterruptedException {
+    void shouldFailedToCreateAccount() throws InterruptedException {
         Mockito.when(bankActionsFacade.createAccount(DEPOSIT)).thenThrow(new IllegalArgumentException("TEST"));
 
         AccountCreateRequest accountCreateRequest = new AccountCreateRequest();
@@ -64,7 +65,7 @@ public class CreateAccountRestActionIntegrationTest extends NoActionsFacadeInCon
     }
 
     @Test
-    public void shouldFailValidationDuringCreateAction() {
+    void shouldFailValidationDuringCreateAction() {
         AccountCreateRequest accountCreateRequest = new AccountCreateRequest();
         accountCreateRequest.setInitialDeposit(BigDecimal.valueOf(0));
 
@@ -78,7 +79,7 @@ public class CreateAccountRestActionIntegrationTest extends NoActionsFacadeInCon
     }
 
     @Test
-    public void shouldFailBeanValidationDuringCreateAction() {
+    void shouldFailBeanValidationDuringCreateAction() {
         AccountCreateRequest accountCreateRequest = new AccountCreateRequest();
 
         ApiErrorResponse errorResponse = resetClient().postForObject(
