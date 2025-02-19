@@ -7,14 +7,14 @@ import com.dominikcebula.bank.service.application.utils.MoneyAmountRound;
 import com.dominikcebula.bank.service.dto.Account;
 import com.dominikcebula.bank.service.logging.Loggers;
 import com.google.inject.Inject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 
 class CreateAccountAction {
 
-    private final Logger logger = LoggerFactory.getLogger(Loggers.APPLICATION);
+    private final Logger logger = LogManager.getLogger(Loggers.APPLICATION);
 
     private final AccountDao accountDao;
     private final AccountIdGenerator accountIdGenerator;

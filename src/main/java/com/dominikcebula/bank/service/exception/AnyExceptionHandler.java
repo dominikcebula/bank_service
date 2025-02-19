@@ -6,14 +6,14 @@ import com.dominikcebula.bank.service.dto.ModelApiResponse;
 import com.dominikcebula.bank.service.logging.Loggers;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import spark.ExceptionHandler;
 import spark.Request;
 import spark.Response;
 
 public class AnyExceptionHandler implements ExceptionHandler<Exception> {
-    private final Logger logger = LoggerFactory.getLogger(Loggers.REST);
+    private final Logger logger = LogManager.getLogger(Loggers.REST);
 
     private final Gson gson;
 
